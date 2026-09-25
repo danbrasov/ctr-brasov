@@ -14,6 +14,7 @@ jobs:
         shell: bash
         run: |
           curl --fail --silent --show-error --location --max-time 30 \
+            --ciphers 'DEFAULT@SECLEVEL=1' \
             --user-agent "Mozilla/5.0 ctr-brasov-notam-check/1.0" \
             "https://flightplan.romatsa.ro/init/notam/getnotamlist?twr=LRBV" \
             -o /tmp/romatsa.html
