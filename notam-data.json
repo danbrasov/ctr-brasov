@@ -1,0 +1,21 @@
+{
+  "source": "https://flightplan.romatsa.ro/init/notam/getnotamlist?twr=LRBV",
+  "checkedAt": "2026-09-25T12:03:00.101530+00:00",
+  "zones": {
+    "AZLR1": {
+      "notam": "D2989/2026",
+      "from": "2609250700",
+      "to": "2609251700"
+    },
+    "AZLR2": {
+      "notam": "D2990/2026",
+      "from": "2609250700",
+      "to": "2609251700"
+    },
+    "AZLR3": {
+      "notam": "D2991/2026",
+      "from": "2609250700",
+      "to": "2609251700"
+    }
+  }
+}
