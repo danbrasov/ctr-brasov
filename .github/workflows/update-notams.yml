@@ -7,14 +7,17 @@ permissions:
   contents: write
 jobs:
   update:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
       - name: Fetch ROMATSA NOTAMs
-        run: python scripts/fetch_notams.py
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location --max-time 30 \
+            --user-agent "Mozilla/5.0 ctr-brasov-notam-check/1.0" \
+            "https://flightplan.romatsa.ro/init/notam/getnotamlist?twr=LRBV" \
+            -o /tmp/romatsa.html
+          python3 scripts/parse_notams.py /tmp/romatsa.html notam-data.json
       - name: Commit changed data
         run: |
           git config user.name "github-actions[bot]"
