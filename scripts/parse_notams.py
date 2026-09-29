@@ -20,9 +20,10 @@ for zone,a in AREAS.items():
     for m in re.finditer(pattern,text):
         block=m.group(0)
         compact=re.sub(r"\s+","",block)
-        if "GLDFLT" in compact and a["coord"] in compact and re.search(r"G\)FL"+a["fl"]+r"\b",compact):
+        if "GLDFLT" in compact and a["coord"] in compact:
             b=re.search(r"B\)(\d{10})",compact); c=re.search(r"C\)(\d{10})",compact)
-            hits.append({"notam":m.group(1),"from":b.group(1) if b else None,"to":c.group(1) if c else None})
+            f=re.search(r"F\)(GND|SFC|FL\d{3})",compact); g=re.search(r"G\)(FL\d{3}|GND|SFC|UNL)",compact)
+            hits.append({"notam":m.group(1),"from":b.group(1) if b else None,"to":c.group(1) if c else None,"lower":f.group(1) if f else None,"upper":g.group(1) if g else None})
     out["zones"][zone]=hits[0] if len(hits)==1 else {"notam":None,"matches":len(hits)}
 with open(outfile,"w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
 print(json.dumps(out,ensure_ascii=False,indent=2))
