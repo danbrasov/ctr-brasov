@@ -28,6 +28,10 @@ function finish(error=null){
   const near=pilots.filter(p=>p.lat>=44.8&&p.lat<=46.5&&p.lon>=24.5&&p.lon<=27.0);
   const zones={};
   for(const [z,p] of Object.entries(POLYS))zones[z]=pilots.filter(x=>inside(x.lat,x.lon,p));
+  // TEST ONLY: AZLR3 is temporarily a 300 km radius around Brasov
+  const BRASOV={lat:45.6579,lon:25.6012},R=6371;
+  const distKm=(a,b)=>{const q=x=>x*Math.PI/180,dlat=q(a.lat-b.lat),dlon=q(a.lon-b.lon),h=Math.sin(dlat/2)**2+Math.cos(q(a.lat))*Math.cos(q(b.lat))*Math.sin(dlon/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
+  zones.AZLR3=pilots.filter(x=>distKm({lat:x.lat,lon:x.lon},BRASOV)<=300);
   fs.writeFileSync('xcontest-test.json',JSON.stringify({checkedAt:new Date().toISOString(),source:'XContest Live',connected:!error,error:error?String(error):null,flyingTotal:pilots.length,brasovRegion:near,zones},null,2));
   try{ws.close()}catch{}
   process.exitCode=error?1:0;
