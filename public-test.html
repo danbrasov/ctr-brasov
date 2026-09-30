@@ -108,7 +108,7 @@ function drawFullPilots(){
 
 function weatherIcon(dir,speed){
  const d=Number.isFinite(+dir)?+dir:0,v=Number.isFinite(+speed)?Math.round(+speed):'—';
- return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],html:'<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><g transform="rotate('+d+' 15 15)"><path d="M15 3.3 L26.1 24.1 L19.6 21.5 L15 25.4 L10.5 21.5 L4 24.1 Z" fill="#facc15"/></g><text x="15" y="16.3" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="900" fill="#111">'+v+'</text></svg>'})
+ return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],html:'<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><g transform="rotate('+d+' 15 15)"><path d="M15 3.3 L26.1 24.1 L19.6 21.5 L15 25.4 L10.5 21.5 L4 24.1 Z" fill="#facc15"/></g><text x="15" y="17.6" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="900" fill="#111">'+v+'</text></svg>'})
 }
 function weatherGraph(points){
  const p=(points||[]).filter(x=>Number.isFinite(+x.t)&&(Number.isFinite(+x.windKmh)||Number.isFinite(+x.gustKmh)));
@@ -122,7 +122,7 @@ function weatherGraph(points){
 function showWeatherInfo(){
  const box=document.getElementById('aircraftinfobox');if(!box||!weatherData?.current)return;
  const w=weatherData.current,s=weatherData.station||{},tm=Number.isFinite(+w.t)?new Date(+w.t).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit'}):'—';
- box.innerHTML='<b>💨 '+esc(s.name||'Stație meteo')+'</b><br>Vânt: <b>'+(Number.isFinite(+w.windKmh)?Math.round(+w.windKmh):'—')+' km/h</b> · rafală '+(Number.isFinite(+w.gustKmh)?Math.round(+w.gustKmh):'—')+' km/h<br>Direcție: '+(Number.isFinite(+w.dir)?Math.round(+w.dir)+'°':'—')+(Number.isFinite(+w.tempC)?' · 🌡️ '+(+w.tempC).toFixed(1)+' °C':'')+' · '+tm+weatherGraph(weatherData.history);
+ box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație meteo')+'</b><br>Vânt: <b>'+(Number.isFinite(+w.windKmh)?Math.round(+w.windKmh):'—')+' km/h</b> · rafală '+(Number.isFinite(+w.gustKmh)?Math.round(+w.gustKmh):'—')+' km/h<br>Direcție: '+(Number.isFinite(+w.dir)?Math.round(+w.dir)+'°':'—')+(Number.isFinite(+w.tempC)?' · 🌡️ '+(+w.tempC).toFixed(1)+' °C':'')+' · '+tm+weatherGraph(weatherData.history)+'</div>';
  box.style.display='block';
 }
 function clearSelectedWeather(){selectedWeather=false;const box=document.getElementById('aircraftinfobox');if(box){box.style.display='none';box.innerHTML=''}}
