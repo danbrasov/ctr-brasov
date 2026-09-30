@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-09-30T18:03:10.140038+00:00",
+  "checkedAt": "2026-09-30T20:16:45.313251+00:00",
   "date": "2026-09-30",
   "windowLocal": {
     "from": "12:00",
@@ -339,25 +339,7 @@
           ]
         ]
       }
-    },
-    {
-      "notam": "P8694/26",
-      "from": "2609300500",
-      "to": "2609301900",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "13600FT AMSL) From:2026-09-30 05:00 Till:2026-09-30 19:00 (",
-      "description": "DANGER AREA ACTIVATED. FRNG AND DEMOLITION OF EXPLOSIVES WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 460408N0261802E WITH 1NM RADIUS EXPECT RADAR VECTORING",
-      "severity": "orange",
-      "shape": {
-        "type": "circle",
-        "center": [
-          46.06888888888889,
-          26.300555555555555
-        ],
-        "radiusKm": 1.852
-      }
     }
   ],
-  "skippedWithoutExplicitGeometry": 101
+  "skippedWithoutExplicitGeometry": 86
 }
