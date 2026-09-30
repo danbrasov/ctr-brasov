@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-09-30T15:14:45.267524+00:00",
+  "checkedAt": "2026-09-30T18:03:10.140038+00:00",
   "date": "2026-09-30",
   "windowLocal": {
     "from": "12:00",
@@ -9,111 +9,6 @@
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
   "items": [
-    {
-      "notam": "D3073/26",
-      "from": "2609300700",
-      "to": "2609301700",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL050) From:2026-09-30 07:00 Till:2026-09-30 17:00 (",
-      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 454233N0254914E-453953N0255514E-454710N0260208E-454728N0255306E 454233N0254914E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.70916666666667,
-            25.820555555555554
-          ],
-          [
-            45.664722222222224,
-            25.920555555555556
-          ],
-          [
-            45.78611111111111,
-            26.035555555555558
-          ],
-          [
-            45.79111111111111,
-            25.884999999999998
-          ],
-          [
-            45.70916666666667,
-            25.820555555555554
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "D3072/26",
-      "from": "2609300700",
-      "to": "2609301700",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL060) From:2026-09-30 07:00 Till:2026-09-30 17:00 (",
-      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 453843N0253754E-454233N0254914E-453953N0255514E-453221N0254805E 453843N0253754E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.64527777777778,
-            25.631666666666668
-          ],
-          [
-            45.70916666666667,
-            25.820555555555554
-          ],
-          [
-            45.664722222222224,
-            25.920555555555556
-          ],
-          [
-            45.53916666666667,
-            25.80138888888889
-          ],
-          [
-            45.64527777777778,
-            25.631666666666668
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "D3071/26",
-      "from": "2609300700",
-      "to": "2609301700",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL090) From:2026-09-30 09:00 Till:2026-09-30 15:30 (",
-      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.343611111111116,
-            25.616111111111113
-          ],
-          [
-            45.46,
-            25.373055555555556
-          ],
-          [
-            45.64527777777778,
-            25.631666666666668
-          ],
-          [
-            45.53916666666667,
-            25.80138888888889
-          ],
-          [
-            45.343611111111116,
-            25.616111111111113
-          ]
-        ]
-      }
-    },
     {
       "notam": "M5865/26",
       "from": "2609300500",
@@ -446,76 +341,6 @@
       }
     },
     {
-      "notam": "P9323/26",
-      "from": "2609300500",
-      "to": "2609301630",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL130) From:2026-09-30 04:00 Till:2026-09-30 16:00 (",
-      "description": "DANGER AREA ACTIVATED. SPORT FLT AND PJE WILL TAKE PLACE INTO THE FLW AREA: 454308N0253253E-454056N0253039E-453921N0253347E-454129N0253605E 454308N0253253E RESERVED AREA SPORTS ACT OF ACFT AND PJE CONTACT ON 135.210 EXPECT RADAR VECTORING",
-      "severity": "red",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.71888888888889,
-            25.548055555555557
-          ],
-          [
-            45.68222222222222,
-            25.510833333333334
-          ],
-          [
-            45.655833333333334,
-            25.563055555555557
-          ],
-          [
-            45.69138888888889,
-            25.60138888888889
-          ],
-          [
-            45.71888888888889,
-            25.548055555555557
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "P9321/26",
-      "from": "2609300500",
-      "to": "2609301645",
-      "schedule": null,
-      "lower": "4000FT AMSL",
-      "upper": "FL080) From:2026-09-30 05:00 Till:2026-09-30 16:45 (",
-      "description": "DANGER AREA ACTIVATED. SPORT FLT AND GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 454717N0253951E-454438N0254522E-453912N0253953E-454204N0253421E 454717N0253951E RESERVED AREA CONTACT ON 135.190 SPORTS ACT OF ACFT AND GLD",
-      "severity": "red",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.78805555555555,
-            25.664166666666667
-          ],
-          [
-            45.74388888888889,
-            25.75611111111111
-          ],
-          [
-            45.65333333333333,
-            25.66472222222222
-          ],
-          [
-            45.70111111111111,
-            25.572499999999998
-          ],
-          [
-            45.78805555555555,
-            25.664166666666667
-          ]
-        ]
-      }
-    },
-    {
       "notam": "P8694/26",
       "from": "2609300500",
       "to": "2609301900",
@@ -532,43 +357,7 @@
         ],
         "radiusKm": 1.852
       }
-    },
-    {
-      "notam": "R0915/26",
-      "from": "2609300500",
-      "to": "2609301600",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "1900FT AMSL) From:2026-09-30 05:00 Till:2026-09-30 16:00 (",
-      "description": "NAVIGATION WARNING. UNMANNED ACFT FLT WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 450654N0254432E WITH 0.25KM RADIUS",
-      "severity": "orange",
-      "shape": {
-        "type": "circle",
-        "center": [
-          45.115,
-          25.742222222222225
-        ],
-        "radiusKm": 0.25
-      }
-    },
-    {
-      "notam": "R0914/26",
-      "from": "2609300500",
-      "to": "2609301600",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "1850FT AMSL) From:2026-09-30 06:00 Till:2026-09-30 16:00 (",
-      "description": "NAVIGATION WARNING. UNMANNED ACFT FLT WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 452216N0250347E WITH 0.4KM RADIUS",
-      "severity": "orange",
-      "shape": {
-        "type": "circle",
-        "center": [
-          45.37111111111111,
-          25.063055555555557
-        ],
-        "radiusKm": 0.4
-      }
     }
   ],
-  "skippedWithoutExplicitGeometry": 147
+  "skippedWithoutExplicitGeometry": 101
 }
