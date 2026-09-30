@@ -105,6 +105,7 @@ function drawFullPilots(){
  for(const p of (xcData?.nearbyLanded||[])){if(!seen.has(p.uuid)){items.push({...p,_landed:true});seen.add(p.uuid)}}
  for(const p of items){if(Number.isFinite(+p.lat)&&Number.isFinite(+p.lon)){const icon=paragliderIcon(p._landed),m=L.marker([+p.lat,+p.lon],{icon,zIndexOffset:700}).addTo(airFullMap).bindPopup('<b>'+(p.name||p.username||'Pilot')+'</b><br>'+(p.username?'@'+p.username+'<br>':'')+(p._landed?'🛬 ATERIZAT<br>':'🪂 LIVE · max. 50 km Brașov<br>')+'Alt: '+(p.alt??'—')+' m');airFullPilotLayers.push(m)}}
 }
+function clearSelectedAircraft(){selectedAircraftHex=null;if(airTrailLayer&&airFullMap){airFullMap.removeLayer(airTrailLayer);airTrailLayer=null}updateSelectedAircraftInfo(null)}
 function updateSelectedAircraftInfo(a){
  const box=document.getElementById('aircraftinfobox');if(!box)return;
  if(!a){box.style.display='none';box.innerHTML='';return}
@@ -120,7 +121,7 @@ function drawFullAircraft(){
  if(!airFullMap)return;
  drawAirspace(airFullMap,airFullAirspace);drawFullRestrictions();
  airFullLayers.forEach(x=>airFullMap.removeLayer(x));airFullLayers=[];
- for(const a of (window.__aircraft100km||[])){if(Number.isFinite(+a.lat)&&Number.isFinite(+a.lon)){const tr=Number.isFinite(+a.track)?+a.track:0,ft=Number.isFinite(+a.alt_geom)?+a.alt_geom:(Number.isFinite(+a.alt_baro)?+a.alt_baro:NaN),alt=Number.isFinite(ft)?Math.round(ft*.3048):null,kmh=Number.isFinite(+a.gs)?Math.round(+a.gs*1.852):null,name=(a.flight||a.r||a.hex||'Aeronavă').trim(),typ=a.desc||a.t||'',dist=Number.isFinite(+a.dst)?Math.round(+a.dst*1.852):null,az=aircraftAzlr(a),clr=az?'#d9363e':'#111',icon=aircraftIcon(a,tr,clr,26);const m=L.marker([+a.lat,+a.lon],{icon}).addTo(airFullMap);m.on('click',()=>{const h=String(a.hex||'').toLowerCase();showAircraftTrail(h);updateSelectedAircraftInfo(a)});airFullLayers.push(m)}}if(selectedAircraftHex){showAircraftTrail(selectedAircraftHex);const sa=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(selectedAircraftHex).toLowerCase());updateSelectedAircraftInfo(sa||null)}else updateSelectedAircraftInfo(null);drawFullPilots();
+ for(const a of (window.__aircraft100km||[])){if(Number.isFinite(+a.lat)&&Number.isFinite(+a.lon)){const tr=Number.isFinite(+a.track)?+a.track:0,ft=Number.isFinite(+a.alt_geom)?+a.alt_geom:(Number.isFinite(+a.alt_baro)?+a.alt_baro:NaN),alt=Number.isFinite(ft)?Math.round(ft*.3048):null,kmh=Number.isFinite(+a.gs)?Math.round(+a.gs*1.852):null,name=(a.flight||a.r||a.hex||'Aeronavă').trim(),typ=a.desc||a.t||'',dist=Number.isFinite(+a.dst)?Math.round(+a.dst*1.852):null,az=aircraftAzlr(a),clr=az?'#d9363e':'#111',icon=aircraftIcon(a,tr,clr,26);const m=L.marker([+a.lat,+a.lon],{icon}).addTo(airFullMap);m.on('click',()=>{const h=String(a.hex||'').toLowerCase();if(String(selectedAircraftHex||'').toLowerCase()===h){clearSelectedAircraft();return}showAircraftTrail(h);updateSelectedAircraftInfo(a)});airFullLayers.push(m)}}if(selectedAircraftHex){showAircraftTrail(selectedAircraftHex);const sa=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(selectedAircraftHex).toLowerCase());updateSelectedAircraftInfo(sa||null)}else updateSelectedAircraftInfo(null);drawFullPilots();
 }
 document.getElementById('airprobe').onclick=()=>{const w=document.getElementById('airmapfull');w.style.display='block';if(!airFullMap){airFullMap=L.map('airmap').setView([45.6579,25.6012],8);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(airFullMap);L.circle([45.6579,25.6012],{radius:AIRCRAFT_RADIUS_KM*1000,fill:false,weight:1}).addTo(airFullMap)}setTimeout(()=>{airFullMap.invalidateSize();drawFullAircraft()},50)};
 async function loadRestrictions(){
@@ -136,6 +137,7 @@ document.getElementById('notamredbtn').onclick=()=>{notamRedVisible=!notamRedVis
 document.getElementById('notamorangebtn').onclick=()=>{notamOrangeVisible=!notamOrangeVisible;updateNotamButtons();drawFullRestrictions()};
 document.getElementById('notamcorrbtn').onclick=()=>{notamCorrVisible=!notamCorrVisible;updateNotamButtons();drawFullRestrictions()};
 updateNotamButtons();
+document.getElementById('aircraftinfobox').onclick=()=>clearSelectedAircraft();
 document.getElementById('airmapclose').onclick=()=>{document.getElementById('airmapfull').style.display='none';};
 document.getElementById('wsprobe').onclick=()=>window.open('https://www.xcontest.org/world/en/flights/live/','_blank');
 </script>
