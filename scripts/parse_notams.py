@@ -24,6 +24,41 @@ for zone,a in AREAS.items():
             b=re.search(r"B\)(\d{10})",compact); c=re.search(r"C\)(\d{10})",compact)
             f=re.search(r"F\)(GND|SFC|FL\d{3})",compact); g=re.search(r"G\)(FL\d{3}|GND|SFC|UNL)",compact)
             hits.append({"notam":m.group(1),"from":b.group(1) if b else None,"to":c.group(1) if c else None,"lower":f.group(1) if f else None,"upper":g.group(1) if g else None})
-    out["zones"][zone]=hits[0] if len(hits)==1 else {"notam":None,"matches":len(hits)}
+    now=datetime.now(timezone.utc)
+    active=[]
+    for h in hits:
+        try:
+            bdt=datetime.strptime(h["from"],"%y%m%d%H%M").replace(tzinfo=timezone.utc) if h.get("from") else None
+            cdt=datetime.strptime(h["to"],"%y%m%d%H%M").replace(tzinfo=timezone.utc) if h.get("to") else None
+            if (bdt is None or bdt<=now) and (cdt is None or now<=cdt):
+                active.append((bdt or datetime.min.replace(tzinfo=timezone.utc),h))
+        except Exception:
+            pass
+    if active:
+        active.sort(key=lambda x:x[0],reverse=True)
+        chosen=active[0][1]
+        chosen["matches"]=len(hits)
+        chosen["activeMatches"]=len(active)
+        out["zones"][zone]=chosen
+    elif hits:
+        future=[]
+        for h in hits:
+            try:
+                bdt=datetime.strptime(h["from"],"%y%m%d%H%M").replace(tzinfo=timezone.utc) if h.get("from") else None
+                if bdt and bdt>now:
+                    future.append((bdt,h))
+            except Exception:
+                pass
+        if future:
+            future.sort(key=lambda x:x[0])
+            chosen=future[0][1]
+            chosen["matches"]=len(hits)
+            chosen["activeMatches"]=0
+            chosen["status"]="upcoming"
+            out["zones"][zone]=chosen
+        else:
+            out["zones"][zone]={"notam":None,"matches":len(hits),"activeMatches":0}
+    else:
+        out["zones"][zone]={"notam":None,"matches":0,"activeMatches":0}
 with open(outfile,"w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
 print(json.dumps(out,ensure_ascii=False,indent=2))
