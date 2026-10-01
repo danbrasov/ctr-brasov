@@ -127,7 +127,7 @@ function drawFullPilots(){
 
 function weatherIcon(dir,speed){
  const d=Number.isFinite(+dir)?+dir:0,v=Number.isFinite(+speed)?Math.round(+speed):'—';
- return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],html:'<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><g transform="rotate('+d+' 15 15)"><path d="M15 3.3 L26.1 24.1 L19.6 21.5 L15 25.4 L10.5 21.5 L4 24.1 Z" fill="#facc15"/></g><text x="15" y="17" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="900" fill="#111">'+v+'</text></svg>'})
+ return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],html:'<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><g transform="rotate('+(d+180)+' 15 15)"><path d="M15 3.3 L26.1 24.1 L19.6 21.5 L15 25.4 L10.5 21.5 L4 24.1 Z" fill="#facc15"/></g><text x="15" y="17" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="900" fill="#111">'+v+'</text></svg>'})
 }
 function weatherGraph(points){
  const p=(points||[]).filter(x=>Number.isFinite(+x.t)&&(Number.isFinite(+x.windKmh)||Number.isFinite(+x.gustKmh)));
