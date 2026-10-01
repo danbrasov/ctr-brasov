@@ -184,10 +184,28 @@ function drawAnmWeather(){
 }
 async function loadAnmWeather(){
  try{
-  const r=await fetch('https://ctr-brasov-aircraft.vercel.app/api/anm',{cache:'no-store'});
-  if(!r.ok)throw Error('HTTP '+r.status);
-  const d=await r.json();if(!d?.ok)throw Error(d?.error||'ANM');
-  anmStations=d.stations||[];
+  let d=null;
+  try{
+   const r=await fetch('https://ctr-brasov-weather.danbrasov77.workers.dev/stations',{cache:'no-store'});
+   if(r.ok){const x=await r.json();if(x?.ok)d=x}
+  }catch(e){}
+  if(!d){
+   const r=await fetch('https://ctr-brasov-aircraft.vercel.app/api/anm',{cache:'no-store'});
+   if(!r.ok)throw Error('HTTP '+r.status);
+   const x=await r.json();if(!x?.ok)throw Error(x?.error||'ANM');d=x
+  }
+  anmStations=(d.stations||[]).map(s=>({
+   id:s.id||s.station_id,
+   name:s.name||s.station_name,
+   lat:Number.isFinite(+s.lat)?+s.lat:+s.latitude,
+   lon:Number.isFinite(+s.lon)?+s.lon:+s.longitude,
+   elevationM:Number.isFinite(+s.elevationM)?+s.elevationM:(Number.isFinite(+s.elevation_m)?+s.elevation_m:null),
+   windKmh:Number.isFinite(+s.windKmh)?+s.windKmh:+s.wind_kmh,
+   dir:Number.isFinite(+s.dir)?+s.dir:+s.wind_dir,
+   tempC:Number.isFinite(+s.tempC)?+s.tempC:(Number.isFinite(+s.temperature_c)?+s.temperature_c:null),
+   pressureHpa:Number.isFinite(+s.pressureHpa)?+s.pressureHpa:(Number.isFinite(+s.pressure_hpa)?+s.pressure_hpa:null),
+   observedAt:s.observedAt||s.observed_at||null
+  }));
   if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block'){
    drawAnmWeather();
    if(selectedAnmStation){
