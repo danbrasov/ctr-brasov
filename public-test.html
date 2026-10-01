@@ -66,6 +66,24 @@ function showMap(z){const box=document.getElementById('mapbox'),row=document.que
 </script>
 <script>
 let airFullMap=null,airFullLayers=[],airFullAirspace=[],airFullPilotLayers=[],airFullRestrictionLayers=[],airWeatherLayers=[],airAnmLayers=[],airTrailLayer=null,selectedAircraftHex=null,selectedWeather=false,selectedAnmStation=null,weatherData=null,anmStations=[],anmHistory={stations:{}},restrictionData={items:[]},notamRedVisible=true,notamOrangeVisible=true,notamCorrVisible=false,weatherVisible=true;const aircraftTrails=new Map();
+const ANM_ELEVATIONS={
+ 'anm-baraolt':508,
+ 'anm-brasov-ghimbav':534,
+ 'anm-campina':461,
+ 'anm-campulung-muscel':681,
+ 'anm-fagaras':428,
+ 'anm-fundata':1384,
+ 'anm-intorsura-buzaului':707,
+ 'anm-lacauti':1776,
+ 'anm-odorheiul-secuiesc':523,
+ 'anm-patarlagele':289,
+ 'anm-penteleu':1632,
+ 'anm-predeal':1090,
+ 'anm-sfantu-gheorghe-munte':523,
+ 'anm-sinaia-1500':1510,
+ 'anm-targu-secuiesc':568,
+ 'anm-varful-omu':2504
+};
 function showAircraftTrail(hex){selectedAircraftHex=hex;if(airTrailLayer){airFullMap.removeLayer(airTrailLayer);airTrailLayer=null}let pts=[...(aircraftTrails.get(hex)||[])];const live=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(hex).toLowerCase());if(live&&Number.isFinite(+live.lat)&&Number.isFinite(+live.lon)){const ft=aircraftAltFt(live),altM=Number.isFinite(ft)?ft*0.3048:null,last=pts[pts.length-1];if(!last||Math.abs(+last.lat-(+live.lat))>1e-6||Math.abs(+last.lon-(+live.lon))>1e-6)pts.push({lat:+live.lat,lon:+live.lon,altM})}if(pts.length>1){const segs=[];for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],alt=((Number.isFinite(+a.altM)?+a.altM:99999)+(Number.isFinite(+b.altM)?+b.altM:99999))/2,midLat=(a.lat+b.lat)/2,midLon=(a.lon+b.lon)/2,altFt=Number.isFinite(alt)?alt/0.3048:NaN,inAzlr=!!azlrAt(midLat,midLon,altFt),col=inAzlr?'#d9363e':(alt<3050?'#f59e0b':'#7c3aed');segs.push(L.polyline([[a.lat,a.lon],[b.lat,b.lon]],{color:col,weight:2,opacity:.9}))}airTrailLayer=L.layerGroup(segs).addTo(airFullMap)}}
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -199,7 +217,7 @@ async function loadAnmWeather(){
    name:s.name||s.station_name,
    lat:Number.isFinite(+s.lat)?+s.lat:+s.latitude,
    lon:Number.isFinite(+s.lon)?+s.lon:+s.longitude,
-   elevationM:(s.elevationM!==null&&s.elevationM!==undefined&&Number.isFinite(+s.elevationM))?+s.elevationM:((s.elevation_m!==null&&s.elevation_m!==undefined&&Number.isFinite(+s.elevation_m))?+s.elevation_m:(String(s.name||s.station_name||'').toUpperCase()==='VARFUL OMU'?2504:null)),
+   elevationM:(s.elevationM!==null&&s.elevationM!==undefined&&Number.isFinite(+s.elevationM))?+s.elevationM:((s.elevation_m!==null&&s.elevation_m!==undefined&&Number.isFinite(+s.elevation_m))?+s.elevation_m:(ANM_ELEVATIONS[String(s.id||s.station_id||'')]??null)),
    windKmh:Number.isFinite(+s.windKmh)?+s.windKmh:+s.wind_kmh,
    dir:Number.isFinite(+s.dir)?+s.dir:+s.wind_dir,
    tempC:Number.isFinite(+s.tempC)?+s.tempC:(Number.isFinite(+s.temperature_c)?+s.temperature_c:null),
@@ -250,7 +268,7 @@ document.getElementById('notamcorrbtn').onclick=()=>{notamCorrVisible=!notamCorr
 document.getElementById('meteobtn').onclick=()=>{weatherVisible=!weatherVisible;document.getElementById('meteobtn').textContent='💨 Meteo'+(weatherVisible?' ✓':'');if(!weatherVisible){if(selectedWeather)clearSelectedWeather();if(selectedAnmStation)clearSelectedAnm()}drawWeather();drawAnmWeather()};
 updateNotamButtons();
 loadWeather();setInterval(loadWeather,120000);
-loadAnmWeather();setInterval(loadAnmWeather,300000);
+loadAnmWeather();setInterval(loadAnmWeather,60000);
 document.getElementById('aircraftinfobox').onclick=()=>{if(selectedWeather)clearSelectedWeather();else if(selectedAnmStation)clearSelectedAnm();else clearSelectedAircraft()};
 document.getElementById('airmapclose').onclick=()=>{document.getElementById('airmapfull').style.display='none';};
 document.getElementById('wsprobe').onclick=()=>window.open('https://www.xcontest.org/world/en/flights/live/','_blank');
