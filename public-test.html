@@ -154,6 +154,21 @@ function showAnmInfo(s){
  box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație ANM')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b><br>Direcție: '+(Number.isFinite(+s.dir)?Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+tm+(h.length?weatherGraph(h):'<br><span style="color:#666">Istoricul se colectează; apar puncte noi după actualizările ANM.</span>')+'<br><span style="color:#666">ANM România</span></div>';
  box.style.display='block';
 }
+async function loadAnmStationHistory(stationId){
+ try{
+  const r=await fetch('https://ctr-brasov-weather.danbrasov77.workers.dev/history?station='+encodeURIComponent(stationId),{cache:'no-store'});
+  if(!r.ok)throw Error('HTTP '+r.status);
+  const d=await r.json();if(!d?.ok)throw Error(d?.error||'history');
+  anmHistory.stations=anmHistory.stations||{};
+  anmHistory.stations[stationId]={history:(d.history||[]).map(x=>({
+   t:+x.observed_at,
+   windKmh:Number.isFinite(+x.wind_kmh)?+x.wind_kmh:null,
+   dir:Number.isFinite(+x.wind_dir)?+x.wind_dir:null,
+   tempC:Number.isFinite(+x.temperature_c)?+x.temperature_c:null,
+   pressureHpa:Number.isFinite(+x.pressure_hpa)?+x.pressure_hpa:null
+  }))};
+ }catch(e){console.warn('Istoric ANM D1 indisponibil',e)}
+}
 function clearSelectedAnm(){selectedAnmStation=null;const box=document.getElementById('aircraftinfobox');if(box){box.style.display='none';box.innerHTML=''}}
 function drawAnmWeather(){
  if(!airFullMap)return;
@@ -163,23 +178,23 @@ function drawAnmWeather(){
   if(!Number.isFinite(+s.lat)||!Number.isFinite(+s.lon)||!Number.isFinite(+s.windKmh))continue;
   if(/BRASOV\s+GHIMBAV/i.test(String(s.name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')))continue;
   const m=L.marker([+s.lat,+s.lon],{icon:weatherIcon(s.dir,s.windKmh),zIndexOffset:880}).addTo(airFullMap);
-  m.on('click',()=>{const id=String(s.id||s.name||'');if(selectedAnmStation===id){clearSelectedAnm();return}clearSelectedAircraft();selectedWeather=false;selectedAnmStation=id;showAnmInfo(s)});
+  m.on('click',async()=>{const id=String(s.id||s.name||'');if(selectedAnmStation===id){clearSelectedAnm();return}clearSelectedAircraft();selectedWeather=false;selectedAnmStation=id;await loadAnmStationHistory(id);showAnmInfo(s)});
   airAnmLayers.push(m);
  }
 }
 async function loadAnmWeather(){
  try{
-  const [r,h]=await Promise.all([
-   fetch('https://ctr-brasov-aircraft.vercel.app/api/anm',{cache:'no-store'}),
-   fetch('anm-history.json?ts='+Date.now(),{cache:'no-store'}).catch(()=>null)
-  ]);
+  const r=await fetch('https://ctr-brasov-aircraft.vercel.app/api/anm',{cache:'no-store'});
   if(!r.ok)throw Error('HTTP '+r.status);
   const d=await r.json();if(!d?.ok)throw Error(d?.error||'ANM');
   anmStations=d.stations||[];
-  if(h&&h.ok){try{anmHistory=await h.json()}catch(e){}}
   if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block'){
    drawAnmWeather();
-   if(selectedAnmStation){const s=anmStations.find(x=>String(x.id||x.name||'')===selectedAnmStation);if(s)showAnmInfo(s);else selectedAnmStation=null}
+   if(selectedAnmStation){
+    await loadAnmStationHistory(selectedAnmStation);
+    const s=anmStations.find(x=>String(x.id||x.name||'')===selectedAnmStation);
+    if(s)showAnmInfo(s);else selectedAnmStation=null
+   }
   }
  }catch(e){console.warn('Stații ANM indisponibile',e)}
 }
