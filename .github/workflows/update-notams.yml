@@ -26,10 +26,15 @@ jobs:
             "https://flightplan.romatsa.ro/init/notam/restrictiiro" \
             -o /tmp/restrictii.html
           python3 scripts/parse_restrictions.py /tmp/restrictii.html restriction-data.json
+
+          # Fallback ANM history collection on this proven working workflow.
+          # Exit code 2 means ANM still exposes the same hourly dataset.
+          python3 scripts/update_anm_history.py anm-history.json || rc=$?
+          if [ "${rc:-0}" -ne 0 ] && [ "${rc:-0}" -ne 2 ]; then exit "${rc}"; fi
       - name: Commit changed data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add notam-data.json restriction-data.json
+          git add notam-data.json restriction-data.json anm-history.json
           git diff --cached --quiet || git commit -m "Update NOTAM test data"
           git push
