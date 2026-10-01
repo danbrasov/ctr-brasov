@@ -2,7 +2,7 @@ name: Update ANM weather history
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "1 * * * *"
 
 permissions:
   contents: write
@@ -12,8 +12,35 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Update ANM history
-        run: python3 scripts/update_anm_history.py anm-history.json
+
+      - name: Wait for new ANM hourly dataset
+        shell: bash
+        run: |
+          set +e
+          found=0
+          for attempt in $(seq 1 15); do
+            echo "ANM check $attempt/15 at $(date -u +%H:%M:%S) UTC"
+            python3 scripts/update_anm_history.py anm-history.json
+            rc=$?
+
+            if [ "$rc" -eq 0 ]; then
+              echo "New ANM dataset found."
+              found=1
+              break
+            elif [ "$rc" -eq 2 ]; then
+              echo "Same ANM dataset; retrying in 60 seconds."
+              sleep 60
+            else
+              echo "Collector failed with exit code $rc"
+              exit "$rc"
+            fi
+          done
+
+          if [ "$found" -eq 0 ]; then
+            echo "No new ANM dataset found in the first 15 minutes of the hour."
+          fi
+          exit 0
+
       - name: Commit changed history
         run: |
           git config user.name "github-actions[bot]"
