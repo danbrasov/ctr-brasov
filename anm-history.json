@@ -1,7 +1,27 @@
 {
   "source": "https://www.meteoromania.ro/wp-json/meteoapi/v2/starea-vremii",
-  "checkedAt": null,
-  "datasetAt": null,
+  "checkedAt": "2026-10-01T08:10:13.640Z",
+  "datasetAt": "2026-10-01T11:00:00+03:00",
   "retentionHours": 24,
-  "stations": {}
+  "stations": {
+    "anm-varful-omu": {
+      "name": "VARFUL OMU",
+      "history": [
+        {
+          "t": 1790838000000,
+          "windKmh": 21,
+          "dir": 68,
+          "tempC": -0.4,
+          "pressureHpa": 761
+        },
+        {
+          "t": 1790841600000,
+          "windKmh": 16,
+          "dir": 90,
+          "tempC": -0.4,
+          "pressureHpa": 761
+        }
+      ]
+    }
+  }
 }
