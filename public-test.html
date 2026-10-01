@@ -65,7 +65,7 @@ function showMap(z){const box=document.getElementById('mapbox'),row=document.que
 })();
 </script>
 <script>
-let airFullMap=null,airFullLayers=[],airFullAirspace=[],airFullPilotLayers=[],airFullRestrictionLayers=[],airWeatherLayers=[],airAnmLayers=[],airTrailLayer=null,selectedAircraftHex=null,selectedWeather=false,selectedAnmStation=null,weatherData=null,anmStations=[],restrictionData={items:[]},notamRedVisible=true,notamOrangeVisible=true,notamCorrVisible=false,weatherVisible=true;const aircraftTrails=new Map();
+let airFullMap=null,airFullLayers=[],airFullAirspace=[],airFullPilotLayers=[],airFullRestrictionLayers=[],airWeatherLayers=[],airAnmLayers=[],airTrailLayer=null,selectedAircraftHex=null,selectedWeather=false,selectedAnmStation=null,weatherData=null,anmStations=[],anmHistory={stations:{}},restrictionData={items:[]},notamRedVisible=true,notamOrangeVisible=true,notamCorrVisible=false,weatherVisible=true;const aircraftTrails=new Map();
 function showAircraftTrail(hex){selectedAircraftHex=hex;if(airTrailLayer){airFullMap.removeLayer(airTrailLayer);airTrailLayer=null}let pts=[...(aircraftTrails.get(hex)||[])];const live=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(hex).toLowerCase());if(live&&Number.isFinite(+live.lat)&&Number.isFinite(+live.lon)){const ft=aircraftAltFt(live),altM=Number.isFinite(ft)?ft*0.3048:null,last=pts[pts.length-1];if(!last||Math.abs(+last.lat-(+live.lat))>1e-6||Math.abs(+last.lon-(+live.lon))>1e-6)pts.push({lat:+live.lat,lon:+live.lon,altM})}if(pts.length>1){const segs=[];for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],alt=((Number.isFinite(+a.altM)?+a.altM:99999)+(Number.isFinite(+b.altM)?+b.altM:99999))/2,midLat=(a.lat+b.lat)/2,midLon=(a.lon+b.lon)/2,altFt=Number.isFinite(alt)?alt/0.3048:NaN,inAzlr=!!azlrAt(midLat,midLon,altFt),col=inAzlr?'#d9363e':(alt<3050?'#f59e0b':'#7c3aed');segs.push(L.polyline([[a.lat,a.lon],[b.lat,b.lon]],{color:col,weight:2,opacity:.9}))}airTrailLayer=L.layerGroup(segs).addTo(airFullMap)}}
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -149,7 +149,8 @@ async function loadWeather(){
 function showAnmInfo(s){
  const box=document.getElementById('aircraftinfobox');if(!box||!s)return;
  const tm=s.observedAt?new Date(s.observedAt).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit'}):'—';
- box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație ANM')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b><br>Direcție: '+(Number.isFinite(+s.dir)?Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+tm+'<br><span style="color:#666">ANM România · istoric 4 h indisponibil momentan</span></div>';
+ const all=anmHistory?.stations?.[String(s.id||'')]?.history||[],cut=Date.now()-4*3600*1000,h=all.filter(x=>Number.isFinite(+x.t)&&+x.t>=cut);
+ box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație ANM')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b><br>Direcție: '+(Number.isFinite(+s.dir)?Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+tm+(h.length?weatherGraph(h):'<br><span style="color:#666">Istoricul se colectează; apar puncte noi după actualizările ANM.</span>')+'<br><span style="color:#666">ANM România</span></div>';
  box.style.display='block';
 }
 function clearSelectedAnm(){selectedAnmStation=null;const box=document.getElementById('aircraftinfobox');if(box){box.style.display='none';box.innerHTML=''}}
@@ -167,10 +168,14 @@ function drawAnmWeather(){
 }
 async function loadAnmWeather(){
  try{
-  const r=await fetch('https://ctr-brasov-aircraft.vercel.app/api/anm',{cache:'no-store'});
+  const [r,h]=await Promise.all([
+   fetch('https://ctr-brasov-aircraft.vercel.app/api/anm',{cache:'no-store'}),
+   fetch('anm-history.json?ts='+Date.now(),{cache:'no-store'}).catch(()=>null)
+  ]);
   if(!r.ok)throw Error('HTTP '+r.status);
   const d=await r.json();if(!d?.ok)throw Error(d?.error||'ANM');
   anmStations=d.stations||[];
+  if(h&&h.ok){try{anmHistory=await h.json()}catch(e){}}
   if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block'){
    drawAnmWeather();
    if(selectedAnmStation){const s=anmStations.find(x=>String(x.id||x.name||'')===selectedAnmStation);if(s)showAnmInfo(s);else selectedAnmStation=null}
