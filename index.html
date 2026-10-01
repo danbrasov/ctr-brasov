@@ -43,12 +43,13 @@ function showMap(z){const box=document.getElementById('mapbox'),row=document.que
   pilotLayers.forEach(x=>map.removeLayer(x));pilotLayers=[];
   {const seen=new Set(),items=[];for(const p of (xcData?.nearbyLive||[])){items.push({...p,_landed:false,_near:true});seen.add(p.uuid)}for(const p of (xcData?.nearbyLanded||[])){if(!seen.has(p.uuid)){items.push({...p,_landed:true,_near:true});seen.add(p.uuid)}}for(const p of (xcData?.zones?.[z]?.landed||[])){if(!seen.has(p.uuid)){items.push({...p,_landed:true});seen.add(p.uuid)}}items.forEach(p=>{if(Number.isFinite(p.lat)&&Number.isFinite(p.lon)){const icon=paragliderIcon(p._landed);const m=L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup('<b>'+(p.name||p.username||'Pilot')+'</b><br>'+(p.username?'@'+p.username+'<br>':'')+(p._landed?'🛬 ATERIZAT<br>':'🪂 LIVE'+(p._near?' · max. 50 km Brașov':'')+'<br>')+'Alt: '+(p.alt??'—')+' m');pilotLayers.push(m)}})}
   drawAircraft();
-  setTimeout(()=>map.invalidateSize(),50)}document.getElementById('mapclose').onclick=e=>{e.stopPropagation();document.getElementById('mapbox').classList.remove('show');openMapZone=null};document.querySelectorAll('[data-mapzone]').forEach(e=>e.onclick=()=>showMap(e.dataset.mapzone));function nr(x){const da=ptime(x?.from),db=ptime(x?.to),a=parts(da),b=parts(db);return x?.notam&&a&&b?x.notam+' · '+dlabel(da)+' '+a.hour+':'+a.minute+'–'+b.hour+':'+b.minute:'—'}async function loadNotams(){try{const r=await fetch('notam-data.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error();const d=await r.json();notamData=d;['AZLR1','AZLR2','AZLR3'].forEach(z=>{const x=d?.zones?.[z],e=document.querySelector('[data-notam="'+z+'"]'),l=document.querySelector('[data-limit="'+z+'"]'),v=nr(x);e.textContent='NOTAM: '+v;e.classList.toggle('none',v==='—');l.textContent=x?.lower&&x?.upper?x.lower+' – '+x.upper:'—'});if(d.checkedAt)nu.textContent='NOTAM verificat: '+new Date(d.checkedAt).toLocaleString('ro-RO',{timeZone:'Europe/Bucharest',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}catch(e){document.querySelectorAll('[data-notam]').forEach(x=>{x.textContent='NOTAM: —';x.classList.add('none')});nu.textContent='Date NOTAM indisponibile.'}}wa.onclick=async()=>{wa.disabled=true;wa.textContent='⏳ Se salvează...';try{const p=payload();const r=await fetch(DB+'/status.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});if(!r.ok)throw new Error('HTTP '+r.status);up.classList.remove('err');up.textContent=formatUpdated(p.updatedAt);const url='https://wa.me/?text='+encodeURIComponent(message());wa.textContent='✅ Salvat';setTimeout(()=>{wa.disabled=false;wa.textContent='💾 Salvează și trimite pe WhatsApp'},1200);window.location.href=url}catch(e){wa.disabled=false;wa.textContent='💾 Salvează și trimite pe WhatsApp';up.textContent='Eroare la salvare. Încearcă din nou.';up.classList.add('err')}};load();loadNotams()</script><div id="wsprobe" style="margin:6px 30px 0;font-size:11px;text-align:center;color:#2563EB;cursor:pointer;font-weight:800">XContest browser: testare conexiune…</div>
-<div id="airprobe" style="margin:6px 30px 0;font-size:11px;text-align:center;color:#2563EB;cursor:pointer;font-weight:800">✈️ Avioane LIVE · &lt;5000 m ASL · 75 km: conectare…</div><div id="airmapfull" style="display:none;position:fixed;inset:0;z-index:9999;background:#fff"><div id="airmap" style="width:100%;height:100%"></div><div id="notamcontrols" style="position:fixed;top:calc(env(safe-area-inset-top, 0px) + 8px);left:62px;z-index:20000;display:flex;flex-direction:column;align-items:flex-start;gap:4px"><button id="notamredbtn" style="border:1px solid #b91c1c;border-radius:8px;padding:4px 6px;background:#fff;color:#b91c1c;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">⛔ Restricții ✓</button><button id="notamorangebtn" style="border:1px solid #d97706;border-radius:8px;padding:4px 6px;background:#fff;color:#d97706;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">⚠️ Avertizări</button><button id="notamcorrbtn" style="border:1px solid #7c3aed;border-radius:8px;padding:4px 6px;background:#fff;color:#7c3aed;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">🛣️ Coridoare</button><button id="meteobtn" style="border:1px solid #2563eb;border-radius:8px;padding:4px 6px;background:#fff;color:#2563eb;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">💨 Meteo ✓</button></div><div id="aircraftinfobox" style="display:none;position:fixed;top:calc(env(safe-area-inset-top, 0px) + 8px);left:154px;right:72px;z-index:20000;background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 1px 5px #0005;color:#111;font-size:12px;line-height:1.35;max-height:180px;overflow:auto"></div><button id="airmapclose" aria-label="Închide harta" style="position:fixed;top:calc(env(safe-area-inset-top, 0px) + 16px);right:16px;z-index:20000;border:2px solid #333;border-radius:50%;width:46px;height:46px;background:#fff;color:#111;font-size:30px;font-weight:700;line-height:40px;box-shadow:0 2px 10px #0008;-webkit-appearance:none;appearance:none">×</button></div>
-<div id="ghv" style="margin:10px 30px 8px;font-size:11px;text-align:center;color:#111;font-weight:800">
-  <div id="ghvhead" style="cursor:pointer;font-weight:400;font-size:11px">🛫 GHV astăzi · se încarcă…</div>
-  <div id="ghvlist" style="display:none;margin-top:8px;text-align:left;background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 1px 4px #0001"></div>
+  setTimeout(()=>map.invalidateSize(),50)}document.getElementById('mapclose').onclick=e=>{e.stopPropagation();document.getElementById('mapbox').classList.remove('show');openMapZone=null};document.querySelectorAll('[data-mapzone]').forEach(e=>e.onclick=()=>showMap(e.dataset.mapzone));function nr(x){const da=ptime(x?.from),db=ptime(x?.to),a=parts(da),b=parts(db);return x?.notam&&a&&b?x.notam+' · '+dlabel(da)+' '+a.hour+':'+a.minute+'–'+b.hour+':'+b.minute:'—'}async function loadNotams(){try{const r=await fetch('notam-data.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error();const d=await r.json();notamData=d;['AZLR1','AZLR2','AZLR3'].forEach(z=>{const x=d?.zones?.[z],e=document.querySelector('[data-notam="'+z+'"]'),l=document.querySelector('[data-limit="'+z+'"]'),v=nr(x);e.textContent='NOTAM: '+v;e.classList.toggle('none',v==='—');l.textContent=x?.lower&&x?.upper?x.lower+' – '+x.upper:'—'});if(d.checkedAt)nu.textContent='NOTAM verificat: '+new Date(d.checkedAt).toLocaleString('ro-RO',{timeZone:'Europe/Bucharest',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}catch(e){document.querySelectorAll('[data-notam]').forEach(x=>{x.textContent='NOTAM: —';x.classList.add('none')});nu.textContent='Date NOTAM indisponibile.'}}wa.onclick=async()=>{wa.disabled=true;wa.textContent='⏳ Se salvează...';try{const p=payload();const r=await fetch(DB+'/status.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});if(!r.ok)throw new Error('HTTP '+r.status);up.classList.remove('err');up.textContent=formatUpdated(p.updatedAt);const url='https://wa.me/?text='+encodeURIComponent(message());wa.textContent='✅ Salvat';setTimeout(()=>{wa.disabled=false;wa.textContent='💾 Salvează și trimite pe WhatsApp'},1200);window.location.href=url}catch(e){wa.disabled=false;wa.textContent='💾 Salvează și trimite pe WhatsApp';up.textContent='Eroare la salvare. Încearcă din nou.';up.classList.add('err')}};load();loadNotams()</script><div id="quicklinks" style="max-width:560px;margin:10px auto 0;display:flex;gap:8px;padding:0 14px">
+  <button id="wsprobe" type="button" style="flex:1;min-width:0;border:1px solid #d1d5db;border-radius:14px;background:#fff;padding:10px 6px;box-shadow:0 1px 4px #0001;color:#2563eb;font-weight:900;font-size:11px;line-height:1.25;cursor:pointer">🪂 XContest LIVE<br><span style="font-size:9px;font-weight:700;color:#6b7280">conectare…</span></button>
+  <button id="airprobe" type="button" style="flex:1;min-width:0;border:1px solid #d1d5db;border-radius:14px;background:#fff;padding:10px 6px;box-shadow:0 1px 4px #0001;color:#2563eb;font-weight:900;font-size:11px;line-height:1.25;cursor:pointer">✈️ Avioane LIVE<br><span style="font-size:9px;font-weight:700;color:#6b7280">&lt;5000 m · 75 km</span></button>
+  <button id="ghvhead" type="button" style="flex:1;min-width:0;border:1px solid #d1d5db;border-radius:14px;background:#fff;padding:10px 6px;box-shadow:0 1px 4px #0001;color:#111;font-weight:900;font-size:11px;line-height:1.25;cursor:pointer">🛫 GHV astăzi<br><span style="font-size:9px;font-weight:700;color:#6b7280">se încarcă…</span></button>
 </div>
+<div id="ghvlist" style="display:none;max-width:532px;margin:8px auto 0;text-align:left;background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 1px 4px #0001;font-size:11px"></div>
+<div id="airmapfull" style="display:none;position:fixed;inset:0;z-index:9999;background:#fff"><div id="airmap" style="width:100%;height:100%"></div><div id="notamcontrols" style="position:fixed;top:calc(env(safe-area-inset-top, 0px) + 8px);left:62px;z-index:20000;display:flex;flex-direction:column;align-items:flex-start;gap:4px"><button id="notamredbtn" style="border:1px solid #b91c1c;border-radius:8px;padding:4px 6px;background:#fff;color:#b91c1c;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">⛔ Restricții ✓</button><button id="notamorangebtn" style="border:1px solid #d97706;border-radius:8px;padding:4px 6px;background:#fff;color:#d97706;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">⚠️ Avertizări</button><button id="notamcorrbtn" style="border:1px solid #7c3aed;border-radius:8px;padding:4px 6px;background:#fff;color:#7c3aed;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">🛣️ Coridoare</button><button id="meteobtn" style="border:1px solid #2563eb;border-radius:8px;padding:4px 6px;background:#fff;color:#2563eb;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">💨 Meteo ✓</button></div><div id="aircraftinfobox" style="display:none;position:fixed;top:calc(env(safe-area-inset-top, 0px) + 8px);left:154px;right:72px;z-index:20000;background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 1px 5px #0005;color:#111;font-size:12px;line-height:1.35;max-height:180px;overflow:auto"></div><button id="airmapclose" aria-label="Închide harta" style="position:fixed;top:calc(env(safe-area-inset-top, 0px) + 16px);right:16px;z-index:20000;border:2px solid #333;border-radius:50%;width:46px;height:46px;background:#fff;color:#111;font-size:30px;font-weight:700;line-height:40px;box-shadow:0 2px 10px #0008;-webkit-appearance:none;appearance:none">×</button></div>
 <script>
 (async function(){
  const h=document.getElementById('ghvhead'),b=document.getElementById('ghvlist');
@@ -57,15 +58,33 @@ function showMap(z){const box=document.getElementById('mapbox'),row=document.que
   const r=await fetch('https://ctr-brasov-aircraft.vercel.app/api/ghv',{cache:'no-store'});
   if(!r.ok)throw Error('HTTP '+r.status);
   const d=await r.json(),A=d.arrivals||[],D=d.departures||[];
-  h.textContent='🛫 GHV astăzi · '+A.length+' sosiri / '+D.length+' plecări';
+  h.innerHTML='🛫 GHV astăzi<br><span style="font-size:9px;font-weight:700;color:#6b7280">'+A.length+' sosiri / '+D.length+' plecări</span>';
   const rows=(a,arr)=>a.map(x=>'<div style="padding:3px 0;border-bottom:1px solid #eee"><b>'+x.time+'</b> · '+x.flight+' · '+(arr?'← ':'→ ')+clean(x.route)+'</div>').join('');
   b.innerHTML='<div style="font-weight:900;margin-bottom:4px">🛬 SOSIRI</div>'+rows(A,true)+'<div style="font-weight:900;margin:10px 0 4px">🛫 PLECĂRI</div>'+rows(D,false);
   h.onclick=()=>{b.style.display=b.style.display==='none'?'block':'none'};
- }catch(e){h.textContent='🛫 GHV astăzi · program indisponibil'}
+ }catch(e){h.innerHTML='🛫 GHV astăzi<br><span style="font-size:9px;font-weight:700;color:#c0392b">program indisponibil</span>'}
 })();
 </script>
 <script>
-let airFullMap=null,airFullLayers=[],airFullAirspace=[],airFullPilotLayers=[],airFullRestrictionLayers=[],airWeatherLayers=[],airTrailLayer=null,selectedAircraftHex=null,selectedWeather=false,weatherData=null,restrictionData={items:[]},notamRedVisible=true,notamOrangeVisible=true,notamCorrVisible=false,weatherVisible=true;const aircraftTrails=new Map();
+let airFullMap=null,airFullLayers=[],airFullAirspace=[],airFullPilotLayers=[],airFullRestrictionLayers=[],airWeatherLayers=[],airAnmLayers=[],airTrailLayer=null,selectedAircraftHex=null,selectedWeather=false,selectedAnmStation=null,weatherData=null,anmStations=[],anmHistory={stations:{}},restrictionData={items:[]},notamRedVisible=true,notamOrangeVisible=true,notamCorrVisible=false,weatherVisible=true;const aircraftTrails=new Map();
+const ANM_ELEVATIONS={
+ 'anm-baraolt':508,
+ 'anm-brasov-ghimbav':534,
+ 'anm-campina':461,
+ 'anm-campulung-muscel':681,
+ 'anm-fagaras':428,
+ 'anm-fundata':1384,
+ 'anm-intorsura-buzaului':707,
+ 'anm-lacauti':1776,
+ 'anm-odorheiul-secuiesc':523,
+ 'anm-patarlagele':289,
+ 'anm-penteleu':1632,
+ 'anm-predeal':1090,
+ 'anm-sfantu-gheorghe-munte':523,
+ 'anm-sinaia-1500':1510,
+ 'anm-targu-secuiesc':568,
+ 'anm-varful-omu':2504
+};
 function showAircraftTrail(hex){selectedAircraftHex=hex;if(airTrailLayer){airFullMap.removeLayer(airTrailLayer);airTrailLayer=null}let pts=[...(aircraftTrails.get(hex)||[])];const live=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(hex).toLowerCase());if(live&&Number.isFinite(+live.lat)&&Number.isFinite(+live.lon)){const ft=aircraftAltFt(live),altM=Number.isFinite(ft)?ft*0.3048:null,last=pts[pts.length-1];if(!last||Math.abs(+last.lat-(+live.lat))>1e-6||Math.abs(+last.lon-(+live.lon))>1e-6)pts.push({lat:+live.lat,lon:+live.lon,altM})}if(pts.length>1){const segs=[];for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],alt=((Number.isFinite(+a.altM)?+a.altM:99999)+(Number.isFinite(+b.altM)?+b.altM:99999))/2,midLat=(a.lat+b.lat)/2,midLon=(a.lon+b.lon)/2,altFt=Number.isFinite(alt)?alt/0.3048:NaN,inAzlr=!!azlrAt(midLat,midLon,altFt),col=inAzlr?'#d9363e':(alt<3050?'#f59e0b':'#7c3aed');segs.push(L.polyline([[a.lat,a.lon],[b.lat,b.lon]],{color:col,weight:2,opacity:.9}))}airTrailLayer=L.layerGroup(segs).addTo(airFullMap)}}
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -105,6 +124,7 @@ function drawFullPilots(){
  for(const p of (xcData?.nearbyLanded||[])){if(!seen.has(p.uuid)){items.push({...p,_landed:true});seen.add(p.uuid)}}
  for(const p of items){if(Number.isFinite(+p.lat)&&Number.isFinite(+p.lon)){const icon=paragliderIcon(p._landed),m=L.marker([+p.lat,+p.lon],{icon,zIndexOffset:700}).addTo(airFullMap).bindPopup('<b>'+(p.name||p.username||'Pilot')+'</b><br>'+(p.username?'@'+p.username+'<br>':'')+(p._landed?'🛬 ATERIZAT<br>':'🪂 LIVE · max. 50 km Brașov<br>')+'Alt: '+(p.alt??'—')+' m');airFullPilotLayers.push(m)}}
 }
+
 function weatherIcon(dir,speed){
  const d=Number.isFinite(+dir)?+dir:0,v=Number.isFinite(+speed)?Math.round(+speed):'—';
  return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],html:'<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><g transform="rotate('+d+' 15 15)"><path d="M15 3.3 L26.1 24.1 L19.6 21.5 L15 25.4 L10.5 21.5 L4 24.1 Z" fill="#facc15"/></g><text x="15" y="17" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="900" fill="#111">'+v+'</text></svg>'})
@@ -112,11 +132,12 @@ function weatherIcon(dir,speed){
 function weatherGraph(points){
  const p=(points||[]).filter(x=>Number.isFinite(+x.t)&&(Number.isFinite(+x.windKmh)||Number.isFinite(+x.gustKmh)));
  if(!p.length)return '<div style="margin-top:5px;color:#666">Istoric 4 h indisponibil.</div>';
- const W=270,H=92,L=28,R=6,T=6,B=18,t0=Math.min(...p.map(x=>+x.t)),t1=Math.max(...p.map(x=>+x.t)),mx=Math.max(10,...p.map(x=>Math.max(Number.isFinite(+x.windKmh)?+x.windKmh:0,Number.isFinite(+x.gustKmh)?+x.gustKmh:0))),ymax=Math.ceil(mx/5)*5;
+ const W=270,H=92,L=28,R=6,T=6,B=18,t0=Math.min(...p.map(x=>+x.t)),t1=Math.max(...p.map(x=>+x.t)),ymax=45;
  const X=t=>L+(W-L-R)*(t1===t0?.5:(t-t0)/(t1-t0)),Y=v=>T+(H-T-B)*(1-v/ymax);
  const line=k=>p.filter(x=>Number.isFinite(+x[k])).map((x,i,a)=>(i?'L':'M')+X(+x.t).toFixed(1)+' '+Y(+x[k]).toFixed(1)).join(' ');
  const labels=[0,.5,1].map(q=>{const t=t0+(t1-t0)*q,ds=new Date(t).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit'});return '<text x="'+X(t).toFixed(1)+'" y="'+(H-3)+'" text-anchor="middle" font-size="9" fill="#666">'+ds+'</text>'}).join('');
- return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:92px;margin-top:5px;display:block"><line x1="'+L+'" y1="'+Y(0)+'" x2="'+(W-R)+'" y2="'+Y(0)+'" stroke="#ddd"/><line x1="'+L+'" y1="'+Y(ymax/2)+'" x2="'+(W-R)+'" y2="'+Y(ymax/2)+'" stroke="#eee"/><line x1="'+L+'" y1="'+Y(ymax)+'" x2="'+(W-R)+'" y2="'+Y(ymax)+'" stroke="#eee"/><text x="2" y="'+(Y(ymax)+3)+'" font-size="9" fill="#666">'+ymax+'</text><text x="2" y="'+(Y(ymax/2)+3)+'" font-size="9" fill="#666">'+Math.round(ymax/2)+'</text><text x="2" y="'+(Y(0)+3)+'" font-size="9" fill="#666">0</text><path d="'+line('windKmh')+'" fill="none" stroke="#2563eb" stroke-width="2"/><path d="'+line('gustKmh')+'" fill="none" stroke="#f59e0b" stroke-width="2"/>'+labels+'</svg><div style="font-size:9px;margin-top:-2px"><span style="color:#2563eb;font-weight:800">— vânt</span> &nbsp; <span style="color:#d97706;font-weight:800">— rafală</span> · km/h</div>'
+ const grid=[45,30,15,0].map(v=>'<line x1="'+L+'" y1="'+Y(v)+'" x2="'+(W-R)+'" y2="'+Y(v)+'" stroke="'+(v===0?'#ddd':'#eee')+'"/><text x="2" y="'+(Y(v)+3)+'" font-size="9" fill="#666">'+v+'</text>').join('');
+ return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:92px;margin-top:5px;display:block">'+grid+'<path d="'+line('windKmh')+'" fill="none" stroke="#2563eb" stroke-width="2"/><path d="'+line('gustKmh')+'" fill="none" stroke="#f59e0b" stroke-width="2"/>'+labels+'</svg><div style="font-size:9px;margin-top:-2px"><span style="color:#2563eb;font-weight:800">— vânt</span> &nbsp; <span style="color:#d97706;font-weight:800">— rafală</span> · km/h</div>'
 }
 function showWeatherInfo(){
  const box=document.getElementById('aircraftinfobox');if(!box||!weatherData?.current)return;
@@ -132,7 +153,7 @@ function drawWeather(){
  const s=weatherData.station,w=weatherData.current;
  if(!Number.isFinite(+s.lat)||!Number.isFinite(+s.lon))return;
  const m=L.marker([+s.lat,+s.lon],{icon:weatherIcon(w.dir,w.windKmh),zIndexOffset:900}).addTo(airFullMap);
- m.on('click',()=>{if(selectedWeather){clearSelectedWeather();return}clearSelectedAircraft();selectedWeather=true;showWeatherInfo()});
+ m.on('click',()=>{if(selectedWeather){clearSelectedWeather();return}clearSelectedAircraft();selectedAnmStation=null;selectedWeather=true;showWeatherInfo()});
  airWeatherLayers.push(m);
 }
 async function loadWeather(){
@@ -143,6 +164,76 @@ async function loadWeather(){
   weatherData=d;
   if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block'){drawWeather();if(selectedWeather)showWeatherInfo()}
  }catch(e){console.warn('Meteo LRBV indisponibil',e)}
+}
+
+function showAnmInfo(s){
+ const box=document.getElementById('aircraftinfobox');if(!box||!s)return;
+ const tm=s.observedAt?new Date(s.observedAt).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit'}):'—';
+ const all=anmHistory?.stations?.[String(s.id||'')]?.history||[],cut=Date.now()-4*3600*1000,h=all.filter(x=>Number.isFinite(+x.t)&&+x.t>=cut);
+ box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație ANM')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b><br>Direcție: '+(Number.isFinite(+s.dir)?Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+tm+(h.length?weatherGraph(h):'<br><span style="color:#666">Istoricul se colectează; apar puncte noi după actualizările ANM.</span>')+'<br><span style="color:#666">ANM România</span></div>';
+ box.style.display='block';
+}
+async function loadAnmStationHistory(stationId){
+ try{
+  const r=await fetch('https://ctr-brasov-weather.danbrasov77.workers.dev/history?station='+encodeURIComponent(stationId),{cache:'no-store'});
+  if(!r.ok)throw Error('HTTP '+r.status);
+  const d=await r.json();if(!d?.ok)throw Error(d?.error||'history');
+  anmHistory.stations=anmHistory.stations||{};
+  anmHistory.stations[stationId]={history:(d.history||[]).map(x=>({
+   t:+x.observed_at,
+   windKmh:Number.isFinite(+x.wind_kmh)?+x.wind_kmh:null,
+   dir:Number.isFinite(+x.wind_dir)?+x.wind_dir:null,
+   tempC:Number.isFinite(+x.temperature_c)?+x.temperature_c:null,
+   pressureHpa:Number.isFinite(+x.pressure_hpa)?+x.pressure_hpa:null
+  }))};
+ }catch(e){console.warn('Istoric ANM D1 indisponibil',e)}
+}
+function clearSelectedAnm(){selectedAnmStation=null;const box=document.getElementById('aircraftinfobox');if(box){box.style.display='none';box.innerHTML=''}}
+function drawAnmWeather(){
+ if(!airFullMap)return;
+ airAnmLayers.forEach(x=>airFullMap.removeLayer(x));airAnmLayers=[];
+ if(!weatherVisible)return;
+ for(const s of (anmStations||[])){
+  if(!Number.isFinite(+s.lat)||!Number.isFinite(+s.lon)||!Number.isFinite(+s.windKmh))continue;
+  if(/BRASOV\s+GHIMBAV/i.test(String(s.name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')))continue;
+  const m=L.marker([+s.lat,+s.lon],{icon:weatherIcon(s.dir,s.windKmh),zIndexOffset:880}).addTo(airFullMap);
+  m.on('click',async()=>{const id=String(s.id||s.name||'');if(selectedAnmStation===id){clearSelectedAnm();return}clearSelectedAircraft();selectedWeather=false;selectedAnmStation=id;await loadAnmStationHistory(id);showAnmInfo(s)});
+  airAnmLayers.push(m);
+ }
+}
+async function loadAnmWeather(){
+ try{
+  let d=null;
+  try{
+   const r=await fetch('https://ctr-brasov-weather.danbrasov77.workers.dev/stations',{cache:'no-store'});
+   if(r.ok){const x=await r.json();if(x?.ok)d=x}
+  }catch(e){}
+  if(!d){
+   const r=await fetch('https://ctr-brasov-aircraft.vercel.app/api/anm',{cache:'no-store'});
+   if(!r.ok)throw Error('HTTP '+r.status);
+   const x=await r.json();if(!x?.ok)throw Error(x?.error||'ANM');d=x
+  }
+  anmStations=(d.stations||[]).map(s=>({
+   id:s.id||s.station_id,
+   name:s.name||s.station_name,
+   lat:Number.isFinite(+s.lat)?+s.lat:+s.latitude,
+   lon:Number.isFinite(+s.lon)?+s.lon:+s.longitude,
+   elevationM:(s.elevationM!==null&&s.elevationM!==undefined&&Number.isFinite(+s.elevationM))?+s.elevationM:((s.elevation_m!==null&&s.elevation_m!==undefined&&Number.isFinite(+s.elevation_m))?+s.elevation_m:(ANM_ELEVATIONS[String(s.id||s.station_id||'')]??null)),
+   windKmh:Number.isFinite(+s.windKmh)?+s.windKmh:+s.wind_kmh,
+   dir:Number.isFinite(+s.dir)?+s.dir:+s.wind_dir,
+   tempC:Number.isFinite(+s.tempC)?+s.tempC:(Number.isFinite(+s.temperature_c)?+s.temperature_c:null),
+   pressureHpa:Number.isFinite(+s.pressureHpa)?+s.pressureHpa:(Number.isFinite(+s.pressure_hpa)?+s.pressure_hpa:null),
+   observedAt:s.observedAt||s.observed_at||null
+  }));
+  if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block'){
+   drawAnmWeather();
+   if(selectedAnmStation){
+    await loadAnmStationHistory(selectedAnmStation);
+    const s=anmStations.find(x=>String(x.id||x.name||'')===selectedAnmStation);
+    if(s)showAnmInfo(s);else selectedAnmStation=null
+   }
+  }
+ }catch(e){console.warn('Stații ANM indisponibile',e)}
 }
 function clearSelectedAircraft(){selectedAircraftHex=null;if(airTrailLayer&&airFullMap){airFullMap.removeLayer(airTrailLayer);airTrailLayer=null}updateSelectedAircraftInfo(null)}
 function updateSelectedAircraftInfo(a){
@@ -160,7 +251,7 @@ function drawFullAircraft(){
  if(!airFullMap)return;
  drawAirspace(airFullMap,airFullAirspace);drawFullRestrictions();
  airFullLayers.forEach(x=>airFullMap.removeLayer(x));airFullLayers=[];
- for(const a of (window.__aircraft100km||[])){if(Number.isFinite(+a.lat)&&Number.isFinite(+a.lon)){const tr=Number.isFinite(+a.track)?+a.track:0,ft=Number.isFinite(+a.alt_geom)?+a.alt_geom:(Number.isFinite(+a.alt_baro)?+a.alt_baro:NaN),alt=Number.isFinite(ft)?Math.round(ft*.3048):null,kmh=Number.isFinite(+a.gs)?Math.round(+a.gs*1.852):null,name=(a.flight||a.r||a.hex||'Aeronavă').trim(),typ=a.desc||a.t||'',dist=Number.isFinite(+a.dst)?Math.round(+a.dst*1.852):null,az=aircraftAzlr(a),clr=az?'#d9363e':'#111',icon=aircraftIcon(a,tr,clr,26);const m=L.marker([+a.lat,+a.lon],{icon}).addTo(airFullMap);m.on('click',()=>{const h=String(a.hex||'').toLowerCase();if(String(selectedAircraftHex||'').toLowerCase()===h){clearSelectedAircraft();return}selectedWeather=false;showAircraftTrail(h);updateSelectedAircraftInfo(a)});airFullLayers.push(m)}}if(selectedAircraftHex){showAircraftTrail(selectedAircraftHex);const sa=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(selectedAircraftHex).toLowerCase());updateSelectedAircraftInfo(sa||null)}else if(selectedWeather)showWeatherInfo();else updateSelectedAircraftInfo(null);drawFullPilots();drawWeather();
+ for(const a of (window.__aircraft100km||[])){if(Number.isFinite(+a.lat)&&Number.isFinite(+a.lon)){const tr=Number.isFinite(+a.track)?+a.track:0,ft=Number.isFinite(+a.alt_geom)?+a.alt_geom:(Number.isFinite(+a.alt_baro)?+a.alt_baro:NaN),alt=Number.isFinite(ft)?Math.round(ft*.3048):null,kmh=Number.isFinite(+a.gs)?Math.round(+a.gs*1.852):null,name=(a.flight||a.r||a.hex||'Aeronavă').trim(),typ=a.desc||a.t||'',dist=Number.isFinite(+a.dst)?Math.round(+a.dst*1.852):null,az=aircraftAzlr(a),clr=az?'#d9363e':'#111',icon=aircraftIcon(a,tr,clr,26);const m=L.marker([+a.lat,+a.lon],{icon}).addTo(airFullMap);m.on('click',()=>{const h=String(a.hex||'').toLowerCase();if(String(selectedAircraftHex||'').toLowerCase()===h){clearSelectedAircraft();return}selectedWeather=false;selectedAnmStation=null;showAircraftTrail(h);updateSelectedAircraftInfo(a)});airFullLayers.push(m)}}if(selectedAircraftHex){showAircraftTrail(selectedAircraftHex);const sa=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(selectedAircraftHex).toLowerCase());updateSelectedAircraftInfo(sa||null)}else if(selectedWeather)showWeatherInfo();else if(selectedAnmStation){const sw=(anmStations||[]).find(x=>String(x.id||x.name||'')===selectedAnmStation);if(sw)showAnmInfo(sw);else updateSelectedAircraftInfo(null)}else updateSelectedAircraftInfo(null);drawFullPilots();drawWeather();drawAnmWeather();
 }
 document.getElementById('airprobe').onclick=()=>{const w=document.getElementById('airmapfull');w.style.display='block';if(!airFullMap){airFullMap=L.map('airmap').setView([45.6579,25.6012],8);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(airFullMap);L.circle([45.6579,25.6012],{radius:AIRCRAFT_RADIUS_KM*1000,fill:false,weight:1}).addTo(airFullMap)}setTimeout(()=>{airFullMap.invalidateSize();drawFullAircraft()},50)};
 async function loadRestrictions(){
@@ -175,10 +266,11 @@ function updateNotamButtons(){const r=document.getElementById('notamredbtn'),o=d
 document.getElementById('notamredbtn').onclick=()=>{notamRedVisible=!notamRedVisible;updateNotamButtons();drawFullRestrictions()};
 document.getElementById('notamorangebtn').onclick=()=>{notamOrangeVisible=!notamOrangeVisible;updateNotamButtons();drawFullRestrictions()};
 document.getElementById('notamcorrbtn').onclick=()=>{notamCorrVisible=!notamCorrVisible;updateNotamButtons();drawFullRestrictions()};
-document.getElementById('meteobtn').onclick=()=>{weatherVisible=!weatherVisible;document.getElementById('meteobtn').textContent='💨 Meteo'+(weatherVisible?' ✓':'');if(!weatherVisible&&selectedWeather)clearSelectedWeather();drawWeather()};
+document.getElementById('meteobtn').onclick=()=>{weatherVisible=!weatherVisible;document.getElementById('meteobtn').textContent='💨 Meteo'+(weatherVisible?' ✓':'');if(!weatherVisible){if(selectedWeather)clearSelectedWeather();if(selectedAnmStation)clearSelectedAnm()}drawWeather();drawAnmWeather()};
 updateNotamButtons();
 loadWeather();setInterval(loadWeather,120000);
-document.getElementById('aircraftinfobox').onclick=()=>{if(selectedWeather)clearSelectedWeather();else clearSelectedAircraft()};
+loadAnmWeather();setInterval(loadAnmWeather,60000);
+document.getElementById('aircraftinfobox').onclick=()=>{if(selectedWeather)clearSelectedWeather();else if(selectedAnmStation)clearSelectedAnm();else clearSelectedAircraft()};
 document.getElementById('airmapclose').onclick=()=>{document.getElementById('airmapfull').style.display='none';};
 document.getElementById('wsprobe').onclick=()=>window.open('https://www.xcontest.org/world/en/flights/live/','_blank');
 </script>
@@ -191,7 +283,7 @@ document.getElementById('wsprobe').onclick=()=>window.open('https://www.xcontest
  const refresh=()=>{const live=[],landed=[];for(const [uuid,f] of flights){const x=f?.lastFix;if(!x)continue;const s=statics.get(uuid)||{},p={uuid,name:s.user?.fullname||null,username:s.user?.username||null,lon:x[0],lat:x[1],alt:x[2],time:x[3]?.t||null};(f?.landed?landed:live).push(p)}
   for(const z of ['AZLR1','AZLR2','AZLR3']){const a=live.filter(p=>inside(p.lat,p.lon,polygons[z])),b=landed.filter(p=>inside(p.lat,p.lon,polygons[z]));xcData.zones[z]={live:a,landed:b};const el=document.querySelector('[data-live="'+z+'"]');el.textContent='👥 '+a.length+'/'+b.length;el.title='LIVE: '+a.length+' · aterizați: '+b.length}
   const C={lat:45.6579,lon:25.6012},R=6371,rr=x=>x*Math.PI/180,dk=p=>{const a=rr(p.lat-C.lat),b=rr(p.lon-C.lon),h=Math.sin(a/2)**2+Math.cos(rr(p.lat))*Math.cos(rr(C.lat))*Math.sin(b/2)**2;return 2*R*Math.asin(Math.sqrt(h))};xcData.nearbyLive=live.filter(p=>dk(p)<=50);xcData.nearbyLanded=landed.filter(p=>dk(p)<=50);
-  const total=flights.size,RO=[[48.27,26.62],[47.95,24.98],[47.73,22.86],[46.62,20.25],[45.75,20.25],[44.68,21.36],[43.62,22.66],[43.75,24.99],[43.65,26.08],[44.17,28.65],[45.18,29.67],[45.45,28.20],[46.00,28.23],[46.67,28.10],[47.30,27.60],[48.27,26.62]],rl=live.filter(p=>inside(p.lat,p.lon,RO)),rd=landed.filter(p=>inside(p.lat,p.lon,RO));e.textContent='XContest LIVE 🇷🇴 ✓ · '+rl.length+' în aer / '+rd.length+' aterizați';e.style.color='#2563EB';e.title='TEST România: resincronizare automată 90 s; total sesiune='+total;got=true;
+  const total=flights.size,RO=[[48.27,26.62],[47.95,24.98],[47.73,22.86],[46.62,20.25],[45.75,20.25],[44.68,21.36],[43.62,22.66],[43.75,24.99],[43.65,26.08],[44.17,28.65],[45.18,29.67],[45.45,28.20],[46.00,28.23],[46.67,28.10],[47.30,27.60],[48.27,26.62]],rl=live.filter(p=>inside(p.lat,p.lon,RO)),rd=landed.filter(p=>inside(p.lat,p.lon,RO));e.innerHTML='🪂 XContest LIVE 🇷🇴 ✓<br><span style="font-size:9px;font-weight:700;color:#6b7280">'+rl.length+' în aer / '+rd.length+' aterizați</span>';e.style.color='#2563EB';e.title='TEST România: resincronizare automată 90 s; total sesiune='+total;got=true;
   if(openMapZone){const z=openMapZone;openMapZone=null;showMap(z)}if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block')drawFullPilots()
  };
  const k=await crypto.subtle.importKey('raw',enc.encode(key),{name:'HMAC',hash:'SHA-256'},false,['sign']);
@@ -203,13 +295,13 @@ document.getElementById('wsprobe').onclick=()=>window.open('https://www.xcontest
   let first=true;
   try{
    w=new WebSocket('wss://live2.xcontest.org/websock/webclient');w.binaryType='arraybuffer';
-   w.onmessage=async ev=>{if(myGen!==generation)return;try{let raw=ev.data instanceof ArrayBuffer?ev.data:await ev.data.arrayBuffer();if(first){first=false;w.send(await crypto.subtle.sign('HMAC',k,raw));w.send(JSON.stringify({tag:'WebFilterContest',contest:'live9999',staticInfos:true}));w.send(JSON.stringify({tag:'WebFollow',contents:[]}));e.textContent='XContest LIVE: resincronizare…';return}
+   w.onmessage=async ev=>{if(myGen!==generation)return;try{let raw=ev.data instanceof ArrayBuffer?ev.data:await ev.data.arrayBuffer();if(first){first=false;w.send(await crypto.subtle.sign('HMAC',k,raw));w.send(JSON.stringify({tag:'WebFilterContest',contest:'live9999',staticInfos:true}));w.send(JSON.stringify({tag:'WebFollow',contents:[]}));e.innerHTML='🪂 XContest LIVE<br><span style="font-size:9px;font-weight:700;color:#6b7280">resincronizare…</span>';return}
     let b=new Uint8Array(raw),txt;if(b[0]===31&&b[1]===139&&window.DecompressionStream){const ds=new DecompressionStream('gzip');txt=await new Response(new Blob([raw]).stream().pipeThrough(ds)).text()}else txt=new TextDecoder().decode(raw);
     const m=JSON.parse(txt);if(m.tag==='LiveFlightInfos'&&m.info){for(const [u,v] of Object.entries(m.info))flights.set(u,v);window.__xcLastInfo=m.info;window.__xcFlights=flights;w.send(JSON.stringify({tag:'WebRequestInfo',contents:Object.keys(m.info)}));refresh()}if(m.tag==='LiveStaticInfos'&&m.static){for(const [u,v] of Object.entries(m.static))statics.set(u,v);refresh()}
    }catch(_){}};
-   w.onerror=()=>{if(myGen!==generation)return;if(!got){e.textContent='XContest LIVE: reconectare…';e.style.color='#c0392b'}};
+   w.onerror=()=>{if(myGen!==generation)return;if(!got){e.innerHTML='🪂 XContest LIVE<br><span style="font-size:9px;font-weight:700;color:#c0392b">reconectare…</span>';e.style.color='#c0392b'}};
    w.onclose=()=>{if(myGen!==generation)return;reconnectTimer=setTimeout(connect,5000)};
-  }catch(_){e.textContent='XContest LIVE: eroare conexiune ✕';e.style.color='#c0392b';reconnectTimer=setTimeout(connect,5000)}
+  }catch(_){e.innerHTML='🪂 XContest LIVE<br><span style="font-size:9px;font-weight:700;color:#c0392b">eroare conexiune ✕</span>';e.style.color='#c0392b';reconnectTimer=setTimeout(connect,5000)}
  };
  connect();
  setInterval(connect,90000);
@@ -263,10 +355,10 @@ document.getElementById('wsprobe').onclick=()=>window.open('https://www.xcontest
    if(selectedAircraftHex&&!window.__aircraft75hex.has(String(selectedAircraftHex).toLowerCase())){selectedAircraftHex=null;if(airTrailLayer&&airFullMap){airFullMap.removeLayer(airTrailLayer);airTrailLayer=null}updateSelectedAircraftInfo(null)}
    if(openMapZone&&document.getElementById('mapbox')?.classList.contains('show'))drawAircraft();
    if(document.getElementById('airmapfull')?.style.display==='block')drawFullAircraft();
-   e.textContent='✈️ Avioane LIVE · <5000 m ASL · 75 km: '+a.length;
+   e.innerHTML='✈️ Avioane LIVE<br><span style="font-size:9px;font-weight:700;color:#6b7280">&lt;5000 m · 75 km: '+a.length+'</span>';
    e.style.color='#2563EB';
    e.title=a.map(x=>(x.flight||x.r||x.hex||'—').trim()+' · '+Math.round(((+x.alt_geom||+x.alt_baro)||0)*0.3048)+' m').slice(0,20).join('\n');
-  }catch(err){e.textContent='✈️ Avioane LIVE: date indisponibile';e.style.color='#c0392b'}
+  }catch(err){e.innerHTML='✈️ Avioane LIVE<br><span style="font-size:9px;font-weight:700;color:#c0392b">date indisponibile</span>';e.style.color='#c0392b'}
  };
  await load();setInterval(load,15000);
 })();
