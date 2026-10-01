@@ -199,7 +199,7 @@ async function loadAnmWeather(){
    name:s.name||s.station_name,
    lat:Number.isFinite(+s.lat)?+s.lat:+s.latitude,
    lon:Number.isFinite(+s.lon)?+s.lon:+s.longitude,
-   elevationM:Number.isFinite(+s.elevationM)?+s.elevationM:(Number.isFinite(+s.elevation_m)?+s.elevation_m:null),
+   elevationM:(s.elevationM!==null&&s.elevationM!==undefined&&Number.isFinite(+s.elevationM))?+s.elevationM:((s.elevation_m!==null&&s.elevation_m!==undefined&&Number.isFinite(+s.elevation_m))?+s.elevation_m:(String(s.name||s.station_name||'').toUpperCase()==='VARFUL OMU'?2504:null)),
    windKmh:Number.isFinite(+s.windKmh)?+s.windKmh:+s.wind_kmh,
    dir:Number.isFinite(+s.dir)?+s.dir:+s.wind_dir,
    tempC:Number.isFinite(+s.tempC)?+s.tempC:(Number.isFinite(+s.temperature_c)?+s.temperature_c:null),
