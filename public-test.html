@@ -139,10 +139,15 @@ function weatherGraph(points){
  const grid=[45,30,15,0].map(v=>'<line x1="'+L+'" y1="'+Y(v)+'" x2="'+(W-R)+'" y2="'+Y(v)+'" stroke="'+(v===0?'#ddd':'#eee')+'"/><text x="2" y="'+(Y(v)+3)+'" font-size="9" fill="#666">'+v+'</text>').join('');
  return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:92px;margin-top:5px;display:block">'+grid+'<path d="'+line('windKmh')+'" fill="none" stroke="#2563eb" stroke-width="2"/><path d="'+line('gustKmh')+'" fill="none" stroke="#f59e0b" stroke-width="2"/>'+labels+'</svg><div style="font-size:9px;margin-top:-2px"><span style="color:#2563eb;font-weight:800">— vânt</span> &nbsp; <span style="color:#d97706;font-weight:800">— rafală</span> · km/h</div>'
 }
+function windCardinal(deg){
+ if(!Number.isFinite(+deg))return'—';
+ const dirs=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSV','SV','VSV','V','VNV','NV','NNV'];
+ return dirs[Math.round((((+deg)%360)+360)%360/22.5)%16];
+}
 function showWeatherInfo(){
  const box=document.getElementById('aircraftinfobox');if(!box||!weatherData?.current)return;
  const w=weatherData.current,s=weatherData.station||{},tm=Number.isFinite(+w.t)?new Date(+w.t).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit'}):'—';
- box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație meteo')+'</b><br>Vânt: <b>'+(Number.isFinite(+w.windKmh)?Math.round(+w.windKmh):'—')+' km/h</b> · rafală '+(Number.isFinite(+w.gustKmh)?Math.round(+w.gustKmh):'—')+' km/h<br>Direcție: '+(Number.isFinite(+w.dir)?Math.round(+w.dir)+'°':'—')+(Number.isFinite(+w.tempC)?' · 🌡️ '+(+w.tempC).toFixed(1)+' °C':'')+' · '+tm+weatherGraph(weatherData.history)+'</div>';
+ box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație meteo')+'</b><br>Vânt: <b>'+(Number.isFinite(+w.windKmh)?Math.round(+w.windKmh):'—')+' km/h</b> · rafală '+(Number.isFinite(+w.gustKmh)?Math.round(+w.gustKmh):'—')+' km/h<br>Direcție: '+(Number.isFinite(+w.dir)?'<b>'+windCardinal(w.dir)+'</b> · '+Math.round(+w.dir)+'°':'—')+(Number.isFinite(+w.tempC)?' · 🌡️ '+(+w.tempC).toFixed(1)+' °C':'')+' · '+tm+weatherGraph(weatherData.history)+'</div>';
  box.style.display='block';
 }
 function clearSelectedWeather(){selectedWeather=false;const box=document.getElementById('aircraftinfobox');if(box){box.style.display='none';box.innerHTML=''}}
@@ -170,7 +175,7 @@ function showAnmInfo(s){
  const box=document.getElementById('aircraftinfobox');if(!box||!s)return;
  const tm=s.observedAt?new Date(s.observedAt).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit'}):'—';
  const all=anmHistory?.stations?.[String(s.id||'')]?.history||[],cut=Date.now()-4*3600*1000,h=all.filter(x=>Number.isFinite(+x.t)&&+x.t>=cut);
- box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație ANM')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b><br>Direcție: '+(Number.isFinite(+s.dir)?Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+tm+(h.length?weatherGraph(h):'<br><span style="color:#666">Istoricul se colectează; apar puncte noi după actualizările ANM.</span>')+'<br><span style="color:#666">ANM România</span></div>';
+ box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație ANM')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b><br>Direcție: '+(Number.isFinite(+s.dir)?'<b>'+windCardinal(s.dir)+'</b> · '+Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+tm+(h.length?weatherGraph(h):'<br><span style="color:#666">Istoricul se colectează; apar puncte noi după actualizările ANM.</span>')+'<br><span style="color:#666">ANM România</span></div>';
  box.style.display='block';
 }
 async function loadAnmStationHistory(stationId){
