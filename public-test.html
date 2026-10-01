@@ -277,7 +277,7 @@ loadWeather();setInterval(loadWeather,120000);
 loadAnmWeather();setInterval(loadAnmWeather,60000);
 document.getElementById('aircraftinfobox').onclick=()=>{if(selectedWeather)clearSelectedWeather();else if(selectedAnmStation)clearSelectedAnm();else clearSelectedAircraft()};
 document.getElementById('airmapclose').onclick=()=>{document.getElementById('airmapfull').style.display='none';};
-document.getElementById('wsprobe').onclick=()=>window.open('https://www.xcontest.org/world/en/flights/live/:fp','_blank');
+document.getElementById('wsprobe').onclick=()=>{window.location.href='https://www.xcontest.org/world/en/flights/live/:fp'};
 </script>
 <script>
 (async function(){
