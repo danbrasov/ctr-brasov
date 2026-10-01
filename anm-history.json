@@ -1,0 +1,7 @@
+{
+  "source": "https://www.meteoromania.ro/wp-json/meteoapi/v2/starea-vremii",
+  "checkedAt": null,
+  "datasetAt": null,
+  "retentionHours": 24,
+  "stations": {}
+}
