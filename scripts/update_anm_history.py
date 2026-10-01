@@ -45,6 +45,10 @@ with urllib.request.urlopen(req,timeout=30) as r:
     data=json.load(r)
 
 dt=datetime.fromisoformat(str(data["date"]).replace("Z","+00:00"))
+if old.get("datasetAt") == data.get("date"):
+    print(json.dumps({"datasetAt": data.get("date"), "status": "unchanged"}, ensure_ascii=False))
+    sys.exit(2)
+
 t=int(dt.timestamp()*1000)
 cut=int((dt-timedelta(hours=24)).timestamp()*1000)
 stations=old.get("stations",{})
