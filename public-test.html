@@ -149,7 +149,7 @@ async function loadWeather(){
 function showAnmInfo(s){
  const box=document.getElementById('aircraftinfobox');if(!box||!s)return;
  const tm=s.observedAt?new Date(s.observedAt).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit'}):'—';
- box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație ANM')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b><br>Direcție: '+(Number.isFinite(+s.dir)?Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+tm+'<br><span style="color:#666">ANM România · istoric 4 h indisponibil momentan</span></div>';
+ box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație ANM')+'</b>'+(Number.isFinite(+s.elevationM)?'<br>Altitudine: ~'+Math.round(+s.elevationM)+' m':'')+'<br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b><br>Direcție: '+(Number.isFinite(+s.dir)?Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+tm+'<br><span style="color:#666">ANM România · istoric 4 h indisponibil momentan</span></div>';
  box.style.display='block';
 }
 function clearSelectedAnm(){selectedAnmStation=null;const box=document.getElementById('aircraftinfobox');if(box){box.style.display='none';box.innerHTML=''}}
