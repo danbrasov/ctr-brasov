@@ -66,7 +66,7 @@ function showMap(z){const box=document.getElementById('mapbox'),row=document.que
 })();
 </script>
 <script>
-let airFullMap=null,airFullLayers=[],airFullAirspace=[],airFullPilotLayers=[],airFullRestrictionLayers=[],airWeatherLayers=[],airAnmLayers=[],airTrailLayer=null,selectedAircraftHex=null,selectedWeather=false,selectedAnmStation=null,weatherData=null,anmStations=[],anmHistory={stations:{}},restrictionData={items:[]},notamRedVisible=true,notamOrangeVisible=true,notamCorrVisible=false,weatherVisible=true;const aircraftTrails=new Map();
+let airFullMap=null,airFullLayers=[],airFullAirspace=[],airFullPilotLayers=[],airFullRestrictionLayers=[],airWeatherLayers=[],airAnmLayers=[],airPgLayers=[],airTrailLayer=null,selectedAircraftHex=null,selectedWeather=false,selectedAnmStation=null,selectedPgStation=null,weatherData=null,anmStations=[],anmHistory={stations:{}},pgStations=[],pgHistory={stations:{}},restrictionData={items:[]},notamRedVisible=true,notamOrangeVisible=true,notamCorrVisible=false,weatherVisible=true;const aircraftTrails=new Map();
 const ANM_ELEVATIONS={
  'anm-baraolt':508,
  'anm-brasov-ghimbav':534,
@@ -175,6 +175,70 @@ async function loadWeather(){
  }catch(e){console.warn('Meteo LRBV indisponibil',e)}
 }
 
+function showPgInfo(s){
+ const box=document.getElementById('aircraftinfobox');if(!box||!s)return;
+ const tm=s.time||'—';
+ const h=(pgHistory?.stations?.[String(s.id||'')]?.history||[]).slice(-20);
+ box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație PG')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh)+' km/h':'—')+'</b>'+(Number.isFinite(+s.gustKmh)?' · rafală '+Math.round(+s.gustKmh)+' km/h':'')+'<br>Direcție: '+(Number.isFinite(+s.dir)?'<b>'+windCardinal(s.dir)+'</b> · '+Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+esc(tm)+(h.length>1?weatherGraph(h):'<br><span style="color:#666">Istoric PG · colectare la 15 minute.</span>')+'<br><span style="color:#666">Paragliding România</span></div>';
+ box.style.display='block';
+}
+function clearSelectedPg(){selectedPgStation=null;const box=document.getElementById('aircraftinfobox');if(box){box.style.display='none';box.innerHTML=''}}
+function drawPgWeather(){
+ if(!airFullMap)return;
+ airPgLayers.forEach(x=>airFullMap.removeLayer(x));airPgLayers=[];
+ if(!weatherVisible)return;
+ for(const s of (pgStations||[])){
+  if(!Number.isFinite(+s.lat)||!Number.isFinite(+s.lon))continue;
+  const m=L.marker([+s.lat,+s.lon],{icon:weatherIcon(s.dir,s.windKmh),zIndexOffset:890}).addTo(airFullMap);
+  m.on('click',()=>{const id=String(s.id||s.name||'');if(selectedPgStation===id){clearSelectedPg();return}clearSelectedAircraft();selectedWeather=false;selectedAnmStation=null;selectedPgStation=id;showPgInfo(s)});
+  airPgLayers.push(m);
+ }
+}
+async function loadPgWeather(){
+ try{
+  const base='https://ctr-brasov-pg-weather.danbrasov77.workers.dev';
+  const rs=await fetch(base+'/stations',{cache:'no-store'});
+  if(!rs.ok)throw Error('HTTP '+rs.status);
+  const ds=await rs.json();if(!ds?.ok)throw Error(ds?.error||'PG stations');
+  const rows=Array.isArray(ds.stations)?ds.stations:[];
+  pgStations=rows.map(s=>({
+   id:s.station_id,
+   name:s.station_name,
+   lat:+s.latitude,
+   lon:+s.longitude,
+   elevationM:(s.elevation_m!==null&&s.elevation_m!==undefined)?+s.elevation_m:null,
+   windKmh:(s.wind_kmh==="-"?"-":((s.wind_kmh===null||s.wind_kmh===undefined)?null:+s.wind_kmh)),
+   gustKmh:(s.gust_kmh==="-"?"-":((s.gust_kmh===null||s.gust_kmh===undefined)?null:+s.gust_kmh)),
+   dir:(s.wind_dir==="-"?"-":((s.wind_dir===null||s.wind_dir===undefined)?null:+s.wind_dir)),
+   tempC:(s.temperature_c!==null&&s.temperature_c!==undefined)?+s.temperature_c:null,
+   pressureHpa:(s.pressure_hpa!==null&&s.pressure_hpa!==undefined)?+s.pressure_hpa:null,
+   observedAt:s.observed_at,
+   time:s.observed_at?new Date(+s.observed_at).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit',second:'2-digit'}):null
+  }));
+  for(const s of pgStations){
+   try{
+    const rh=await fetch(base+'/history?station='+encodeURIComponent(s.id),{cache:'no-store'});
+    if(!rh.ok)continue;
+    const dh=await rh.json();
+    pgHistory.stations[s.id]={history:(dh.history||[]).map(x=>({
+      t:+x.observed_at,
+      windKmh:(x.wind_kmh!==null&&x.wind_kmh!==undefined)?+x.wind_kmh:null,
+      gustKmh:(x.gust_kmh!==null&&x.gust_kmh!==undefined)?+x.gust_kmh:null,
+      dir:(x.wind_dir!==null&&x.wind_dir!==undefined)?+x.wind_dir:null,
+      tempC:(x.temperature_c!==null&&x.temperature_c!==undefined)?+x.temperature_c:null,
+      pressureHpa:(x.pressure_hpa!==null&&x.pressure_hpa!==undefined)?+x.pressure_hpa:null
+    }))};
+   }catch(e){}
+  }
+  if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block'){
+   drawPgWeather();
+   if(selectedPgStation){
+    const s=pgStations.find(x=>String(x.id||x.name||'')===selectedPgStation);
+    if(s)showPgInfo(s);else selectedPgStation=null
+   }
+  }
+ }catch(e){console.warn('Meteo Paragliding România indisponibil',e)}
+}
 function showAnmInfo(s){
  const box=document.getElementById('aircraftinfobox');if(!box||!s)return;
  const tm=s.observedAt?new Date(s.observedAt).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit'}):'—';
@@ -260,7 +324,7 @@ function drawFullAircraft(){
  if(!airFullMap)return;
  drawAirspace(airFullMap,airFullAirspace);drawFullRestrictions();
  airFullLayers.forEach(x=>airFullMap.removeLayer(x));airFullLayers=[];
- for(const a of (window.__aircraft100km||[])){if(Number.isFinite(+a.lat)&&Number.isFinite(+a.lon)){const tr=Number.isFinite(+a.track)?+a.track:0,ft=Number.isFinite(+a.alt_geom)?+a.alt_geom:(Number.isFinite(+a.alt_baro)?+a.alt_baro:NaN),alt=Number.isFinite(ft)?Math.round(ft*.3048):null,kmh=Number.isFinite(+a.gs)?Math.round(+a.gs*1.852):null,name=(a.flight||a.r||a.hex||'Aeronavă').trim(),typ=a.desc||a.t||'',dist=Number.isFinite(+a.dst)?Math.round(+a.dst*1.852):null,az=aircraftAzlr(a),clr=az?'#d9363e':'#111',icon=aircraftIcon(a,tr,clr,26);const m=L.marker([+a.lat,+a.lon],{icon}).addTo(airFullMap);m.on('click',()=>{const h=String(a.hex||'').toLowerCase();if(String(selectedAircraftHex||'').toLowerCase()===h){clearSelectedAircraft();return}selectedWeather=false;selectedAnmStation=null;showAircraftTrail(h);updateSelectedAircraftInfo(a)});airFullLayers.push(m)}}if(selectedAircraftHex){showAircraftTrail(selectedAircraftHex);const sa=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(selectedAircraftHex).toLowerCase());updateSelectedAircraftInfo(sa||null)}else if(selectedWeather)showWeatherInfo();else if(selectedAnmStation){const sw=(anmStations||[]).find(x=>String(x.id||x.name||'')===selectedAnmStation);if(sw)showAnmInfo(sw);else updateSelectedAircraftInfo(null)}else updateSelectedAircraftInfo(null);drawFullPilots();drawWeather();drawAnmWeather();
+ for(const a of (window.__aircraft100km||[])){if(Number.isFinite(+a.lat)&&Number.isFinite(+a.lon)){const tr=Number.isFinite(+a.track)?+a.track:0,ft=Number.isFinite(+a.alt_geom)?+a.alt_geom:(Number.isFinite(+a.alt_baro)?+a.alt_baro:NaN),alt=Number.isFinite(ft)?Math.round(ft*.3048):null,kmh=Number.isFinite(+a.gs)?Math.round(+a.gs*1.852):null,name=(a.flight||a.r||a.hex||'Aeronavă').trim(),typ=a.desc||a.t||'',dist=Number.isFinite(+a.dst)?Math.round(+a.dst*1.852):null,az=aircraftAzlr(a),clr=az?'#d9363e':'#111',icon=aircraftIcon(a,tr,clr,26);const m=L.marker([+a.lat,+a.lon],{icon}).addTo(airFullMap);m.on('click',()=>{const h=String(a.hex||'').toLowerCase();if(String(selectedAircraftHex||'').toLowerCase()===h){clearSelectedAircraft();return}selectedWeather=false;selectedAnmStation=null;selectedPgStation=null;showAircraftTrail(h);updateSelectedAircraftInfo(a)});airFullLayers.push(m)}}if(selectedAircraftHex){showAircraftTrail(selectedAircraftHex);const sa=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(selectedAircraftHex).toLowerCase());updateSelectedAircraftInfo(sa||null)}else if(selectedWeather)showWeatherInfo();else if(selectedAnmStation){const sw=(anmStations||[]).find(x=>String(x.id||x.name||'')===selectedAnmStation);if(sw)showAnmInfo(sw);else updateSelectedAircraftInfo(null)}else if(selectedPgStation){const sp=(pgStations||[]).find(x=>String(x.id||x.name||'')===selectedPgStation);if(sp)showPgInfo(sp);else updateSelectedAircraftInfo(null)}else updateSelectedAircraftInfo(null);drawFullPilots();drawWeather();drawAnmWeather();drawPgWeather();
 }
 document.getElementById('airprobe').onclick=()=>{const w=document.getElementById('airmapfull');w.style.display='block';if(!airFullMap){airFullMap=L.map('airmap').setView([45.6579,25.6012],8);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(airFullMap);L.circle([45.6579,25.6012],{radius:AIRCRAFT_RADIUS_KM*1000,fill:false,weight:1}).addTo(airFullMap)}setTimeout(()=>{airFullMap.invalidateSize();drawFullAircraft()},50)};
 async function loadRestrictions(){
@@ -275,11 +339,12 @@ function updateNotamButtons(){const r=document.getElementById('notamredbtn'),o=d
 document.getElementById('notamredbtn').onclick=()=>{notamRedVisible=!notamRedVisible;updateNotamButtons();drawFullRestrictions()};
 document.getElementById('notamorangebtn').onclick=()=>{notamOrangeVisible=!notamOrangeVisible;updateNotamButtons();drawFullRestrictions()};
 document.getElementById('notamcorrbtn').onclick=()=>{notamCorrVisible=!notamCorrVisible;updateNotamButtons();drawFullRestrictions()};
-document.getElementById('meteobtn').onclick=()=>{weatherVisible=!weatherVisible;document.getElementById('meteobtn').textContent='💨 Meteo'+(weatherVisible?' ✓':'');if(!weatherVisible){if(selectedWeather)clearSelectedWeather();if(selectedAnmStation)clearSelectedAnm()}drawWeather();drawAnmWeather()};
+document.getElementById('meteobtn').onclick=()=>{weatherVisible=!weatherVisible;document.getElementById('meteobtn').textContent='💨 Meteo'+(weatherVisible?' ✓':'');if(!weatherVisible){if(selectedWeather)clearSelectedWeather();if(selectedAnmStation)clearSelectedAnm();if(selectedPgStation)clearSelectedPg()}drawWeather();drawAnmWeather();drawPgWeather()};
 updateNotamButtons();
 loadWeather();setInterval(loadWeather,120000);
 loadAnmWeather();setInterval(loadAnmWeather,60000);
-document.getElementById('aircraftinfobox').onclick=()=>{if(selectedWeather)clearSelectedWeather();else if(selectedAnmStation)clearSelectedAnm();else clearSelectedAircraft()};
+loadPgWeather();setInterval(loadPgWeather,60000);
+document.getElementById('aircraftinfobox').onclick=()=>{if(selectedWeather)clearSelectedWeather();else if(selectedAnmStation)clearSelectedAnm();else if(selectedPgStation)clearSelectedPg();else clearSelectedAircraft()};
 document.getElementById('airmapclose').onclick=()=>{document.getElementById('airmapfull').style.display='none';};
 document.getElementById('wsprobe').onclick=()=>window.open('https://www.xcontest.org/world/en/flights/live/:fp','_blank');
 </script>
