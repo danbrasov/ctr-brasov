@@ -1,0 +1,21 @@
+name: Update PG weather history
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect Paragliding Romania weather
+        run: python3 scripts/update_pg_weather.py pg-weather-history.json
+      - name: Commit changed history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pg-weather-history.json
+          git diff --cached --quiet || git commit -m "Update PG weather history"
+          git push
