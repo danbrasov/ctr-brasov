@@ -6,6 +6,19 @@ OUT = sys.argv[1] if len(sys.argv) > 1 else "pg-weather-history.json"
 URL = "https://ctr-brasov-aircraft.vercel.app/api/pgmeteo"
 RETENTION_HOURS = 168  # 7 days
 
+now = datetime.now(timezone.utc)
+try:
+    with open(OUT, encoding="utf-8") as f:
+        previous = json.load(f)
+    last_update = previous.get("updatedAt")
+    if last_update:
+        last_dt = datetime.fromisoformat(last_update.replace("Z","+00:00"))
+        if now - last_dt < timedelta(minutes=15):
+            print("PG weather: not due yet")
+            raise SystemExit(2)
+except (FileNotFoundError, json.JSONDecodeError, ValueError):
+    pass
+
 with urllib.request.urlopen(URL, timeout=20) as r:
     data = json.load(r)
 
@@ -61,8 +74,10 @@ point = {
 }
 
 hist = entry.setdefault("history", [])
-if not hist or hist[-1].get("time") != time_text:
-    hist.append(point)
+if hist and hist[-1].get("time") == time_text:
+    print("PG weather: same station timestamp")
+    raise SystemExit(2)
+hist.append(point)
 
 cutoff = int((now - timedelta(hours=RETENTION_HOURS)).timestamp()*1000)
 entry["history"] = [x for x in hist if int(x.get("t") or 0) >= cutoff]
