@@ -203,7 +203,7 @@ function drawAnmWeather(){
  airAnmLayers.forEach(x=>airFullMap.removeLayer(x));airAnmLayers=[];
  if(!weatherVisible)return;
  for(const s of (anmStations||[])){
-  if(!Number.isFinite(+s.lat)||!Number.isFinite(+s.lon)||!Number.isFinite(+s.windKmh))continue;
+  if(!Number.isFinite(+s.lat)||!Number.isFinite(+s.lon))continue;
   if(/BRASOV\s+GHIMBAV/i.test(String(s.name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')))continue;
   const m=L.marker([+s.lat,+s.lon],{icon:weatherIcon(s.dir,s.windKmh),zIndexOffset:880}).addTo(airFullMap);
   m.on('click',async()=>{const id=String(s.id||s.name||'');if(selectedAnmStation===id){clearSelectedAnm();return}clearSelectedAircraft();selectedWeather=false;selectedAnmStation=id;await loadAnmStationHistory(id);showAnmInfo(s)});
