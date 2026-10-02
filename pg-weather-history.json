@@ -1,5 +1,24 @@
 {
   "source": "Paragliding România",
-  "updatedAt": null,
-  "stations": {}
+  "updatedAt": "2026-10-02T11:04:29+00:00",
+  "stations": {
+    "pg-lempes": {
+      "id": "pg-lempes",
+      "name": "Lempeș",
+      "lat": 45.7148,
+      "lon": 25.6527,
+      "elevationM": 704,
+      "history": [
+        {
+          "t": 1790939069000,
+          "time": "14:04:29",
+          "windKmh": 5,
+          "gustKmh": 7,
+          "dir": 92,
+          "tempC": 16.2,
+          "pressureHpa": 964
+        }
+      ]
+    }
+  }
 }
