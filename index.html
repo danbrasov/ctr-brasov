@@ -49,7 +49,7 @@ function showMap(z){const box=document.getElementById('mapbox'),row=document.que
   <button id="ghvhead" type="button" style="flex:1;min-width:0;border:1px solid #d1d5db;border-radius:14px;background:#fff;padding:10px 6px;box-shadow:0 1px 4px #0001;color:#111;font-weight:900;font-size:11px;line-height:1.25;cursor:pointer">🛫 GHV astăzi<br><span style="font-size:9px;font-weight:700;color:#6b7280">se încarcă…</span></button>
 </div>
 <div id="ghvlist" style="display:none;max-width:532px;margin:8px auto 0;text-align:left;background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 1px 4px #0001;font-size:11px"></div>
-<div id="airmapfull" style="display:none;position:fixed;inset:0;z-index:9999;background:#fff"><div id="airmap" style="width:100%;height:100%"></div><div id="notamcontrols" style="position:fixed;top:calc(env(safe-area-inset-top, 0px) + 8px);left:62px;z-index:20000;display:flex;flex-direction:column;align-items:flex-start;gap:4px"><button id="notamredbtn" style="border:1px solid #b91c1c;border-radius:8px;padding:4px 6px;background:#fff;color:#b91c1c;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">⛔ Restricții ✓</button><button id="notamorangebtn" style="border:1px solid #d97706;border-radius:8px;padding:4px 6px;background:#fff;color:#d97706;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">⚠️ Avertizări</button><button id="notamcorrbtn" style="border:1px solid #7c3aed;border-radius:8px;padding:4px 6px;background:#fff;color:#7c3aed;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">🛣️ Coridoare</button><button id="meteobtn" style="border:1px solid #2563eb;border-radius:8px;padding:4px 6px;background:#fff;color:#2563eb;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">💨 Meteo ✓</button></div><div id="aircraftinfobox" style="display:none;position:fixed;top:calc(env(safe-area-inset-top, 0px) + 8px);left:154px;right:72px;z-index:20000;background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 1px 5px #0005;color:#111;font-size:12px;line-height:1.35;max-height:180px;overflow:auto"></div><button id="airmapclose" aria-label="Închide harta" style="position:fixed;top:calc(env(safe-area-inset-top, 0px) + 16px);right:16px;z-index:20000;border:2px solid #333;border-radius:50%;width:46px;height:46px;background:#fff;color:#111;font-size:30px;font-weight:700;line-height:40px;box-shadow:0 2px 10px #0008;-webkit-appearance:none;appearance:none">×</button></div>
+<div id="airmapfull" style="display:none;position:fixed;inset:0;z-index:9999;background:#fff"><div id="airmap" style="width:100%;height:100%"></div><div id="notamcontrols" style="position:fixed;top:calc(env(safe-area-inset-top, 0px) + 8px);left:62px;z-index:20000;display:flex;flex-direction:column;align-items:flex-start;gap:4px"><button id="notamredbtn" style="border:1px solid #b91c1c;border-radius:8px;padding:4px 6px;background:#fff;color:#b91c1c;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">⛔ Restricții ✓</button><button id="notamorangebtn" style="border:1px solid #d97706;border-radius:8px;padding:4px 6px;background:#fff;color:#d97706;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">⚠️ Avertizări</button><button id="notamcorrbtn" style="border:1px solid #7c3aed;border-radius:8px;padding:4px 6px;background:#fff;color:#7c3aed;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">🛣️ Coridoare</button><button id="notamtomorrowbtn" style="display:none;border:1px solid #0f766e;border-radius:8px;padding:4px 6px;background:#fff;color:#0f766e;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">📅 NOTAM mâine</button><button id="meteobtn" style="border:1px solid #2563eb;border-radius:8px;padding:4px 6px;background:#fff;color:#2563eb;font-weight:800;font-size:9px;box-shadow:0 1px 4px #0004">💨 Meteo ✓</button></div><div id="aircraftinfobox" style="display:none;position:fixed;top:calc(env(safe-area-inset-top, 0px) + 8px);left:154px;right:72px;z-index:20000;background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 1px 5px #0005;color:#111;font-size:12px;line-height:1.35;max-height:180px;overflow:auto"></div><button id="airmapclose" aria-label="Închide harta" style="position:fixed;top:calc(env(safe-area-inset-top, 0px) + 16px);right:16px;z-index:20000;border:2px solid #333;border-radius:50%;width:46px;height:46px;background:#fff;color:#111;font-size:30px;font-weight:700;line-height:40px;box-shadow:0 2px 10px #0008;-webkit-appearance:none;appearance:none">×</button></div>
 <script>
 (async function(){
  const h=document.getElementById('ghvhead'),b=document.getElementById('ghvlist');
@@ -66,7 +66,7 @@ function showMap(z){const box=document.getElementById('mapbox'),row=document.que
 })();
 </script>
 <script>
-let airFullMap=null,airFullLayers=[],airFullAirspace=[],airFullPilotLayers=[],airFullRestrictionLayers=[],airWeatherLayers=[],airAnmLayers=[],airPgLayers=[],airTrailLayer=null,selectedAircraftHex=null,selectedWeather=false,selectedAnmStation=null,selectedPgStation=null,weatherData=null,anmStations=[],anmHistory={stations:{}},pgStations=[],pgHistory={stations:{}},restrictionData={items:[]},notamRedVisible=true,notamOrangeVisible=true,notamCorrVisible=false,weatherVisible=true;const aircraftTrails=new Map();
+let airFullMap=null,airFullLayers=[],airFullAirspace=[],airFullPilotLayers=[],airFullRestrictionLayers=[],airWeatherLayers=[],airAnmLayers=[],airPgLayers=[],airTrailLayer=null,selectedAircraftHex=null,selectedWeather=false,selectedAnmStation=null,selectedPgStation=null,weatherData=null,anmStations=[],anmHistory={stations:{}},pgStations=[],pgHistory={stations:{}},restrictionData={items:[]},restrictionTodayData={items:[]},restrictionTomorrowData={items:[]},tomorrowNotamData={zones:{}},notamTomorrowMode=false,notamRedVisible=true,notamOrangeVisible=true,notamCorrVisible=false,weatherVisible=true;const aircraftTrails=new Map();
 const ANM_ELEVATIONS={
  'anm-baraolt':508,
  'anm-brasov-ghimbav':534,
@@ -327,12 +327,58 @@ function drawFullAircraft(){
  for(const a of (window.__aircraft100km||[])){if(Number.isFinite(+a.lat)&&Number.isFinite(+a.lon)){const tr=Number.isFinite(+a.track)?+a.track:0,ft=Number.isFinite(+a.alt_geom)?+a.alt_geom:(Number.isFinite(+a.alt_baro)?+a.alt_baro:NaN),alt=Number.isFinite(ft)?Math.round(ft*.3048):null,kmh=Number.isFinite(+a.gs)?Math.round(+a.gs*1.852):null,name=(a.flight||a.r||a.hex||'Aeronavă').trim(),typ=a.desc||a.t||'',dist=Number.isFinite(+a.dst)?Math.round(+a.dst*1.852):null,az=aircraftAzlr(a),clr=az?'#d9363e':'#111',icon=aircraftIcon(a,tr,clr,26);const m=L.marker([+a.lat,+a.lon],{icon}).addTo(airFullMap);m.on('click',()=>{const h=String(a.hex||'').toLowerCase();if(String(selectedAircraftHex||'').toLowerCase()===h){clearSelectedAircraft();return}selectedWeather=false;selectedAnmStation=null;selectedPgStation=null;showAircraftTrail(h);updateSelectedAircraftInfo(a)});airFullLayers.push(m)}}if(selectedAircraftHex){showAircraftTrail(selectedAircraftHex);const sa=(window.__aircraft100km||[]).find(x=>String(x.hex||'').toLowerCase()===String(selectedAircraftHex).toLowerCase());updateSelectedAircraftInfo(sa||null)}else if(selectedWeather)showWeatherInfo();else if(selectedAnmStation){const sw=(anmStations||[]).find(x=>String(x.id||x.name||'')===selectedAnmStation);if(sw)showAnmInfo(sw);else updateSelectedAircraftInfo(null)}else if(selectedPgStation){const sp=(pgStations||[]).find(x=>String(x.id||x.name||'')===selectedPgStation);if(sp)showPgInfo(sp);else updateSelectedAircraftInfo(null)}else updateSelectedAircraftInfo(null);drawFullPilots();drawWeather();drawAnmWeather();drawPgWeather();
 }
 document.getElementById('airprobe').onclick=()=>{const w=document.getElementById('airmapfull');w.style.display='block';if(!airFullMap){airFullMap=L.map('airmap').setView([45.6579,25.6012],8);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(airFullMap);L.circle([45.6579,25.6012],{radius:AIRCRAFT_RADIUS_KM*1000,fill:false,weight:1}).addTo(airFullMap)}setTimeout(()=>{airFullMap.invalidateSize();drawFullAircraft()},50)};
+function tomorrowAzlrItems(d){
+ const out=[];
+ for(const [z,x] of Object.entries(d?.zones||{})){
+  if(!x?.notam||!POLYS?.[z])continue;
+  const pts=POLYS[z].split('-').map(ll).filter(Boolean);
+  if(pts.length<3)continue;
+  out.push({
+   notam:x.notam,
+   from:x.from||null,
+   to:x.to||null,
+   schedule:null,
+   lower:x.lower||'GND',
+   upper:x.upper||'—',
+   description:z+' – NOTAM GLD pentru mâine',
+   severity:'orange',
+   shape:{type:'polygon',points:pts},
+   _azlrTomorrow:true
+  });
+ }
+ return out;
+}
+function applyRestrictionDay(){
+ const b=document.getElementById('notamtomorrowbtn');
+ if(notamTomorrowMode){
+  const az=tomorrowAzlrItems(tomorrowNotamData);
+  restrictionData={...(restrictionTomorrowData||{}),items:[...((restrictionTomorrowData?.items)||[]),...az]};
+ }else{
+  restrictionData=restrictionTodayData||{items:[]};
+ }
+ if(b)b.textContent=notamTomorrowMode?'📅 NOTAM mâine ✓':'📅 NOTAM mâine';
+ if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block')drawFullRestrictions();
+}
 async function loadRestrictions(){
  try{
-  const r=await fetch('https://ctr-brasov-notam.danbrasov77.workers.dev/restrictions?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
-  const d=await r.json();if(!d?.ok)throw Error(d?.error||'Restrictions');
-  restrictionData=d||{items:[]};
-  if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block')drawFullRestrictions();
+  const ts=Date.now();
+  const [rt,rm,nm]=await Promise.all([
+   fetch('https://ctr-brasov-notam.danbrasov77.workers.dev/restrictions?ts='+ts,{cache:'no-store'}),
+   fetch('https://ctr-brasov-notam.danbrasov77.workers.dev/restrictions?day=tomorrow&ts='+ts,{cache:'no-store'}),
+   fetch('https://ctr-brasov-notam.danbrasov77.workers.dev/notams?day=tomorrow&ts='+ts,{cache:'no-store'})
+  ]);
+  if(!rt.ok||!rm.ok||!nm.ok)throw Error('HTTP restrictions');
+  const [today,tomorrow,tomorrowNotams]=await Promise.all([rt.json(),rm.json(),nm.json()]);
+  if(!today?.ok)throw Error(today?.error||'Restrictions');
+  restrictionTodayData=today||{items:[]};
+  restrictionTomorrowData=tomorrow?.ok?tomorrow:{items:[]};
+  tomorrowNotamData=tomorrowNotams?.ok?tomorrowNotams:{zones:{}};
+  const az=tomorrowAzlrItems(tomorrowNotamData);
+  const hasTomorrow=((restrictionTomorrowData?.items)||[]).length>0||az.length>0;
+  const b=document.getElementById('notamtomorrowbtn');
+  if(b)b.style.display=hasTomorrow?'block':'none';
+  if(!hasTomorrow)notamTomorrowMode=false;
+  applyRestrictionDay();
  }catch(e){console.warn('Restriction data unavailable',e)}
 }
 loadRestrictions();setInterval(loadRestrictions,60000);
@@ -340,6 +386,7 @@ function updateNotamButtons(){const r=document.getElementById('notamredbtn'),o=d
 document.getElementById('notamredbtn').onclick=()=>{notamRedVisible=!notamRedVisible;updateNotamButtons();drawFullRestrictions()};
 document.getElementById('notamorangebtn').onclick=()=>{notamOrangeVisible=!notamOrangeVisible;updateNotamButtons();drawFullRestrictions()};
 document.getElementById('notamcorrbtn').onclick=()=>{notamCorrVisible=!notamCorrVisible;updateNotamButtons();drawFullRestrictions()};
+document.getElementById('notamtomorrowbtn').onclick=()=>{notamTomorrowMode=!notamTomorrowMode;applyRestrictionDay()};
 document.getElementById('meteobtn').onclick=()=>{weatherVisible=!weatherVisible;document.getElementById('meteobtn').textContent='💨 Meteo'+(weatherVisible?' ✓':'');if(!weatherVisible){if(selectedWeather)clearSelectedWeather();if(selectedAnmStation)clearSelectedAnm();if(selectedPgStation)clearSelectedPg()}drawWeather();drawAnmWeather();drawPgWeather()};
 updateNotamButtons();
 loadWeather();setInterval(loadWeather,120000);
