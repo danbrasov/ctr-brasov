@@ -358,8 +358,9 @@ function drawFullAircraft(){
 document.getElementById('airprobe').onclick=()=>{const w=document.getElementById('airmapfull');w.style.display='block';if(!airFullMap){airFullMap=L.map('airmap').setView([45.6579,25.6012],8);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(airFullMap);L.circle([45.6579,25.6012],{radius:AIRCRAFT_RADIUS_KM*1000,fill:false,weight:1}).addTo(airFullMap)}setTimeout(()=>{airFullMap.invalidateSize();drawFullAircraft()},50)};
 async function loadRestrictions(){
  try{
-  const r=await fetch('restriction-data.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
-  restrictionData=await r.json()||{items:[]};
+  const r=await fetch('https://ctr-brasov-notam.danbrasov77.workers.dev/restrictions?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
+  const d=await r.json();if(!d?.ok)throw Error(d?.error||'Restrictions');
+  restrictionData=d||{items:[]};
   if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block')drawFullRestrictions();
  }catch(e){console.warn('Restriction data unavailable',e)}
 }
