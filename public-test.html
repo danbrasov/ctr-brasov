@@ -231,9 +231,12 @@ async function loadPgWeather(){
   const s=d.station||{},w=d.current||{};
   const row={
    id:s.id||'pg-lempes',name:s.name||'Lempeș',lat:+s.lat,lon:+s.lon,elevationM:+s.elevationM,
-   windKmh:Number.isFinite(+w.windKmh)?+w.windKmh:null,gustKmh:Number.isFinite(+w.gustKmh)?+w.gustKmh:null,
-   dir:Number.isFinite(+w.dir)?+w.dir:null,tempC:Number.isFinite(+w.tempC)?+w.tempC:null,
-   pressureHpa:Number.isFinite(+w.pressureHpa)?+w.pressureHpa:null,time:w.time||null
+   windKmh:(w.windKmh!==null&&w.windKmh!==undefined&&Number.isFinite(+w.windKmh))?+w.windKmh:null,
+   gustKmh:(w.gustKmh!==null&&w.gustKmh!==undefined&&Number.isFinite(+w.gustKmh))?+w.gustKmh:null,
+   dir:(w.dir!==null&&w.dir!==undefined&&Number.isFinite(+w.dir))?+w.dir:null,
+   tempC:(w.tempC!==null&&w.tempC!==undefined&&Number.isFinite(+w.tempC))?+w.tempC:null,
+   pressureHpa:(w.pressureHpa!==null&&w.pressureHpa!==undefined&&Number.isFinite(+w.pressureHpa))?+w.pressureHpa:null,
+   time:w.time||null
   };
   pgStations=[row];
   const id=String(row.id),now=Date.now();pgHistory.stations[id]=pgHistory.stations[id]||{history:[]};
