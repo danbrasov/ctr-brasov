@@ -27,6 +27,12 @@ jobs:
             -o /tmp/restrictii.html
           python3 scripts/parse_restrictions.py /tmp/restrictii.html restriction-data.json
 
+          # Collect Paragliding Romania weather through this proven workflow.
+          # The script itself limits upstream access to once every 15 minutes.
+          rc=0
+          python3 scripts/update_pg_weather.py pg-weather-history.json || rc=$?
+          if [ "$rc" -ne 0 ] && [ "$rc" -ne 2 ]; then exit "$rc"; fi
+
           # Fallback ANM history collection on this proven working workflow.
           # Exit code 2 means ANM still exposes the same hourly dataset.
           python3 scripts/update_anm_history.py anm-history.json || rc=$?
@@ -35,6 +41,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add notam-data.json restriction-data.json anm-history.json
+          git add notam-data.json restriction-data.json anm-history.json pg-weather-history.json
           git diff --cached --quiet || git commit -m "Update NOTAM test data"
           git push
