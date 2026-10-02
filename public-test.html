@@ -208,7 +208,7 @@ function showPgInfo(s){
  const box=document.getElementById('aircraftinfobox');if(!box||!s)return;
  const tm=s.time||'—';
  const h=(pgHistory?.stations?.[String(s.id||'')]?.history||[]).slice(-20);
- box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație PG')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b>'+(Number.isFinite(+s.gustKmh)?' · rafală '+Math.round(+s.gustKmh)+' km/h':'')+'<br>Direcție: '+(Number.isFinite(+s.dir)?'<b>'+windCardinal(s.dir)+'</b> · '+Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+esc(tm)+(h.length>1?weatherGraph(h):'<br><span style="color:#666">Istoricul PG se colectează la 15 minute.</span>')+'<br><span style="color:#666">Paragliding România</span></div>';
+ box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație PG')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh):'—')+' km/h</b>'+(Number.isFinite(+s.gustKmh)?' · rafală '+Math.round(+s.gustKmh)+' km/h':'')+'<br>Direcție: '+(Number.isFinite(+s.dir)?'<b>'+windCardinal(s.dir)+'</b> · '+Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+esc(tm)+(h.length>1?weatherGraph(h):'<br><span style="color:#666">Istoric PG · colectare la 15 minute.</span>')+'<br><span style="color:#666">Paragliding România</span></div>';
  box.style.display='block';
 }
 function clearSelectedPg(){selectedPgStation=null;const box=document.getElementById('aircraftinfobox');if(box){box.style.display='none';box.innerHTML=''}}
@@ -225,32 +225,47 @@ function drawPgWeather(){
 }
 async function loadPgWeather(){
  try{
-  let d=null;
-  try{
-   const r=await fetch('pg-weather-history.json?ts='+Date.now(),{cache:'no-store'});
-   if(r.ok)d=await r.json();
-  }catch(e){}
-  let entry=d?.stations?.['pg-lempes']||null,h=Array.isArray(entry?.history)?entry.history:[];
-  if(!h.length){
-   const r=await fetch('https://ctr-brasov-aircraft.vercel.app/api/pgmeteo',{cache:'no-store'});
-   if(!r.ok)throw Error('HTTP '+r.status);
-   const x=await r.json();if(!x?.ok)throw Error(x?.error||'PG meteo');
-   const s=x.station||{},w=x.current||{};
-   entry={id:s.id||'pg-lempes',name:s.name||'Lempeș',lat:+s.lat,lon:+s.lon,elevationM:+s.elevationM};
-   h=[{t:Date.now(),time:w.time||null,windKmh:w.windKmh,gustKmh:w.gustKmh,dir:w.dir,tempC:w.tempC,pressureHpa:w.pressureHpa}];
+  const base='https://ctr-brasov-pg-weather.danbrasov77.workers.dev';
+  const rs=await fetch(base+'/stations',{cache:'no-store'});
+  if(!rs.ok)throw Error('HTTP '+rs.status);
+  const ds=await rs.json();if(!ds?.ok)throw Error(ds?.error||'PG stations');
+  const rows=Array.isArray(ds.stations)?ds.stations:[];
+  pgStations=rows.map(s=>({
+   id:s.station_id,
+   name:s.station_name,
+   lat:+s.latitude,
+   lon:+s.longitude,
+   elevationM:(s.elevation_m!==null&&s.elevation_m!==undefined)?+s.elevation_m:null,
+   windKmh:(s.wind_kmh!==null&&s.wind_kmh!==undefined)?+s.wind_kmh:null,
+   gustKmh:(s.gust_kmh!==null&&s.gust_kmh!==undefined)?+s.gust_kmh:null,
+   dir:(s.wind_dir!==null&&s.wind_dir!==undefined)?+s.wind_dir:null,
+   tempC:(s.temperature_c!==null&&s.temperature_c!==undefined)?+s.temperature_c:null,
+   pressureHpa:(s.pressure_hpa!==null&&s.pressure_hpa!==undefined)?+s.pressure_hpa:null,
+   observedAt:s.observed_at,
+   time:s.observed_at?new Date(+s.observed_at).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit',second:'2-digit'}):null
+  }));
+  for(const s of pgStations){
+   try{
+    const rh=await fetch(base+'/history?station='+encodeURIComponent(s.id),{cache:'no-store'});
+    if(!rh.ok)continue;
+    const dh=await rh.json();
+    pgHistory.stations[s.id]={history:(dh.history||[]).map(x=>({
+      t:+x.observed_at,
+      windKmh:(x.wind_kmh!==null&&x.wind_kmh!==undefined)?+x.wind_kmh:null,
+      gustKmh:(x.gust_kmh!==null&&x.gust_kmh!==undefined)?+x.gust_kmh:null,
+      dir:(x.wind_dir!==null&&x.wind_dir!==undefined)?+x.wind_dir:null,
+      tempC:(x.temperature_c!==null&&x.temperature_c!==undefined)?+x.temperature_c:null,
+      pressureHpa:(x.pressure_hpa!==null&&x.pressure_hpa!==undefined)?+x.pressure_hpa:null
+    }))};
+   }catch(e){}
   }
-  const last=h[h.length-1]||{},row={
-   id:entry.id||'pg-lempes',name:entry.name||'Lempeș',lat:+entry.lat,lon:+entry.lon,elevationM:+entry.elevationM,
-   windKmh:(last.windKmh!==null&&last.windKmh!==undefined&&Number.isFinite(+last.windKmh))?+last.windKmh:null,
-   gustKmh:(last.gustKmh!==null&&last.gustKmh!==undefined&&Number.isFinite(+last.gustKmh))?+last.gustKmh:null,
-   dir:(last.dir!==null&&last.dir!==undefined&&Number.isFinite(+last.dir))?+last.dir:null,
-   tempC:(last.tempC!==null&&last.tempC!==undefined&&Number.isFinite(+last.tempC))?+last.tempC:null,
-   pressureHpa:(last.pressureHpa!==null&&last.pressureHpa!==undefined&&Number.isFinite(+last.pressureHpa))?+last.pressureHpa:null,
-   time:last.time||null
-  };
-  pgStations=[row];
-  pgHistory.stations[row.id]={history:h.filter(x=>Number.isFinite(+x.t)&&+x.t>=Date.now()-4*3600*1000)};
-  if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block'){drawPgWeather();if(selectedPgStation===row.id)showPgInfo(row)}
+  if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block'){
+   drawPgWeather();
+   if(selectedPgStation){
+    const s=pgStations.find(x=>String(x.id||x.name||'')===selectedPgStation);
+    if(s)showPgInfo(s);else selectedPgStation=null
+   }
+  }
  }catch(e){console.warn('Meteo Paragliding România indisponibil',e)}
 }
 function showAnmInfo(s){
