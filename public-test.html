@@ -122,7 +122,7 @@ function drawFullRestrictions(){
   const red=r.severity==='red',rawDesc=String(r.description||''),sh=r.shape||{},corr=/EITHER SIDE OF A STRAIGHT LINE/i.test(rawDesc);
   if((red&&!notamRedVisible)||(!red&&!corr&&!notamOrangeVisible)||(corr&&!notamCorrVisible))continue;
   if(!red&&/GLD FLT WILL TAKE PLACE/i.test(rawDesc))continue;
-  if(!red&&!corr&&sh.type==='polygon'&&Array.isArray(sh.points)&&sh.points.some(p=>kmFromBrasov(p)>100))continue;
+  
   const col=red?'#dc2626':(corr?'#7c3aed':'#f59e0b'),fill=red?.22:(corr?.12:.16),desc=esc(rawDesc);
   const interval=(r.schedule?esc(r.schedule):notamLocalTime(r.from)+' – '+notamLocalTime(r.to));
   const popup='<b>'+(red?'⛔ ':(corr?'🛣️ ':'⚠️ '))+esc(r.notam||'NOTAM')+'</b><br><b>Limite:</b> '+esc(r.lower||'—')+' – '+esc(r.upper||'—')+'<br><b>Interval:</b> '+interval+'<br><b>Descriere:</b><br>'+desc+'<br><span style="font-size:9px;color:#666">Sursa: ROMATSA Current restrictions</span>';
