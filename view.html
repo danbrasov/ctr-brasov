@@ -241,7 +241,7 @@ async function loadPgWeather(){
     if(!rh.ok)continue;
     const dh=await rh.json();
     pgHistory.stations[s.id]={history:(dh.history||[]).map(x=>({
-      t:+x.observed_at,
+      t:anmHistoryTime(x),
       windKmh:(x.wind_kmh!==null&&x.wind_kmh!==undefined)?+x.wind_kmh:null,
       gustKmh:(x.gust_kmh!==null&&x.gust_kmh!==undefined)?+x.gust_kmh:null,
       dir:(x.wind_dir!==null&&x.wind_dir!==undefined)?+x.wind_dir:null,
@@ -258,6 +258,13 @@ async function loadPgWeather(){
    }
   }
  }catch(e){console.warn('Meteo Paragliding România indisponibil',e)}
+}
+function anmHistoryTime(x){
+ const v=x?.observed_at??x?.observedAt??x?.t??x?.time??null;
+ if(v===null||v===undefined)return NaN;
+ if(typeof v==='number'&&Number.isFinite(v))return v<1e12?v*1000:v;
+ if(/^\d+$/.test(String(v))){const n=Number(v);return n<1e12?n*1000:n}
+ const n=Date.parse(String(v));return Number.isFinite(n)?n:NaN;
 }
 function showAnmInfo(s){
  const box=document.getElementById('aircraftinfobox');if(!box||!s)return;
