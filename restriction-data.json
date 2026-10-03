@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-03T05:09:46.805552+00:00",
+  "checkedAt": "2026-10-03T10:26:02.581107+00:00",
   "date": "2026-10-03",
   "windowLocal": {
     "from": "12:00",
@@ -9,6 +9,111 @@
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
   "items": [
+    {
+      "notam": "D3129/26",
+      "from": "2610030700",
+      "to": "2610031700",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL050) From:2026-10-03 07:00 Till:2026-10-03 17:00 (",
+      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 454233N0254914E-453953N0255514E-454710N0260208E-454728N0255306E 454233N0254914E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.70916666666667,
+            25.820555555555554
+          ],
+          [
+            45.664722222222224,
+            25.920555555555556
+          ],
+          [
+            45.78611111111111,
+            26.035555555555558
+          ],
+          [
+            45.79111111111111,
+            25.884999999999998
+          ],
+          [
+            45.70916666666667,
+            25.820555555555554
+          ]
+        ]
+      }
+    },
+    {
+      "notam": "D3128/26",
+      "from": "2610030700",
+      "to": "2610031700",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL060) From:2026-10-03 07:00 Till:2026-10-03 17:00 (",
+      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 453843N0253754E-454233N0254914E-453953N0255514E-453221N0254805E 453843N0253754E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.64527777777778,
+            25.631666666666668
+          ],
+          [
+            45.70916666666667,
+            25.820555555555554
+          ],
+          [
+            45.664722222222224,
+            25.920555555555556
+          ],
+          [
+            45.53916666666667,
+            25.80138888888889
+          ],
+          [
+            45.64527777777778,
+            25.631666666666668
+          ]
+        ]
+      }
+    },
+    {
+      "notam": "D3127/26",
+      "from": "2610030700",
+      "to": "2610031700",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL090) From:2026-10-03 09:00 Till:2026-10-03 15:30 (",
+      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.343611111111116,
+            25.616111111111113
+          ],
+          [
+            45.46,
+            25.373055555555556
+          ],
+          [
+            45.64527777777778,
+            25.631666666666668
+          ],
+          [
+            45.53916666666667,
+            25.80138888888889
+          ],
+          [
+            45.343611111111116,
+            25.616111111111113
+          ]
+        ]
+      }
+    },
     {
       "notam": "M5964/26",
       "from": "2610030430",
@@ -487,41 +592,6 @@
       }
     },
     {
-      "notam": "P9728/26",
-      "from": "2610030500",
-      "to": "2610031600",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL130) From:2026-10-03 04:00 Till:2026-10-03 16:00 (",
-      "description": "DANGER AREA ACTIVATED. SPORT FLT AND PJE WILL TAKE PLACE INTO THE FLW AREA: 454308N0253253E-454056N0253039E-453921N0253347E-454129N0253605E 454308N0253253E RESERVED AREA SPORTS ACT OF ACFT AND PJE CONTACT ON 135.210 EXPECT RADAR VECTORING",
-      "severity": "red",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.71888888888889,
-            25.548055555555557
-          ],
-          [
-            45.68222222222222,
-            25.510833333333334
-          ],
-          [
-            45.655833333333334,
-            25.563055555555557
-          ],
-          [
-            45.69138888888889,
-            25.60138888888889
-          ],
-          [
-            45.71888888888889,
-            25.548055555555557
-          ]
-        ]
-      }
-    },
-    {
       "notam": "P9725/26",
       "from": "2610030500",
       "to": "2610031600",
@@ -557,5 +627,5 @@
       }
     }
   ],
-  "skippedWithoutExplicitGeometry": 87
+  "skippedWithoutExplicitGeometry": 117
 }
