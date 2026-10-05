@@ -109,11 +109,20 @@ function finiteNumber(value) {
   return Number.isFinite(n) ? n : null;
 }
 
+async function getXpanderAuth(env) {
+  const binding = env.XPANDER_AUTH;
+  if (!binding) return null;
+  if (typeof binding === "string") return binding;
+  if (typeof binding?.get === "function") return await binding.get();
+  return null;
+}
+
 async function fetchXpander(env) {
-  if (!env.XPANDER_AUTH) throw new Error("XPANDER_AUTH secret is not configured");
+  const auth = await getXpanderAuth(env);
+  if (!auth) throw new Error("XPANDER_AUTH secret is not configured");
 
   const url = new URL(XPANDER_API);
-  url.searchParams.set("auth", env.XPANDER_AUTH);
+  url.searchParams.set("auth", auth);
   url.searchParams.set("_", String(Date.now()));
 
   const r = await fetch(url.toString(), {
