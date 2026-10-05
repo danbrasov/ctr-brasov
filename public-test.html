@@ -239,9 +239,26 @@ function drawPgWeather(){
  for(const s of (pgStations||[])){
   if(!Number.isFinite(+s.lat)||!Number.isFinite(+s.lon))continue;
   const m=L.marker([+s.lat,+s.lon],{icon:weatherIcon(s.dir,s.windKmh),zIndexOffset:890}).addTo(airFullMap);
-  m.on('click',()=>{const id=String(s.id||s.name||'');if(selectedPgStation===id){clearSelectedPg();return}clearSelectedAircraft();selectedWeather=false;selectedAnmStation=null;selectedPgStation=id;showPgInfo(s)});
+  m.on('click',async()=>{const id=String(s.id||s.name||'');if(selectedPgStation===id){clearSelectedPg();return}clearSelectedAircraft();selectedWeather=false;selectedAnmStation=null;selectedPgStation=id;await loadPgStationHistory(id);showPgInfo(s)});
   airPgLayers.push(m);
  }
+}
+async function loadPgStationHistory(stationId){
+ try{
+  const base='https://ctr-brasov-pg-weather.danbrasov77.workers.dev';
+  const rh=await fetch(base+'/history?station='+encodeURIComponent(stationId),{cache:'no-store'});
+  if(!rh.ok)throw Error('HTTP '+rh.status);
+  const dh=await rh.json();if(!dh?.ok)throw Error(dh?.error||'PG history');
+  pgHistory.stations=pgHistory.stations||{};
+  pgHistory.stations[stationId]={history:(dh.history||[]).map(x=>({
+   t:anmHistoryTime(x),
+   windKmh:(x.wind_kmh!==null&&x.wind_kmh!==undefined)?+x.wind_kmh:null,
+   gustKmh:(x.gust_kmh!==null&&x.gust_kmh!==undefined)?+x.gust_kmh:null,
+   dir:(x.wind_dir!==null&&x.wind_dir!==undefined)?+x.wind_dir:null,
+   tempC:(x.temperature_c!==null&&x.temperature_c!==undefined)?+x.temperature_c:null,
+   pressureHpa:(x.pressure_hpa!==null&&x.pressure_hpa!==undefined)?+x.pressure_hpa:null
+  }))};
+ }catch(e){console.warn('Istoric PG D1 indisponibil',e)}
 }
 async function loadPgWeather(){
  try{
@@ -264,21 +281,6 @@ async function loadPgWeather(){
    observedAt:s.observed_at,
    time:s.observed_at?new Date(+s.observed_at).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit',second:'2-digit'}):null
   }));
-  for(const s of pgStations){
-   try{
-    const rh=await fetch(base+'/history?station='+encodeURIComponent(s.id),{cache:'no-store'});
-    if(!rh.ok)continue;
-    const dh=await rh.json();
-    pgHistory.stations[s.id]={history:(dh.history||[]).map(x=>({
-      t:anmHistoryTime(x),
-      windKmh:(x.wind_kmh!==null&&x.wind_kmh!==undefined)?+x.wind_kmh:null,
-      gustKmh:(x.gust_kmh!==null&&x.gust_kmh!==undefined)?+x.gust_kmh:null,
-      dir:(x.wind_dir!==null&&x.wind_dir!==undefined)?+x.wind_dir:null,
-      tempC:(x.temperature_c!==null&&x.temperature_c!==undefined)?+x.temperature_c:null,
-      pressureHpa:(x.pressure_hpa!==null&&x.pressure_hpa!==undefined)?+x.pressure_hpa:null
-    }))};
-   }catch(e){}
-  }
   if(airFullMap&&document.getElementById('airmapfull')?.style.display==='block'){
    drawPgWeather();
    if(selectedPgStation){
