@@ -91,6 +91,46 @@ function parseWind(v) {
   ];
 }
 
+async function ensureStateTable(env) {
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS worker_state (
+      key TEXT PRIMARY KEY,
+      value TEXT,
+      updated_at INTEGER
+    )
+  `).run();
+}
+
+async function getStateNumber(env, key) {
+  await ensureStateTable(env);
+
+  const row = await env.DB.prepare(`
+    SELECT value
+    FROM worker_state
+    WHERE key = ?
+    LIMIT 1
+  `)
+    .bind(key)
+    .first();
+
+  const value = Number(row?.value);
+  return Number.isFinite(value) ? value : null;
+}
+
+async function setStateNumber(env, key, value) {
+  await ensureStateTable(env);
+
+  await env.DB.prepare(`
+    INSERT INTO worker_state (key, value, updated_at)
+    VALUES (?, ?, ?)
+    ON CONFLICT(key) DO UPDATE SET
+      value = excluded.value,
+      updated_at = excluded.updated_at
+  `)
+    .bind(key, String(value), Date.now())
+    .run();
+}
+
 async function collect(env) {
   const response = await fetch(ANM_URL, {
     headers: {
@@ -178,6 +218,12 @@ async function collect(env) {
     }
   }
 
+  await setStateNumber(
+    env,
+    "anm_last_observed",
+    observedAt
+  );
+
   return {
     ok: true,
     datasetAt: data.date,
@@ -212,15 +258,10 @@ async function history(env, stationId, hours = 4) {
 }
 
 async function latestObservedAt(env) {
-  const row = await env.DB.prepare(`
-    SELECT MAX(observed_at) AS last_observed
-    FROM weather_history
-    WHERE station_id LIKE 'anm-%'
-  `).first();
-
-  const value = Number(row?.last_observed);
-
-  return Number.isFinite(value) ? value : null;
+  return await getStateNumber(
+    env,
+    "anm_last_observed"
+  );
 }
 
 async function cleanupOldWeather(env) {
@@ -245,8 +286,10 @@ async function scheduledCollect(event, env) {
     await cleanupOldWeather(env);
   }
 
-  // La minutul 00 nu verificăm ANM.
-  // Prima verificare este la HH:01.
+  // La HH:00 nu verificăm ANM.
+  // Începem la HH:01 și, dacă observația
+  // pentru ora curentă nu a apărut încă,
+  // încercăm din nou în fiecare minut.
   if (now.getUTCMinutes() === 0) {
     return;
   }
@@ -254,7 +297,8 @@ async function scheduledCollect(event, env) {
   const lastObserved = await latestObservedAt(env);
 
   // Dacă avem deja observația ANM pentru ora curentă,
-  // nu mai interogăm ANM până în ora următoare.
+  // nu mai interogăm API-ul ANM până la următoarea oră.
+  // Citirea stării este un singur rând din worker_state.
   if (
     lastObserved !== null &&
     Math.floor(lastObserved / 3600000) ===
