@@ -1,0 +1,13 @@
+name = "ctr-brasov-pg-weather"
+main = "src/index.js"
+compatibility_date = "2026-10-05"
+
+[triggers]
+crons = ["*/10 * * * *"]
+
+# D1 binding used by /collect and /history.
+# Add the existing Cloudflare D1 database_id before enabling GitHub deployment.
+[[d1_databases]]
+binding = "DB"
+database_name = "ctr-brasov-weather"
+database_id = "REPLACE_WITH_EXISTING_D1_DATABASE_ID"
