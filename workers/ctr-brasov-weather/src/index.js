@@ -356,10 +356,12 @@ if (url.pathname === "/stations") {
         station_id,
         MAX(observed_at) AS max_observed
       FROM weather_history
+      WHERE station_id LIKE 'anm-%'
       GROUP BY station_id
     ) latest
       ON w.station_id = latest.station_id
      AND w.observed_at = latest.max_observed
+    WHERE w.station_id LIKE 'anm-%'
     ORDER BY w.station_name
   `).all();
 
