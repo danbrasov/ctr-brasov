@@ -18,6 +18,8 @@ const STATIONS = [
 
 const BASE = "https://meteo.paragliding-romania.ro";
 const SOURCE = "paragliding-romania";
+const UPSTREAM = "xpander";
+const XPANDER_API = "https://www.xpander.ro/api/";
 const STALE_HOURS = 2;
 const ZERO_WIND_HOURS = 4;
 
@@ -72,6 +74,103 @@ function localTimestamp(timeText) {
   }
 
   return null;
+}
+
+
+function localDateTimeTimestamp(value) {
+  const m = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})$/);
+  if (!m) return null;
+
+  const [, yy, mo, dd, hh, mi, ss] = m;
+  const tentativeUtc = Date.UTC(+yy, +mo - 1, +dd, +hh, +mi, +ss);
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Bucharest",
+    hour12: false,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+  const wanted = `${yy}-${mo}-${dd} ${hh}:${mi}:${ss}`;
+
+  for (const offsetHours of [2, 3]) {
+    const candidate = tentativeUtc - offsetHours * 3600000;
+    const p = Object.fromEntries(formatter.formatToParts(new Date(candidate)).map(x => [x.type, x.value]));
+    const check = `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}`;
+    if (check === wanted) return candidate;
+  }
+  return null;
+}
+
+function finiteNumber(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+async function fetchXpander(env) {
+  if (!env.XPANDER_AUTH) throw new Error("XPANDER_AUTH secret is not configured");
+
+  const url = new URL(XPANDER_API);
+  url.searchParams.set("auth", env.XPANDER_AUTH);
+  url.searchParams.set("_", String(Date.now()));
+
+  const r = await fetch(url.toString(), {
+    headers: {
+      "User-Agent": "ctr-brasov-pg-weather/2.0",
+      "Accept": "application/json"
+    },
+    cf: { cacheTtl: 0, cacheEverything: false }
+  });
+
+  if (!r.ok) throw new Error(`Xpander API -> HTTP ${r.status}`);
+  const payload = await r.json();
+  if (!payload || typeof payload.meteo !== "object") throw new Error("Invalid Xpander API response");
+  return payload.meteo;
+}
+
+function fromXpander(station, meteo) {
+  const key = String(station.sourceId).padStart(2, "0");
+  const item = meteo?.[key];
+  if (!item) {
+    return { station, status: "offline", offlineReason: "station missing from API" };
+  }
+
+  const age = finiteNumber(item.age);
+  const online = item.status === "online" && item.data &&
+    (age === null || age <= STALE_HOURS * 3600);
+
+  if (!online) {
+    return {
+      station,
+      status: "offline",
+      offlineReason: item.offline_reason || (age !== null ? `stale data (${age}s)` : "no data")
+    };
+  }
+
+  const observedAt = localDateTimeTimestamp(item.ts);
+  if (!observedAt) {
+    return { station, status: "offline", offlineReason: "invalid observation timestamp" };
+  }
+
+  const ws = finiteNumber(item.data.ws);
+  const wg = finiteNumber(item.data.wg);
+
+  return {
+    station,
+    status: "online",
+    offlineReason: null,
+    observedAt,
+    time: item.ts,
+    age,
+    windKmh: ws === null ? null : ws * 3.6,
+    gustKmh: wg === null ? null : wg * 3.6,
+    windDir: finiteNumber(item.data.wdn),
+    temperatureC: finiteNumber(item.data.ta),
+    pressureHpa: finiteNumber(item.data.pa),
+    humidityPct: finiteNumber(item.data.rh)
+  };
 }
 
 async function fetchText(url) {
@@ -223,9 +322,31 @@ async function collect(env) {
   let saved = 0;
   const results = [];
 
+  let meteo = null;
+  if (env.XPANDER_AUTH) {
+    try {
+      meteo = await fetchXpander(env);
+    } catch (e) {
+      results.push({ upstream: UPSTREAM, error: String(e?.message || e), fallback: "legacy" });
+    }
+  }
+
   for (const station of STATIONS) {
     try {
-      const data = await getStation(station);
+      const data = meteo ? fromXpander(station, meteo) : await getStation(station);
+
+      if (data.status === "offline") {
+        results.push({
+          station: station.id,
+          sourceId: station.sourceId,
+          name: station.name,
+          status: "offline",
+          offlineReason: data.offlineReason,
+          saved: 0
+        });
+        continue;
+      }
+
       const changes = await saveStation(env, data);
       saved += changes;
 
@@ -233,6 +354,7 @@ async function collect(env) {
         station: station.id,
         sourceId: station.sourceId,
         name: station.name,
+        status: "online",
         time: data.time,
         observedAt: data.observedAt,
         observedAtIso: new Date(data.observedAt).toISOString(),
@@ -241,7 +363,8 @@ async function collect(env) {
         gustKmh: data.gustKmh,
         windDir: data.windDir,
         temperatureC: data.temperatureC,
-        pressureHpa: data.pressureHpa
+        pressureHpa: data.pressureHpa,
+        humidityPct: data.humidityPct ?? null
       });
     } catch (e) {
       results.push({
@@ -257,6 +380,7 @@ async function collect(env) {
   return {
     ok: true,
     source: SOURCE,
+    upstream: meteo ? UPSTREAM : "legacy-paragliding-romania",
     stationsConfigured: STATIONS.length,
     saved,
     results
@@ -267,13 +391,55 @@ async function collect(env) {
  * Current station values are read directly from Paragliding România.
  * This endpoint intentionally does not query D1.
  */
-async function stations() {
+async function stations(env) {
   const rows = [];
+
+  if (env.XPANDER_AUTH) {
+    try {
+      const meteo = await fetchXpander(env);
+
+      for (const station of STATIONS) {
+        const data = fromXpander(station, meteo);
+        const offline = data.status === "offline";
+
+        rows.push({
+          station_id: station.id,
+          station_name: station.name,
+          observed_at: offline ? null : data.observedAt,
+          wind_kmh: offline ? null : data.windKmh,
+          wind_dir: offline ? null : data.windDir,
+          temperature_c: offline ? null : data.temperatureC,
+          pressure_hpa: offline ? null : data.pressureHpa,
+          humidity_pct: offline ? null : data.humidityPct,
+          latitude: station.lat,
+          longitude: station.lon,
+          elevation_m: station.elevationM,
+          gust_kmh: offline ? null : data.gustKmh,
+          source: SOURCE,
+          upstream: UPSTREAM,
+          weather_status: offline ? "offline" : "ok",
+          offline_reason: offline ? data.offlineReason : null,
+          age_seconds: offline ? null : data.age
+        });
+      }
+
+      return {
+        ok: true,
+        source: SOURCE,
+        upstream: UPSTREAM,
+        zeroWindWindowHours: ZERO_WIND_HOURS,
+        liveSource: true,
+        d1Read: false,
+        stations: rows
+      };
+    } catch (e) {
+      console.warn("Xpander unavailable, using legacy source", String(e?.message || e));
+    }
+  }
 
   for (const station of STATIONS) {
     try {
       const data = await getStation(station);
-
       rows.push({
         station_id: station.id,
         station_name: station.name,
@@ -287,20 +453,19 @@ async function stations() {
         elevation_m: station.elevationM,
         gust_kmh: data.gustKmh,
         source: SOURCE,
-        raw_wind_kmh: data.windKmh,
-        raw_gust_kmh: data.gustKmh,
-        raw_wind_dir: data.windDir,
-        weather_status: "ok"
+        upstream: "legacy-paragliding-romania",
+        weather_status: "ok",
+        offline_reason: null
       });
     } catch (e) {
-      // Offline/stale stations are omitted from the live map response,
-      // exactly as getStation() defines them.
+      // Legacy source cannot reliably enumerate offline stations.
     }
   }
 
   return {
     ok: true,
     source: SOURCE,
+    upstream: "legacy-paragliding-romania",
     zeroWindWindowHours: ZERO_WIND_HOURS,
     liveSource: true,
     d1Read: false,
@@ -392,7 +557,7 @@ export default {
       }
 
       if (url.pathname === "/stations") {
-        return json(await stations());
+        return json(await stations(env));
       }
 
       if (url.pathname === "/configured") {
