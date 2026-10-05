@@ -45,18 +45,35 @@ function showMap(z){const box=document.getElementById('mapbox'),row=document.que
   drawAircraft();
   setTimeout(()=>map.invalidateSize(),50)}document.getElementById('mapclose').onclick=e=>{e.stopPropagation();document.getElementById('mapbox').classList.remove('show');openMapZone=null};document.querySelectorAll('[data-mapzone]').forEach(e=>e.onclick=()=>showMap(e.dataset.mapzone));function nr(x){const da=ptime(x?.from),db=ptime(x?.to),a=parts(da),b=parts(db);return x?.notam&&a&&b?'<span class="notam-number">'+x.notam+'</span> · '+dlabel(da)+' '+a.hour+':'+a.minute+'–'+b.hour+':'+b.minute:'—'}async function loadRestrictionAlert(){const e=document.getElementById('restrictionalert');if(!e)return;try{const r=await fetch('https://ctr-brasov-notam.danbrasov77.workers.dev/restrictions?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!d?.ok)throw Error(d?.error||'restrictions');const now=Date.now(),items=(d.items||[]).filter(x=>{const a=Date.parse(x.fromIso||''),b=Date.parse(x.toIso||'');return Number.isFinite(a)&&Number.isFinite(b)&&now>=a&&now<=b});if(items.length){const ids=items.map(x=>x.notam).filter(Boolean);e.textContent='⚠️ '+items.length+' restricții active: '+ids.join(', ');e.classList.add('show')}else{e.textContent='';e.classList.remove('show')}}catch(err){console.warn('Restricții NOTAM indisponibile',err);e.textContent='';e.classList.remove('show')}}
 async function loadNotams(){try{
- const r=await fetch('https://ctr-brasov-notam.danbrasov77.workers.dev/notams?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
+ const ts=Date.now();
+ const [r,rm]=await Promise.all([
+  fetch('https://ctr-brasov-notam.danbrasov77.workers.dev/notams?ts='+ts,{cache:'no-store'}),
+  fetch('https://ctr-brasov-notam.danbrasov77.workers.dev/notams?day=tomorrow&ts='+ts,{cache:'no-store'})
+ ]);
+ if(!r.ok)throw Error('HTTP '+r.status);
  const d=await r.json();if(!d?.ok)throw Error(d?.error||'NOTAM');
+ const dm=rm.ok?await rm.json():null;
  const now=new Date(),today=parts(now);
  const pickToday=x=>{
-  if(x?.notam)return x;
+  if(x?.notam){
+   const t=ptime(x?.to);
+   if(!t||t>now)return x;
+  }
   const h=(x?.all||[]).find(a=>{
    const f=ptime(a?.from),t=ptime(a?.to),p=parts(f);
    return f&&t&&p&&today&&p.year===today.year&&p.month===today.month&&p.day===today.day&&t>now;
   });
   return h?{...x,...h,lower:x?.lower,upper:x?.upper}:x;
  };
- ['AZLR1','AZLR2','AZLR3'].forEach(z=>{if(d?.zones?.[z])d.zones[z]=pickToday(d.zones[z])});
+ ['AZLR1','AZLR2','AZLR3'].forEach(z=>{
+  if(!d?.zones?.[z])return;
+  const todayZone=pickToday(d.zones[z]);
+  const hasToday=!!todayZone?.notam&&(!ptime(todayZone?.to)||ptime(todayZone.to)>now);
+  const tomorrowZone=dm?.ok?dm?.zones?.[z]:null;
+  d.zones[z]=(!hasToday&&tomorrowZone?.notam)
+   ? {...todayZone,...tomorrowZone,lower:todayZone?.lower||tomorrowZone?.lower,upper:todayZone?.upper||tomorrowZone?.upper}
+   : todayZone;
+ });
  notamData=d;
  ['AZLR1','AZLR2','AZLR3'].forEach(z=>{
   const x=d?.zones?.[z],e=document.querySelector('[data-notam="'+z+'"]'),l=document.querySelector('[data-limit="'+z+'"]'),v=nr(x);
