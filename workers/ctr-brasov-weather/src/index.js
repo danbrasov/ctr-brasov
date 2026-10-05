@@ -265,7 +265,7 @@ async function latestObservedAt(env) {
 }
 
 async function cleanupOldWeather(env) {
-  const cutoff = Date.now() - 7 * 24 * 3600 * 1000;
+  const cutoff = Date.now() - 6 * 3600 * 1000;
 
   await env.DB.prepare(`
     DELETE FROM weather_history
@@ -278,11 +278,9 @@ async function cleanupOldWeather(env) {
 async function scheduledCollect(event, env) {
   const now = new Date(event.scheduledTime || Date.now());
 
-  // Curățare o singură dată pe zi, la 03:10 UTC.
-  if (
-    now.getUTCHours() === 3 &&
-    now.getUTCMinutes() === 10
-  ) {
+  // Curățare o dată pe oră, la minutul 10.
+  // Păstrăm doar ultimele 6 ore pentru ANM + PG.
+  if (now.getUTCMinutes() === 10) {
     await cleanupOldWeather(env);
   }
 
@@ -428,7 +426,7 @@ if (url.pathname === "/stations") {
             lastObserved !== null
               ? new Date(lastObserved).toISOString()
               : null,
-          retentionDays: 7,
+          retentionHours: 6,
         }),
         { headers }
       );
