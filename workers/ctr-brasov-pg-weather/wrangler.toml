@@ -11,3 +11,9 @@ crons = ["*/15 * * * *"]
 binding = "DB"
 database_name = "ctr-brasov-weather"
 database_id = "a27c96f1-bb4d-473a-8f37-90eaba411fc7"
+
+[[secrets_store_secrets]]
+binding = "XPANDER_AUTH"
+store_id = "c288ca8ddf0a433499e9c36666f0e74f"
+secret_name = "xpander_auth"
+
