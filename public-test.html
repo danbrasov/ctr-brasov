@@ -175,9 +175,9 @@ async function loadGliders(){
   const b=document.getElementById('gliderbtn');if(b)b.textContent='🛩️ Planoare ?';
  }
 }
-function weatherIcon(dir,speed){
- const d=Number.isFinite(+dir)?+dir:0,v=Number.isFinite(+speed)?Math.round(+speed):'—';
- return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],html:'<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><g transform="rotate('+(d+180)+' 15 15)"><path d="M15 3.3 L26.1 24.1 L19.6 21.5 L15 25.4 L10.5 21.5 L4 24.1 Z" fill="#facc15"/></g><text x="15" y="17" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="900" fill="#111">'+v+'</text></svg>'})
+function weatherIcon(dir,speed,offline=false){
+ const d=Number.isFinite(+dir)?+dir:0,v=Number.isFinite(+speed)?Math.round(+speed):'—',fill=offline?'#9ca3af':'#facc15',txt=offline?'—':v;
+ return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],html:'<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><g transform="rotate('+(d+180)+' 15 15)"><path d="M15 3.3 L26.1 24.1 L19.6 21.5 L15 25.4 L10.5 21.5 L4 24.1 Z" fill="'+fill+'"/></g><text x="15" y="17" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="900" fill="#111">'+txt+'</text></svg>'})
 }
 function weatherGraph(points){
  const p=(points||[]).filter(x=>Number.isFinite(+x.t)&&(Number.isFinite(+x.windKmh)||Number.isFinite(+x.gustKmh)));
@@ -227,9 +227,14 @@ async function loadWeather(){
 
 function showPgInfo(s){
  const box=document.getElementById('aircraftinfobox');if(!box||!s)return;
+ const offline=s.status==='offline';
+ if(offline){
+  box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px;color:#6b7280">💨 '+esc(s.name||'Stație PG')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br><b style="color:#6b7280">Offline</b>'+(s.offlineReason?' · '+esc(s.offlineReason):'')+'<br>Vânt: <b>—</b><br>Direcție: —<br><span style="color:#666">Xpander / Paragliding România</span></div>';
+  box.style.display='block';return
+ }
  const tm=s.time||'—';
  const h=(pgHistory?.stations?.[String(s.id||'')]?.history||[]).slice(-20);
- box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație PG')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh)+' km/h':'—')+'</b>'+(Number.isFinite(+s.gustKmh)?' · rafală '+Math.round(+s.gustKmh)+' km/h':'')+'<br>Direcție: '+(Number.isFinite(+s.dir)?'<b>'+windCardinal(s.dir)+'</b> · '+Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+esc(tm)+(h.length>1?weatherGraph(h):'<br><span style="color:#666">Istoric PG · colectare la 15 minute.</span>')+'<br><span style="color:#666">Paragliding România</span></div>';
+ box.innerHTML='<div style="font-size:9px;line-height:1.25"><b style="font-size:10px">💨 '+esc(s.name||'Stație PG')+(Number.isFinite(+s.elevationM)?' &nbsp; '+Math.round(+s.elevationM)+'m':'')+'</b><br>Vânt: <b>'+(Number.isFinite(+s.windKmh)?Math.round(+s.windKmh)+' km/h':'—')+'</b>'+(Number.isFinite(+s.gustKmh)?' · rafală '+Math.round(+s.gustKmh)+' km/h':'')+'<br>Direcție: '+(Number.isFinite(+s.dir)?'<b>'+windCardinal(s.dir)+'</b> · '+Math.round(+s.dir)+'°':'—')+(Number.isFinite(+s.tempC)?' · 🌡️ '+(+s.tempC).toFixed(1)+' °C':'')+(Number.isFinite(+s.pressureHpa)?' · '+Math.round(+s.pressureHpa)+' hPa':'')+' · '+esc(tm)+(h.length>1?weatherGraph(h):'<br><span style="color:#666">Istoric PG · colectare la 15 minute.</span>')+'<br><span style="color:#666">Xpander / Paragliding România</span></div>';
  box.style.display='block';
 }
 function clearSelectedPg(){selectedPgStation=null;const box=document.getElementById('aircraftinfobox');if(box){box.style.display='none';box.innerHTML=''}}
@@ -239,8 +244,8 @@ function drawPgWeather(){
  if(!weatherVisible)return;
  for(const s of (pgStations||[])){
   if(!Number.isFinite(+s.lat)||!Number.isFinite(+s.lon))continue;
-  const m=L.marker([+s.lat,+s.lon],{icon:weatherIcon(s.dir,s.windKmh),zIndexOffset:890}).addTo(airFullMap);
-  m.on('click',async()=>{const id=String(s.id||s.name||'');if(selectedPgStation===id){clearSelectedPg();return}clearSelectedAircraft();selectedWeather=false;selectedAnmStation=null;selectedPgStation=id;await loadPgStationHistory(id);showPgInfo(s)});
+  const m=L.marker([+s.lat,+s.lon],{icon:weatherIcon(s.dir,s.windKmh,s.status==='offline'),zIndexOffset:890}).addTo(airFullMap);
+  m.on('click',async()=>{const id=String(s.id||s.name||'');if(selectedPgStation===id){clearSelectedPg();return}clearSelectedAircraft();selectedWeather=false;selectedAnmStation=null;selectedPgStation=id;if(s.status!=='offline')await loadPgStationHistory(id);showPgInfo(s)});
   airPgLayers.push(m);
  }
 }
@@ -271,14 +276,16 @@ async function loadPgWeather(){
   pgStations=rows.map(s=>({
    id:s.station_id,
    name:s.station_name,
-   lat:+s.latitude,
-   lon:+s.longitude,
+   lat:(s.latitude!==null&&s.latitude!==undefined)?+s.latitude:null,
+   lon:(s.longitude!==null&&s.longitude!==undefined)?+s.longitude:null,
    elevationM:(s.elevation_m!==null&&s.elevation_m!==undefined)?+s.elevation_m:null,
    windKmh:(s.wind_kmh==="-"?"-":((s.wind_kmh===null||s.wind_kmh===undefined)?null:+s.wind_kmh)),
    gustKmh:(s.gust_kmh==="-"?"-":((s.gust_kmh===null||s.gust_kmh===undefined)?null:+s.gust_kmh)),
    dir:(s.wind_dir==="-"?"-":((s.wind_dir===null||s.wind_dir===undefined)?null:+s.wind_dir)),
    tempC:(s.temperature_c!==null&&s.temperature_c!==undefined)?+s.temperature_c:null,
    pressureHpa:(s.pressure_hpa!==null&&s.pressure_hpa!==undefined)?+s.pressure_hpa:null,
+   status:s.weather_status||s.status||'ok',
+   offlineReason:s.offline_reason||null,
    observedAt:s.observed_at,
    time:s.observed_at?new Date(+s.observed_at).toLocaleTimeString('ro-RO',{timeZone:'Europe/Bucharest',hour:'2-digit',minute:'2-digit',second:'2-digit'}):null
   }));
