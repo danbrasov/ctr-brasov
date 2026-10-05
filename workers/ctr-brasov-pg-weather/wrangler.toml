@@ -3,7 +3,7 @@ main = "src/index.js"
 compatibility_date = "2026-10-05"
 
 [triggers]
-crons = ["*/10 * * * *"]
+crons = ["*/15 * * * *"]
 
 # D1 binding used by /collect and /history.
 # Add the existing Cloudflare D1 database_id before enabling GitHub deployment.
