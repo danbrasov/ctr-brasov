@@ -4,3 +4,8 @@ compatibility_date = "2026-10-05"
 
 [triggers]
 crons = ["*/15 * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ctr-brasov-weather"
+database_id = "a27c96f1-bb4d-473a-8f37-90eaba411fc7"
