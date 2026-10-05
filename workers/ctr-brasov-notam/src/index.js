@@ -3590,6 +3590,101 @@ function parseRestrictions(
 
 /* =========================================================
 
+   D1 CACHE — TODAY + TOMORROW ONLY
+
+   ========================================================= */
+
+async function ensureNotamCacheTable(env) {
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS notam_daily_cache (
+      day_key TEXT PRIMARY KEY,
+      payload_json TEXT NOT NULL,
+      checked_at TEXT NOT NULL,
+      updated_at INTEGER NOT NULL
+    )
+  `).run();
+}
+
+function localDayKey(dayMode = "today") {
+  const d = selectedLocalDay(dayMode);
+  return `${d.year}-${String(d.month).padStart(2, "0")}-${String(d.day).padStart(2, "0")}`;
+}
+
+async function saveDailyCache(env, dayMode, payload) {
+  if (!env.DB) return;
+  await ensureNotamCacheTable(env);
+  const key = localDayKey(dayMode);
+  await env.DB.prepare(`
+    INSERT INTO notam_daily_cache (day_key, payload_json, checked_at, updated_at)
+    VALUES (?, ?, ?, ?)
+    ON CONFLICT(day_key) DO UPDATE SET
+      payload_json = excluded.payload_json,
+      checked_at = excluded.checked_at,
+      updated_at = excluded.updated_at
+  `).bind(
+    key,
+    JSON.stringify(payload),
+    payload.checkedAt || new Date().toISOString(),
+    Date.now()
+  ).run();
+
+  const keepToday = localDayKey("today");
+  const keepTomorrow = localDayKey("tomorrow");
+  await env.DB.prepare(`
+    DELETE FROM notam_daily_cache
+    WHERE day_key NOT IN (?, ?)
+  `).bind(keepToday, keepTomorrow).run();
+}
+
+async function readDailyCache(env, dayMode) {
+  if (!env.DB) return null;
+  await ensureNotamCacheTable(env);
+  const row = await env.DB.prepare(`
+    SELECT payload_json, checked_at, updated_at
+    FROM notam_daily_cache
+    WHERE day_key = ?
+    LIMIT 1
+  `).bind(localDayKey(dayMode)).first();
+
+  if (!row?.payload_json) return null;
+
+  try {
+    const payload = JSON.parse(row.payload_json);
+    return {
+      ...payload,
+      cache: {
+        source: "d1",
+        dayKey: localDayKey(dayMode),
+        checkedAt: row.checked_at || payload.checkedAt || null,
+        updatedAt: row.updated_at || null
+      }
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function refreshDay(env, dayMode) {
+  const payload = await collect(dayMode);
+  await saveDailyCache(env, dayMode, payload);
+  return payload;
+}
+
+async function refreshTodayAndTomorrow(env) {
+  const [today, tomorrow] = await Promise.all([
+    collect("today"),
+    collect("tomorrow")
+  ]);
+
+  await saveDailyCache(env, "today", today);
+  await saveDailyCache(env, "tomorrow", tomorrow);
+
+  return { today, tomorrow };
+}
+
+
+/* =========================================================
+
    COLLECT
 
    ========================================================= */
@@ -3759,13 +3854,7 @@ export default {
 
 
         return json(
-
-          await collect(
-
-            dayMode
-
-          )
-
+          await refreshDay(env, dayMode)
         );
 
       }
@@ -3782,65 +3871,25 @@ export default {
 
       ) {
 
+        let cached = await readDailyCache(env, dayMode);
 
-
-        const html =
-
-          await fetchText(
-
-            NOTAM_URL
-
-          );
-
-
-
-
+        if (!cached) {
+          try {
+            cached = await refreshDay(env, dayMode);
+          } catch (e) {
+            throw e;
+          }
+        }
 
         return json({
-
-
-
-          ok:
-
-            true,
-
-
-
-          source:
-
-            NOTAM_URL,
-
-
-
-          checkedAt:
-
-            new Date()
-
-              .toISOString(),
-
-
-
-          day:
-
-            dayMode,
-
-
-
-          zones:
-
-            parseNotams(
-
-              html,
-
-              dayMode
-
-            )
-
+          ok: true,
+          source: NOTAM_URL,
+          checkedAt: cached.checkedAt || new Date().toISOString(),
+          day: dayMode,
+          zones: cached.zones || {},
+          cache: cached.cache || { source: "live" }
         });
-
       }
-
-
 
 
 
@@ -3852,41 +3901,25 @@ export default {
 
       ) {
 
+        let cached = await readDailyCache(env, dayMode);
 
-
-        const html =
-
-          await fetchText(
-
-            RESTRICTIONS_URL
-
-          );
-
-
-
-
+        if (!cached) {
+          cached = await refreshDay(env, dayMode);
+        }
 
         return json({
-
-          ok:
-
-            true,
-
-
-
-          ...parseRestrictions(
-
-            html,
-
-            dayMode
-
-          )
-
+          ok: true,
+          ...(cached.restrictions || {
+            source: RESTRICTIONS_URL,
+            checkedAt: cached.checkedAt || new Date().toISOString(),
+            day: dayMode,
+            date: localDayKey(dayMode),
+            items: [],
+            skippedWithoutExplicitGeometry: 0
+          }),
+          cache: cached.cache || { source: "live" }
         });
-
       }
-
-
 
 
 
@@ -3901,13 +3934,7 @@ export default {
 
 
         return json(
-
-          await collect(
-
-            dayMode
-
-          )
-
+          await refreshDay(env, dayMode)
         );
 
       }
@@ -4005,13 +4032,7 @@ export default {
 
 
     ctx.waitUntil(
-
-      collect(
-
-        "today"
-
-      )
-
+      refreshTodayAndTomorrow(env)
     );
 
   }
