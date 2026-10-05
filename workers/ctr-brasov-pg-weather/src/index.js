@@ -8,7 +8,7 @@ const STATIONS = [
   { id: "pg-saua-magurii", sourceId: 8, name: "Saua Magurii, BV", lat: 45.5259, lon: 25.3204, elevationM: 1238 },
   { id: "pg-parang", sourceId: 10, name: "BIRDSHOUSE Parang, HD", lat: 45.3892, lon: 23.4598, elevationM: 1508 },
   { id: "pg-bunloc", sourceId: 11, name: "Bunloc, BV", lat: 45.5889, lon: 25.6649, elevationM: 1171 },
-  { id: "pg-gropsoarele", sourceId: 12, name: "Vf. Gropsoarele, PH", lat: 45.2924, lon: 25.5830, elevationM: 1810 },
+  { id: "pg-gropsoarele", sourceId: 12, name: "Vf. Gropșoarele, PH", lat: 45.48983, lon: 25.97532, elevationM: 1883 },
   { id: "pg-piatra-mare", sourceId: 14, name: "Piatra Mare", lat: 45.55078, lon: 25.63853, elevationM: 1844 },
   { id: "pg-lempes", sourceId: 15, name: "Lempes", lat: 45.7148, lon: 25.6527, elevationM: 704 },
   { id: "pg-moeciu", sourceId: 20, name: "Moeciu de Sus", lat: 45.4662, lon: 25.3780, elevationM: 1150 },
