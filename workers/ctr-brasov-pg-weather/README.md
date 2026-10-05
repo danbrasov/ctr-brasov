@@ -6,3 +6,6 @@ Worker Cloudflare pentru stațiile Paragliding România și istoricul PG în D1.
 - `/stations` citește valorile curente direct online, fără D1.
 - cron la 10 minute scrie valori noi în D1.
 - `/history?station=...` citește D1 numai la cererea utilizatorului.
+
+
+GitHub deploy connected to Cloudflare Workers Builds.
