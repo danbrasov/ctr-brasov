@@ -2130,7 +2130,7 @@ function parseNotams(
 
         new RegExp(
 
-          `G\\\)\\\s*FL${area.fl}\\\b`
+          `G\\)\\s*FL${area.fl}\\b`
 
         );
 
