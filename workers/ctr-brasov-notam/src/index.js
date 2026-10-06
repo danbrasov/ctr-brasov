@@ -2184,6 +2184,34 @@ function parseNotams(
 
 
 
+      const schedule =
+
+        block.match(
+
+          /D\)\s*(.*?)(?=\s+[EFGQ]\)|$)/
+
+        )?.[1]?.trim() ||
+
+        "";
+
+
+
+
+
+      const description =
+
+        block.match(
+
+          /E\)\s*(.*?)(?=\s+[FGQ]\)|$)/
+
+        )?.[1]?.trim() ||
+
+        "";
+
+
+
+
+
       const fromDate =
 
         notamDate(
@@ -2269,6 +2297,10 @@ function parseNotams(
         from,
 
         to,
+
+        schedule,
+
+        description,
 
 
 
@@ -2439,6 +2471,22 @@ function parseNotams(
         selected?.active ||
 
         false,
+
+
+
+      schedule:
+
+        selected?.schedule ||
+
+        "",
+
+
+
+      description:
+
+        selected?.description ||
+
+        "",
 
 
 
