@@ -36,13 +36,13 @@ function aircraftClass(a){
  return isAirliner?{kind:'airliner',emoji:'✈️',label:'Avion de linie / transport'}:{kind:'small',emoji:'🛩️',label:'Avion mic / GA'};
 }
 function aircraftIcon(a,track,color,size=24){
- const tr=Number.isFinite(+track)?+track:0,c=aircraftClass(a);
+ const tr=Number.isFinite(+track)?+track:0,c=aircraftClass(a),px=c.kind==='airliner'?Math.round(size*1.16):size;
  const svg=c.kind==='heli'
- ? '<svg viewBox="0 0 32 32" width="'+size+'" height="'+size+'" aria-hidden="true"><g fill="'+color+'" stroke="#fff" stroke-width=".7" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="16" cy="11" rx="4.2" ry="6.2"/><path d="M14.7 16.2h2.6v9.2h-2.6z"/><path d="M11.5 25.2h9l4 2.4v2l-8.5-2.1-8.5 2.1v-2z"/><path d="M3 4.5l11.2 9.2M29 4.5L17.8 13.7M3 19.5l11.2-9.2M29 19.5L17.8 10.3" fill="none" stroke="'+color+'" stroke-width="2.2"/></g></svg>'
+ ? '<svg viewBox="0 0 32 32" width="'+px+'" height="'+px+'" aria-hidden="true"><g fill="'+color+'" stroke="#fff" stroke-width=".7" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="16" cy="12" rx="4.4" ry="6.2"/><path d="M15 17.5h2v7.5h-2z"/><path d="M11 25h10l4 2.4v1.8l-9-2-9 2v-1.8z"/><path d="M3 5l11.5 8.8M29 5L17.5 13.8M3 19l11.5-8.8M29 19L17.5 10.2" fill="none" stroke="'+color+'" stroke-width="2.3"/></g></svg>'
  : c.kind==='small'
- ? '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'" aria-hidden="true"><path d="M12 2l1.25 7.1 7.25 2.1v2.2l-7.25-.7.55 6 2.7 1.4v1.4L12 20l-4.5 1.5v-1.4l2.7-1.4.55-6-7.25.7v-2.2l7.25-2.1z" fill="'+color+'" stroke="#fff" stroke-width=".9" stroke-linejoin="round"/></svg>'
- : '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'" aria-hidden="true"><path d="M12 1.5L14 9l6.5 3v2L14 12.8l.8 7.2 2.2 1.7v1.3L12 21l-5 2v-1.3L9.2 20l.8-7.2L3.5 14v-2L10 9z" fill="'+color+'" stroke="#fff" stroke-width=".8" stroke-linejoin="round"/></svg>';
- return L.divIcon({className:'',html:'<div style="width:'+size+'px;height:'+size+'px;filter:drop-shadow(0 1px 2px #fff);transform:rotate('+tr+'deg);transform-origin:50% 50%">'+svg+'</div>',iconSize:[size,size],iconAnchor:[size/2,size/2],popupAnchor:[0,-size/2]})
+ ? '<svg viewBox="0 0 28 28" width="'+px+'" height="'+px+'" aria-hidden="true"><path d="M14 2.5l1.1 8.1 9.2 2.2v2.5l-9-.7.6 7.1 3.2 1.6v1.5L14 23l-5.1 1.8v-1.5l3.2-1.6.6-7.1-9 .7v-2.5l9.2-2.2z" fill="'+color+'" stroke="#fff" stroke-width=".9" stroke-linejoin="round"/></svg>'
+ : '<svg viewBox="0 0 32 32" width="'+px+'" height="'+px+'" aria-hidden="true"><path d="M16 2l2.2 10 10 4v2.8l-10.2-1.5 1.1 8.6 3.5 2.1v1.8L16 27.4 9.4 30v-1.8l3.5-2.1 1.1-8.6L3.8 19v-2.8l10-4z" fill="'+color+'" stroke="#fff" stroke-width="1" stroke-linejoin="round"/></svg>';
+ return L.divIcon({className:'',html:'<div style="width:'+px+'px;height:'+px+'px;filter:drop-shadow(0 1px 2px #fff);transform:rotate('+tr+'deg);transform-origin:50% 50%">'+svg+'</div>',iconSize:[px,px],iconAnchor:[px/2,px/2],popupAnchor:[0,-px/2]})
 }
 function paragliderIcon(landed){
  const wingFill=landed?'#9aa0a6':'#ffea00',wingStroke=landed?'#7a7f86':'#8a6d00',lineColor=landed?'#7a7f86':'#111',pilotColor=landed?'#7a7f86':'#111';
