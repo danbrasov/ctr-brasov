@@ -122,6 +122,13 @@ function showAircraftTrail(hex){selectedAircraftHex=hex;if(airTrailLayer){airFul
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function notamLocalTime(s){if(!s||!/^[0-9]{10}$/.test(s))return'—';const d=new Date(Date.UTC(2000+ +s.slice(0,2),+s.slice(2,4)-1,+s.slice(4,6),+s.slice(6,8),+s.slice(8,10)));return d.toLocaleString('ro-RO',{timeZone:'Europe/Bucharest',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}
+function notamInterval(a,b){
+ const fa=notamLocalTime(a),fb=notamLocalTime(b);
+ if(fa==='—'||fb==='—')return fa+'–'+fb;
+ const ma=fa.match(/^(\d{2}\.\d{2}),?\s*(\d{2}:\d{2})$/),mb=fb.match(/^(\d{2}\.\d{2}),?\s*(\d{2}:\d{2})$/);
+ if(ma&&mb&&ma[1]===mb[1])return ma[1]+' '+ma[2]+'–'+mb[2];
+ return fa+' – '+fb;
+}
 function kmFromBrasov(p){const R=6371,rr=x=>x*Math.PI/180,a=rr(+p[0]-45.6579),b=rr(+p[1]-25.6012),h=Math.sin(a/2)**2+Math.cos(rr(45.6579))*Math.cos(rr(+p[0]))*Math.sin(b/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
 function localXY(p){const k=111.32,cl=Math.cos(45.6579*Math.PI/180);return[(+p[1]-25.6012)*k*cl,(+p[0]-45.6579)*k]}
 function localLL(x,y){const k=111.32,cl=Math.cos(45.6579*Math.PI/180);return[45.6579+y/k,25.6012+x/(k*cl)]}
@@ -394,7 +401,7 @@ function showAzlrInfo(z){
  const o=zoneOpen(z),n=notamData?.zones?.[z]||{},xc=xcData?.zones?.[z]||{},live=(xc.live||[]).length,landed=(xc.landed||[]).length;
  const limits=(n.lower&&n.upper)?n.lower+' – '+n.upper:(z==='AZLR1'?'GND – FL090':z==='AZLR2'?'GND – FL060':'GND – FL050');
  const nt=n.notam?'<br>NOTAM: <b>'+esc(n.notam)+'</b>':'<br>NOTAM: —';
- const interval=n.notam?'<br>Interval: '+notamLocalTime(n.from)+' – '+notamLocalTime(n.to):'';
+ const interval=n.notam?'<br>Interval: '+notamInterval(n.from,n.to):'';
  const sched=n.schedule?'<br>Program: '+esc(n.schedule):'';
  const desc=n.description?'<div style="margin-top:6px;padding-top:5px;border-top:1px solid #e5e7eb"><b>Text NOTAM:</b><div style="margin-top:3px;max-height:78px;overflow:auto;font-size:9px;line-height:1.3;color:#374151">'+esc(n.description)+'</div></div>':'';
  box.innerHTML='<div style="font-size:10px;line-height:1.35"><b style="font-size:12px">🗺️ '+esc(z)+'</b><br><b style="color:'+(o?'#159447':'#2563eb')+'">'+(o?'🟢 DESCHIS':'🔵 ÎNCHIS')+'</b><br>Limite: <b>'+esc(limits)+'</b>'+nt+interval+sched+'<br>🪂 Piloți: <b>'+live+'</b> live / '+landed+' aterizați'+desc+'</div>';
