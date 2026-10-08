@@ -1,19 +1,12 @@
 {
   "source": "https://www.meteoromania.ro/wp-json/meteoapi/v2/starea-vremii",
-  "checkedAt": "2026-10-08T17:56:44.649754+00:00",
-  "datasetAt": "2026-10-08T20:00:00+03:00",
+  "checkedAt": "2026-10-08T20:25:59.370457+00:00",
+  "datasetAt": "2026-10-08T23:00:00+03:00",
   "retentionHours": 24,
   "stations": {
     "anm-varful-omu": {
       "name": "VARFUL OMU",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 32.8,
-          "dir": 180.0,
-          "tempC": 5.6,
-          "pressureHpa": 756.8
-        },
         {
           "t": 1791403200000,
           "windKmh": 33.1,
@@ -55,19 +48,19 @@
           "dir": 247.5,
           "tempC": 5.3,
           "pressureHpa": 754.8
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 26.6,
+          "dir": 270.0,
+          "tempC": 5.1,
+          "pressureHpa": 754.9
         }
       ]
     },
     "anm-baraolt": {
       "name": "BARAOLT",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 4.0,
-          "dir": 315.0,
-          "tempC": 10.2,
-          "pressureHpa": 960.4
-        },
         {
           "t": 1791403200000,
           "windKmh": 3.2,
@@ -109,19 +102,19 @@
           "dir": 90.0,
           "tempC": 17.6,
           "pressureHpa": 956.0
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 3.6,
+          "dir": 0.0,
+          "tempC": 11.4,
+          "pressureHpa": 956.8
         }
       ]
     },
     "anm-brasov-ghimbav": {
       "name": "BRASOV GHIMBAV",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 21.2,
-          "dir": 202.5,
-          "tempC": 15.9,
-          "pressureHpa": 957.2
-        },
         {
           "t": 1791403200000,
           "windKmh": 16.6,
@@ -163,19 +156,19 @@
           "dir": 202.5,
           "tempC": 19.8,
           "pressureHpa": 953.3
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 22.7,
+          "dir": 202.5,
+          "tempC": 17.4,
+          "pressureHpa": 953.6
         }
       ]
     },
     "anm-campina": {
       "name": "CAMPINA",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 2.9,
-          "dir": 0.0,
-          "tempC": 9.5,
-          "pressureHpa": 966.3
-        },
         {
           "t": 1791403200000,
           "windKmh": 3.6,
@@ -217,19 +210,19 @@
           "dir": 337.5,
           "tempC": 13.4,
           "pressureHpa": 962.8
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 3.6,
+          "dir": 0.0,
+          "tempC": 9.1,
+          "pressureHpa": 962.9
         }
       ]
     },
     "anm-campulung-muscel": {
       "name": "CAMPULUNG MUSCEL",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 2.2,
-          "dir": 90.0,
-          "tempC": 10.6,
-          "pressureHpa": 942.0
-        },
         {
           "t": 1791403200000,
           "windKmh": 4.0,
@@ -271,19 +264,19 @@
           "dir": 315.0,
           "tempC": 15.2,
           "pressureHpa": 938.7
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 2.5,
+          "dir": 67.5,
+          "tempC": 10.0,
+          "pressureHpa": 939.1
         }
       ]
     },
     "anm-fagaras": {
       "name": "FAGARAS",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 2.5,
-          "dir": 157.5,
-          "tempC": 8.5,
-          "pressureHpa": 969.2
-        },
         {
           "t": 1791403200000,
           "windKmh": 4.0,
@@ -325,19 +318,19 @@
           "dir": 225.0,
           "tempC": 14.2,
           "pressureHpa": 964.8
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 3.2,
+          "dir": 135.0,
+          "tempC": 7.1,
+          "pressureHpa": 965.6
         }
       ]
     },
     "anm-fundata": {
       "name": "FUNDATA",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 10.1,
-          "dir": 202.5,
-          "tempC": 11.9,
-          "pressureHpa": 868.2
-        },
         {
           "t": 1791403200000,
           "windKmh": 9.7,
@@ -379,19 +372,19 @@
           "dir": 202.5,
           "tempC": 12.7,
           "pressureHpa": 865.1
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 10.4,
+          "dir": 202.5,
+          "tempC": 12.1,
+          "pressureHpa": 865.3
         }
       ]
     },
     "anm-intorsura-buzaului": {
       "name": "INTORSURA BUZAULUI",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 0.7,
-          "dir": 112.5,
-          "tempC": 8.1,
-          "pressureHpa": 940.3
-        },
         {
           "t": 1791403200000,
           "windKmh": 1.1,
@@ -433,19 +426,19 @@
           "dir": 157.5,
           "tempC": 15.1,
           "pressureHpa": 936.6
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 1.8,
+          "dir": 135.0,
+          "tempC": 7.1,
+          "pressureHpa": 936.8
         }
       ]
     },
     "anm-lacauti": {
       "name": "LACAUTI",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 12.6,
-          "dir": 180.0,
-          "tempC": 8.9,
-          "pressureHpa": 827.0
-        },
         {
           "t": 1791403200000,
           "windKmh": 11.5,
@@ -487,19 +480,19 @@
           "dir": 180.0,
           "tempC": 8.5,
           "pressureHpa": 823.8
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 20.5,
+          "dir": 202.5,
+          "tempC": 8.2,
+          "pressureHpa": 823.8
         }
       ]
     },
     "anm-odorheiul-secuiesc": {
       "name": "ODORHEIUL SECUIESC",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 8.3,
-          "dir": 22.5,
-          "tempC": 12.2,
-          "pressureHpa": 958.4
-        },
         {
           "t": 1791403200000,
           "windKmh": 8.3,
@@ -541,19 +534,19 @@
           "dir": 22.5,
           "tempC": 16.3,
           "pressureHpa": 954.0
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 9.7,
+          "dir": 45.0,
+          "tempC": 11.5,
+          "pressureHpa": 954.8
         }
       ]
     },
     "anm-patarlagele": {
       "name": "PATARLAGELE",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 2.2,
-          "dir": 202.5,
-          "tempC": 9.2,
-          "pressureHpa": 986.4
-        },
         {
           "t": 1791403200000,
           "windKmh": 1.4,
@@ -595,19 +588,19 @@
           "dir": 0.0,
           "tempC": 12.2,
           "pressureHpa": 982.6
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 4.3,
+          "dir": 0.0,
+          "tempC": 8.8,
+          "pressureHpa": 982.9
         }
       ]
     },
     "anm-penteleu": {
       "name": "PENTELEU",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 14.0,
-          "dir": 135.0,
-          "tempC": 9.2,
-          "pressureHpa": 841.3
-        },
         {
           "t": 1791403200000,
           "windKmh": 12.2,
@@ -649,19 +642,19 @@
           "dir": 180.0,
           "tempC": 9.5,
           "pressureHpa": 838.1
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 21.2,
+          "dir": 180.0,
+          "tempC": 9.2,
+          "pressureHpa": 838.2
         }
       ]
     },
     "anm-predeal": {
       "name": "PREDEAL",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 2.5,
-          "dir": 135.0,
-          "tempC": 8.2,
-          "pressureHpa": 897.2
-        },
         {
           "t": 1791403200000,
           "windKmh": 4.0,
@@ -703,19 +696,19 @@
           "dir": 135.0,
           "tempC": 12.3,
           "pressureHpa": 893.7
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 2.9,
+          "dir": 135.0,
+          "tempC": 8.3,
+          "pressureHpa": 894.1
         }
       ]
     },
     "anm-sfantu-gheorghe-munte": {
       "name": "SFANTU GHEORGHE (MUNTE)",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 1.8,
-          "dir": 22.5,
-          "tempC": 9.3,
-          "pressureHpa": 959.0
-        },
         {
           "t": 1791403200000,
           "windKmh": 1.1,
@@ -757,19 +750,19 @@
           "dir": 202.5,
           "tempC": 18.7,
           "pressureHpa": 954.9
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 1.8,
+          "dir": 0.0,
+          "tempC": 7.6,
+          "pressureHpa": 955.5
         }
       ]
     },
     "anm-sinaia-1500": {
       "name": "SINAIA 1500",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 8.3,
-          "dir": 225.0,
-          "tempC": 11.1,
-          "pressureHpa": 853.4
-        },
         {
           "t": 1791403200000,
           "windKmh": 12.6,
@@ -811,19 +804,19 @@
           "dir": 225.0,
           "tempC": 11.6,
           "pressureHpa": 850.3
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 6.1,
+          "dir": 247.5,
+          "tempC": 12.3,
+          "pressureHpa": 850.4
         }
       ]
     },
     "anm-targu-secuiesc": {
       "name": "TARGU SECUIESC",
       "history": [
-        {
-          "t": 1791399600000,
-          "windKmh": 8.3,
-          "dir": 0.0,
-          "tempC": 10.5,
-          "pressureHpa": 954.0
-        },
         {
           "t": 1791403200000,
           "windKmh": 9.7,
@@ -865,6 +858,13 @@
           "dir": 202.5,
           "tempC": 13.3,
           "pressureHpa": 949.9
+        },
+        {
+          "t": 1791489600000,
+          "windKmh": 10.1,
+          "dir": 22.5,
+          "tempC": 9.7,
+          "pressureHpa": 950.5
         }
       ]
     }
