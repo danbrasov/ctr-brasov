@@ -3731,6 +3731,41 @@ async function refreshTodayAndTomorrow(env) {
 }
 
 
+function mergeTomorrowRestrictions(primary, rawList) {
+  const merged = [];
+  const seen = new Set();
+
+  for (const item of (primary?.items || [])) {
+    const key = String(item?.notam || "").toUpperCase();
+    if (key) seen.add(key);
+    merged.push(item);
+  }
+
+  let addedFromRawList = 0;
+
+  for (const item of (rawList?.items || [])) {
+    const key = String(item?.notam || "").toUpperCase();
+    if (key && seen.has(key)) continue;
+    if (key) seen.add(key);
+    merged.push({
+      ...item,
+      _source: "LRBV NOTAM list"
+    });
+    addedFromRawList++;
+  }
+
+  return {
+    ...(primary || {}),
+    source: [RESTRICTIONS_URL, NOTAM_URL],
+    items: merged,
+    earlyTomorrowFromNotamList: addedFromRawList,
+    skippedWithoutExplicitGeometry:
+      Number(primary?.skippedWithoutExplicitGeometry || 0) +
+      Number(rawList?.skippedWithoutExplicitGeometry || 0)
+  };
+}
+
+
 /* =========================================================
 
    COLLECT
@@ -3779,6 +3814,59 @@ async function collect(
 
 
 
+  const zones =
+
+    parseNotams(
+
+      notamHtml,
+
+      dayMode
+
+    );
+
+
+
+  const restrictionsPage =
+
+    parseRestrictions(
+
+      restrictionsHtml,
+
+      dayMode
+
+    );
+
+
+
+  /*
+    Seara, pagina ROMATSA "Current restrictions" poate să nu conțină încă
+    toate restricțiile pentru ziua următoare. Lista TWR LRBV conține însă
+    frecvent deja NOTAM-urile viitoare. Pentru "tomorrow" le parsăm și de
+    acolo, apoi le combinăm fără duplicate. Pentru "today" păstrăm fluxul
+    existent, stabil.
+  */
+  const restrictions =
+
+    dayMode === "tomorrow"
+
+      ? mergeTomorrowRestrictions(
+
+          restrictionsPage,
+
+          parseRestrictions(
+
+            notamHtml,
+
+            dayMode
+
+          )
+
+        )
+
+      : restrictionsPage;
+
+
+
   return {
 
 
@@ -3801,27 +3889,11 @@ async function collect(
 
 
 
-    zones:
-
-      parseNotams(
-
-        notamHtml,
-
-        dayMode
-
-      ),
+    zones,
 
 
 
-    restrictions:
-
-      parseRestrictions(
-
-        restrictionsHtml,
-
-        dayMode
-
-      )
+    restrictions
 
   };
 
