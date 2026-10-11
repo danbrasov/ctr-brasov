@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-11T00:42:58.719354+00:00",
+  "checkedAt": "2026-10-11T06:31:14.384610+00:00",
   "date": "2026-10-11",
   "windowLocal": {
     "from": "12:00",
@@ -9,6 +9,185 @@
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
   "items": [
+    {
+      "notam": "M6287/26",
+      "from": "2610110600",
+      "to": "2610111600",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "6500FT AMSL) From:2026-10-11 06:00 Till:2026-10-11 16:00 (",
+      "description": "NAVIGATION WARNING. FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 461307N0251438E-454733N0251422E-454609N0254749E-461206N0254832E 461307N0251438E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            46.218611111111116,
+            25.24388888888889
+          ],
+          [
+            45.7925,
+            25.239444444444445
+          ],
+          [
+            45.76916666666666,
+            25.796944444444446
+          ],
+          [
+            46.20166666666667,
+            25.80888888888889
+          ],
+          [
+            46.218611111111116,
+            25.24388888888889
+          ]
+        ]
+      }
+    },
+    {
+      "notam": "M6285/26",
+      "from": "2610110600",
+      "to": "2610111600",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "4700FT AMSL) From:2026-10-11 06:00 Till:2026-10-11 16:00 (",
+      "description": "NAVIGATION WARNING FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 461402N0243115E-454858N0243109E-454732N0251421E-461306N0251438E 461402N0243115E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            46.23388888888889,
+            24.520833333333332
+          ],
+          [
+            45.816111111111105,
+            24.519166666666667
+          ],
+          [
+            45.79222222222222,
+            25.239166666666666
+          ],
+          [
+            46.218333333333334,
+            25.24388888888889
+          ],
+          [
+            46.23388888888889,
+            24.520833333333332
+          ]
+        ]
+      }
+    },
+    {
+      "notam": "M6281/26",
+      "from": "2610110600",
+      "to": "2610111600",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "6200FT AMSL) From:2026-10-11 06:00 Till:2026-10-11 16:00 (",
+      "description": "NAVIGATION WARNING. FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 463920N0243134E-461403N0243116E-461307N0251438E-463753N0251502E 463920N0243134E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            46.65555555555555,
+            24.52611111111111
+          ],
+          [
+            46.23416666666667,
+            24.52111111111111
+          ],
+          [
+            46.218611111111116,
+            25.24388888888889
+          ],
+          [
+            46.63138888888889,
+            25.250555555555554
+          ],
+          [
+            46.65555555555555,
+            24.52611111111111
+          ]
+        ]
+      }
+    },
+    {
+      "notam": "M6261/26",
+      "from": "2610110445",
+      "to": "2610111530",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL070) From:2026-10-11 04:45 Till:2026-10-11 15:30 (",
+      "description": "NAVIGATION WARNING. FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 450315N0255754E-452151N0281814E-455228N0280705E-455417N0264952E 453300N0255739E-450315N0255754E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.05416666666667,
+            25.965
+          ],
+          [
+            45.36416666666667,
+            28.30388888888889
+          ],
+          [
+            45.87444444444444,
+            28.118055555555557
+          ],
+          [
+            45.90472222222222,
+            26.83111111111111
+          ],
+          [
+            45.55,
+            25.960833333333333
+          ],
+          [
+            45.05416666666667,
+            25.965
+          ]
+        ]
+      }
+    },
+    {
+      "notam": "M6260/26",
+      "from": "2610110445",
+      "to": "2610111530",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL070) From:2026-10-11 00:00 Till:2026-10-11 23:59 (",
+      "description": "NAVIGATION WARNING. FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 444349N0255735E-445036N0293509E-452209N0293652E-451825N0255731E 444349N0255735E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            44.73027777777778,
+            25.959722222222222
+          ],
+          [
+            44.843333333333334,
+            29.585833333333333
+          ],
+          [
+            45.369166666666665,
+            29.614444444444445
+          ],
+          [
+            45.30694444444444,
+            25.95861111111111
+          ],
+          [
+            44.73027777777778,
+            25.959722222222222
+          ]
+        ]
+      }
+    },
     {
       "notam": "M6255/26",
       "from": "2610110000",
@@ -117,6 +296,41 @@
       }
     },
     {
+      "notam": "R2179/26",
+      "from": "2610110500",
+      "to": "2610111600",
+      "schedule": null,
+      "lower": "4000FT AMSL",
+      "upper": "FL080) From:2026-10-11 05:00 Till:2026-10-11 16:00 (",
+      "description": "DANGER AREA ACTIVATED. SPORT FLT AND GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 454717N0253951E-454438N0254522E-453912N0253953E-454204N0253421E 454717N0253951E RESERVED AREA CONTACT ON 135.190 SPORTS ACT OF ACFT AND GLD",
+      "severity": "red",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.78805555555555,
+            25.664166666666667
+          ],
+          [
+            45.74388888888889,
+            25.75611111111111
+          ],
+          [
+            45.65333333333333,
+            25.66472222222222
+          ],
+          [
+            45.70111111111111,
+            25.572499999999998
+          ],
+          [
+            45.78805555555555,
+            25.664166666666667
+          ]
+        ]
+      }
+    },
+    {
       "notam": "R2142/26",
       "from": "2610110000",
       "to": "2610112359",
@@ -135,5 +349,5 @@
       }
     }
   ],
-  "skippedWithoutExplicitGeometry": 48
+  "skippedWithoutExplicitGeometry": 72
 }
