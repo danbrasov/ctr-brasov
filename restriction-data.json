@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-14T07:15:16.601453+00:00",
+  "checkedAt": "2026-10-14T12:56:16.781814+00:00",
   "date": "2026-10-14",
   "windowLocal": {
     "from": "12:00",
@@ -742,12 +742,67 @@
       }
     },
     {
+      "notam": "M6367/26",
+      "from": "2610141200",
+      "to": "2610142000",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL105) From:2026-10-14 12:00 Till:2026-10-14 20:00 (",
+      "description": "NAVIGATION WARNING. MIL FLT WILL TAKE PLACE INTO AN AREA BOUNDED BY 5NM EITHER SIDE OF A STRAIGHT LINE CONNECTING THE FLW POINTS OF COORD: 463015N0235320E-461339N0242314E-453440N0255602E-451300N0265800E 453052N0264117E-451416N0273818E-451300N0265800E-453440N0255602E 461339N0242314E-463015N0235320E FLT WILL BE COOR BTN CIV AND MIL ATC",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            46.50416666666667,
+            23.88888888888889
+          ],
+          [
+            46.2275,
+            24.38722222222222
+          ],
+          [
+            45.57777777777778,
+            25.933888888888887
+          ],
+          [
+            45.21666666666667,
+            26.966666666666665
+          ],
+          [
+            45.51444444444444,
+            26.688055555555557
+          ],
+          [
+            45.23777777777778,
+            27.638333333333332
+          ],
+          [
+            45.21666666666667,
+            26.966666666666665
+          ],
+          [
+            45.57777777777778,
+            25.933888888888887
+          ],
+          [
+            46.2275,
+            24.38722222222222
+          ],
+          [
+            46.50416666666667,
+            23.88888888888889
+          ]
+        ]
+      }
+    },
+    {
       "notam": "R2684/26",
       "from": "2610140500",
       "to": "2610141700",
       "schedule": null,
       "lower": "GND",
-      "upper": "FL120) From:2026-10-14 05:00 Till:2026-10-14 16:00 (",
+      "upper": "FL120) From:2026-10-14 06:00 Till:2026-10-14 14:00 (",
       "description": "DANGER AREA ACTIVATED PJE WILL TAKE PLACE INTO THE FLW AREA: 453512N0252456E-453329N0252754E-453114N0252538E-453259N0252243E 453512N0252456E AERIAL SPORTING ACTIVITIES PJE. INFORMATION CONCERNING ACTIVATION/DEACTIVATION OF THE AREA DURING PLANNED HOURS OF ACTIVITY WILL BE OBTAINED FROM ATC. EXPECT RADAR VECTORING",
       "severity": "orange",
       "shape": {
@@ -772,41 +827,6 @@
           [
             45.586666666666666,
             25.415555555555553
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "R2683/26",
-      "from": "2610140500",
-      "to": "2610141600",
-      "schedule": null,
-      "lower": "4000FT AMSL",
-      "upper": "FL080) From:2026-10-14 05:00 Till:2026-10-14 16:00 (",
-      "description": "DANGER AREA ACTIVATED. SPORT FLT AND GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 454717N0253951E-454438N0254522E-453912N0253953E-454204N0253421E 454717N0253951E RESERVED AREA CONTACT ON 135.190 SPORTS ACT OF ACFT AND GLD",
-      "severity": "red",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.78805555555555,
-            25.664166666666667
-          ],
-          [
-            45.74388888888889,
-            25.75611111111111
-          ],
-          [
-            45.65333333333333,
-            25.66472222222222
-          ],
-          [
-            45.70111111111111,
-            25.572499999999998
-          ],
-          [
-            45.78805555555555,
-            25.664166666666667
           ]
         ]
       }
@@ -847,5 +867,5 @@
       }
     }
   ],
-  "skippedWithoutExplicitGeometry": 161
+  "skippedWithoutExplicitGeometry": 173
 }
