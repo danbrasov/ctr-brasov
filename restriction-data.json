@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-14T21:33:14.834205+00:00",
+  "checkedAt": "2026-10-15T00:04:52.927161+00:00",
   "date": "2026-10-15",
   "windowLocal": {
     "from": "12:00",
@@ -8,6 +8,25 @@
   },
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
-  "items": [],
-  "skippedWithoutExplicitGeometry": 6
+  "items": [
+    {
+      "notam": "R2826/26",
+      "from": "2610150000",
+      "to": "2610152059",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "3800FT AMSL) From:2026-10-15 00:00 Till:2026-10-15 23:59 (",
+      "description": "NAVIGATION WARNING. UNMANNED ACFT FLT WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 454534N0252218E WITH 2KM RADIUS",
+      "severity": "orange",
+      "shape": {
+        "type": "circle",
+        "center": [
+          45.75944444444445,
+          25.371666666666666
+        ],
+        "radiusKm": 2.0
+      }
+    }
+  ],
+  "skippedWithoutExplicitGeometry": 31
 }
