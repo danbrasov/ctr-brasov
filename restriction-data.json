@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-20T07:44:19.787279+00:00",
+  "checkedAt": "2026-10-20T13:03:27.951186+00:00",
   "date": "2026-10-20",
   "windowLocal": {
     "from": "12:00",
@@ -85,7 +85,7 @@
       "to": "2610201700",
       "schedule": null,
       "lower": "GND",
-      "upper": "FL090) From:2026-10-20 06:00 Till:2026-10-20 10:00 (",
+      "upper": "FL090) From:2026-10-20 05:00 Till:2026-10-20 22:00 (",
       "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
       "severity": "orange",
       "shape": {
@@ -110,224 +110,6 @@
           [
             45.343611111111116,
             25.616111111111113
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "M6606/26",
-      "from": "2610200600",
-      "to": "2610201000",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "10000FT AMSL) From:2026-10-20 06:00 Till:2026-10-20 10:00 (",
-      "description": "NAVIGATION WARNING FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 454732N0251421E-454658N0252825E-454045N0252525E-454046N0251411E 454732N0251421E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.79222222222222,
-            25.239166666666666
-          ],
-          [
-            45.782777777777774,
-            25.473611111111108
-          ],
-          [
-            45.67916666666667,
-            25.42361111111111
-          ],
-          [
-            45.67944444444444,
-            25.23638888888889
-          ],
-          [
-            45.79222222222222,
-            25.239166666666666
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "M6605/26",
-      "from": "2610200600",
-      "to": "2610201000",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "6500FT AMSL) From:2026-10-20 06:00 Till:2026-10-20 10:00 (",
-      "description": "NAVIGATION WARNING FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 461306N0251438E-454732N0251421E-454609N0254749E-461206N0254832E 461306N0251438E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            46.218333333333334,
-            25.24388888888889
-          ],
-          [
-            45.79222222222222,
-            25.239166666666666
-          ],
-          [
-            45.76916666666666,
-            25.796944444444446
-          ],
-          [
-            46.20166666666667,
-            25.80888888888889
-          ],
-          [
-            46.218333333333334,
-            25.24388888888889
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "M6604/26",
-      "from": "2610200600",
-      "to": "2610201000",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "4700FT AMSL) From:2026-10-20 06:00 Till:2026-10-20 10:00 (",
-      "description": "NAVIGATION WARNING. FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 461306N0251438E-454732N0251421E-454758N0250111E-455503N0245531E 460130N0244513E-461343N0244245E-461306N0251438E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            46.218333333333334,
-            25.24388888888889
-          ],
-          [
-            45.79222222222222,
-            25.239166666666666
-          ],
-          [
-            45.79944444444444,
-            25.01972222222222
-          ],
-          [
-            45.9175,
-            24.92527777777778
-          ],
-          [
-            46.025,
-            24.753611111111113
-          ],
-          [
-            46.228611111111114,
-            24.7125
-          ],
-          [
-            46.218333333333334,
-            25.24388888888889
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "M6603/26",
-      "from": "2610200600",
-      "to": "2610201000",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "7400FT AMSL) From:2026-10-20 06:00 Till:2026-10-20 10:00 (",
-      "description": "NAVIGATION WARNING. FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 463639N0254904E-461206N0254832E-461046N0263427E-463538N0261322E 463639N0254904E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            46.61083333333333,
-            25.817777777777778
-          ],
-          [
-            46.20166666666667,
-            25.80888888888889
-          ],
-          [
-            46.17944444444444,
-            26.574166666666667
-          ],
-          [
-            46.59388888888889,
-            26.222777777777775
-          ],
-          [
-            46.61083333333333,
-            25.817777777777778
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "M6602/26",
-      "from": "2610200600",
-      "to": "2610201000",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "8000FT AMSL) From:2026-10-20 06:00 Till:2026-10-20 10:00 (",
-      "description": "NAVIGATION WARNING. FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 463753N0251501E-463650N0254439E-461213N0254405E-461307N0251438E 463753N0251501E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            46.63138888888889,
-            25.25027777777778
-          ],
-          [
-            46.61388888888889,
-            25.74416666666667
-          ],
-          [
-            46.203611111111115,
-            25.734722222222224
-          ],
-          [
-            46.218611111111116,
-            25.24388888888889
-          ],
-          [
-            46.63138888888889,
-            25.25027777777778
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "M6601/26",
-      "from": "2610200600",
-      "to": "2610201000",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "6200FT AMSL) From:2026-10-20 06:00 Till:2026-10-20 10:00 (",
-      "description": "NAVIGATION WARNING. FOX VACCINATION FLT WILL TAKE PLACE INTO THE FLW AREA: 463919N0243134E-461402N0243115E-461306N0251438E-463753N0251501E 463919N0243134E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            46.655277777777776,
-            24.52611111111111
-          ],
-          [
-            46.23388888888889,
-            24.520833333333332
-          ],
-          [
-            46.218333333333334,
-            25.24388888888889
-          ],
-          [
-            46.63138888888889,
-            25.25027777777778
-          ],
-          [
-            46.655277777777776,
-            24.52611111111111
           ]
         ]
       }
@@ -724,7 +506,7 @@
       "to": "2610201900",
       "schedule": null,
       "lower": "GND",
-      "upper": "10675FT AMSL) From:2026-10-20 04:30 Till:2026-10-20 12:30 (",
+      "upper": "10675FT AMSL) From:2026-10-20 05:00 Till:2026-10-20 19:00 (",
       "description": "DANGER AREA ACTIVATED. FRNG WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 460408N0261802E WITH 1NM RADIUS",
       "severity": "orange",
       "shape": {
