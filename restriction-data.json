@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-21T09:42:01.305540+00:00",
+  "checkedAt": "2026-10-21T14:42:09.497388+00:00",
   "date": "2026-10-21",
   "windowLocal": {
     "from": "12:00",
@@ -9,6 +9,111 @@
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
   "items": [
+    {
+      "notam": "D3464/26",
+      "from": "2610211200",
+      "to": "2610211700",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL050) From:2026-10-21 12:00 Till:2026-10-21 17:00 (",
+      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 454233N0254914E-453953N0255514E-454710N0260208E-454728N0255306E 454233N0254914E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.70916666666667,
+            25.820555555555554
+          ],
+          [
+            45.664722222222224,
+            25.920555555555556
+          ],
+          [
+            45.78611111111111,
+            26.035555555555558
+          ],
+          [
+            45.79111111111111,
+            25.884999999999998
+          ],
+          [
+            45.70916666666667,
+            25.820555555555554
+          ]
+        ]
+      }
+    },
+    {
+      "notam": "D3462/26",
+      "from": "2610211200",
+      "to": "2610211700",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL060) From:2026-10-21 12:00 Till:2026-10-21 17:00 (",
+      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 453843N0253754E-454233N0254914E-453953N0255514E-453221N0254805E 453843N0253754E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.64527777777778,
+            25.631666666666668
+          ],
+          [
+            45.70916666666667,
+            25.820555555555554
+          ],
+          [
+            45.664722222222224,
+            25.920555555555556
+          ],
+          [
+            45.53916666666667,
+            25.80138888888889
+          ],
+          [
+            45.64527777777778,
+            25.631666666666668
+          ]
+        ]
+      }
+    },
+    {
+      "notam": "D3460/26",
+      "from": "2610211200",
+      "to": "2610211700",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL090) From:2026-10-21 12:00 Till:2026-10-21 15:00 (",
+      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.343611111111116,
+            25.616111111111113
+          ],
+          [
+            45.46,
+            25.373055555555556
+          ],
+          [
+            45.64527777777778,
+            25.631666666666668
+          ],
+          [
+            45.53916666666667,
+            25.80138888888889
+          ],
+          [
+            45.343611111111116,
+            25.616111111111113
+          ]
+        ]
+      }
+    },
     {
       "notam": "M6635/26",
       "from": "2610210430",
@@ -611,7 +716,7 @@
       "to": "2610211900",
       "schedule": null,
       "lower": "GND",
-      "upper": "10675FT AMSL) From:2026-10-21 04:30 Till:2026-10-21 12:30 (",
+      "upper": "10675FT AMSL) From:2026-10-21 05:00 Till:2026-10-21 19:00 (",
       "description": "DANGER AREA ACTIVATED. FRNG WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 460408N0261802E WITH 1NM RADIUS",
       "severity": "orange",
       "shape": {
@@ -624,5 +729,5 @@
       }
     }
   ],
-  "skippedWithoutExplicitGeometry": 161
+  "skippedWithoutExplicitGeometry": 157
 }
