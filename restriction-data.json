@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-24T14:09:16.252243+00:00",
+  "checkedAt": "2026-10-24T19:43:28.134970+00:00",
   "date": "2026-10-24",
   "windowLocal": {
     "from": "12:00",
@@ -9,119 +9,6 @@
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
   "items": [
-    {
-      "notam": "D3501/26",
-      "from": "2610240600",
-      "to": "2610241600",
-      "schedule": null,
-      "lower": "FL090",
-      "upper": "FL100) From:2026-10-24 06:00 Till:2026-10-24 16:00 (",
-      "description": "NAVIGATION WARNING. AERIAL PHOTOGRAPHY FLT WILL TAKE PLACE INTO THE FLW AREA: 460437N0253030E-460446N0253521E-455119N0253628E-454626N0255046E 454224N0255112E-454151N0253156E-460437N0253030E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            46.07694444444445,
-            25.508333333333333
-          ],
-          [
-            46.07944444444445,
-            25.589166666666664
-          ],
-          [
-            45.85527777777778,
-            25.60777777777778
-          ],
-          [
-            45.77388888888889,
-            25.84611111111111
-          ],
-          [
-            45.70666666666667,
-            25.853333333333335
-          ],
-          [
-            45.6975,
-            25.53222222222222
-          ],
-          [
-            46.07694444444445,
-            25.508333333333333
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "D3498/26",
-      "from": "2610240700",
-      "to": "2610241700",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL060) From:2026-10-24 07:00 Till:2026-10-24 17:00 (",
-      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 453843N0253754E-454233N0254914E-453953N0255514E-453221N0254805E 453843N0253754E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.64527777777778,
-            25.631666666666668
-          ],
-          [
-            45.70916666666667,
-            25.820555555555554
-          ],
-          [
-            45.664722222222224,
-            25.920555555555556
-          ],
-          [
-            45.53916666666667,
-            25.80138888888889
-          ],
-          [
-            45.64527777777778,
-            25.631666666666668
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "D3497/26",
-      "from": "2610240700",
-      "to": "2610241700",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL090) From:2026-10-24 09:00 Till:2026-10-24 16:00 (",
-      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.343611111111116,
-            25.616111111111113
-          ],
-          [
-            45.46,
-            25.373055555555556
-          ],
-          [
-            45.64527777777778,
-            25.631666666666668
-          ],
-          [
-            45.53916666666667,
-            25.80138888888889
-          ],
-          [
-            45.343611111111116,
-            25.616111111111113
-          ]
-        ]
-      }
-    },
     {
       "notam": "M6737/26",
       "from": "2610240500",
@@ -407,53 +294,6 @@
       }
     },
     {
-      "notam": "M6726/26",
-      "from": "2610240600",
-      "to": "2610241800",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL105) From:2026-10-24 06:00 Till:2026-10-24 18:00 (",
-      "description": "NAVIGATION WARNING MIL FLT WILL TAKE PLACE INTO AN AREA BOUNDED BY 5NM EITHER SIDE OF A STRAIGHT LINE CONNECTING THE FLW POINT OF COORD: 442100N0282700E-443248N0281248E-452948N0263340E-452906N0262616E 462304N0245800E-452948N0263340E-443248N0281248E-442100N0282700E FLT WILL BE COOR BTN CIV AND MIL ATC",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            44.35,
-            28.45
-          ],
-          [
-            44.54666666666667,
-            28.21333333333333
-          ],
-          [
-            45.49666666666667,
-            26.561111111111114
-          ],
-          [
-            45.485,
-            26.43777777777778
-          ],
-          [
-            46.38444444444444,
-            24.966666666666665
-          ],
-          [
-            45.49666666666667,
-            26.561111111111114
-          ],
-          [
-            44.54666666666667,
-            28.21333333333333
-          ],
-          [
-            44.35,
-            28.45
-          ]
-        ]
-      }
-    },
-    {
       "notam": "M6722/26",
       "from": "2610240000",
       "to": "2610242359",
@@ -559,60 +399,7 @@
           ]
         ]
       }
-    },
-    {
-      "notam": "R4393/26",
-      "from": "2610240700",
-      "to": "2610241600",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "4000FT AMSL) From:2026-10-24 10:00 Till:2026-10-24 18:00 (",
-      "description": "NAVIGATION WARNING. UNMANNED ACFT FLT WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 461231N0253822E WITH 3NM RADIUS",
-      "severity": "orange",
-      "shape": {
-        "type": "circle",
-        "center": [
-          46.20861111111111,
-          25.639444444444443
-        ],
-        "radiusKm": 5.556
-      }
-    },
-    {
-      "notam": "R4358/26",
-      "from": "2610240500",
-      "to": "2610241600",
-      "schedule": null,
-      "lower": "4000FT AMSL",
-      "upper": "FL080) From:2026-10-24 05:00 Till:2026-10-24 16:00 (",
-      "description": "DANGER AREA ACTIVATED. SPORT FLT AND GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 454717N0253951E-454438N0254522E-453912N0253953E-454204N0253421E 454717N0253951E RESERVED AREA CONTACT ON 135.190 SPORTS ACT OF ACFT AND GLD",
-      "severity": "red",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.78805555555555,
-            25.664166666666667
-          ],
-          [
-            45.74388888888889,
-            25.75611111111111
-          ],
-          [
-            45.65333333333333,
-            25.66472222222222
-          ],
-          [
-            45.70111111111111,
-            25.572499999999998
-          ],
-          [
-            45.78805555555555,
-            25.664166666666667
-          ]
-        ]
-      }
     }
   ],
-  "skippedWithoutExplicitGeometry": 112
+  "skippedWithoutExplicitGeometry": 86
 }
