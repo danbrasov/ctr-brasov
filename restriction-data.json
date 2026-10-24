@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-24T10:48:28.766430+00:00",
+  "checkedAt": "2026-10-24T14:09:16.252243+00:00",
   "date": "2026-10-24",
   "windowLocal": {
     "from": "12:00",
@@ -93,7 +93,7 @@
       "to": "2610241700",
       "schedule": null,
       "lower": "GND",
-      "upper": "FL090) From:2026-10-24 09:00 Till:2026-10-24 13:30 (",
+      "upper": "FL090) From:2026-10-24 09:00 Till:2026-10-24 16:00 (",
       "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
       "severity": "orange",
       "shape": {
@@ -614,5 +614,5 @@
       }
     }
   ],
-  "skippedWithoutExplicitGeometry": 115
+  "skippedWithoutExplicitGeometry": 112
 }
