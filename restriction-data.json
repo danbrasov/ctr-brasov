@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-25T17:34:45.760909+00:00",
+  "checkedAt": "2026-10-25T19:56:48.120714+00:00",
   "date": "2026-10-25",
   "windowLocal": {
     "from": "12:00",
@@ -9,76 +9,6 @@
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
   "items": [
-    {
-      "notam": "D3513/26",
-      "from": "2610250800",
-      "to": "2610251800",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL060) From:2026-10-25 08:00 Till:2026-10-25 18:00 (",
-      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 453843N0253754E-454233N0254914E-453953N0255514E-453221N0254805E 453843N0253754E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.64527777777778,
-            25.631666666666668
-          ],
-          [
-            45.70916666666667,
-            25.820555555555554
-          ],
-          [
-            45.664722222222224,
-            25.920555555555556
-          ],
-          [
-            45.53916666666667,
-            25.80138888888889
-          ],
-          [
-            45.64527777777778,
-            25.631666666666668
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "D3512/26",
-      "from": "2610250800",
-      "to": "2610251800",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL090) From:2026-10-25 05:00 Till:2026-10-25 22:00 (",
-      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
-      "severity": "orange",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.343611111111116,
-            25.616111111111113
-          ],
-          [
-            45.46,
-            25.373055555555556
-          ],
-          [
-            45.64527777777778,
-            25.631666666666668
-          ],
-          [
-            45.53916666666667,
-            25.80138888888889
-          ],
-          [
-            45.343611111111116,
-            25.616111111111113
-          ]
-        ]
-      }
-    },
     {
       "notam": "M6767/26",
       "from": "2610250500",
@@ -471,5 +401,5 @@
       }
     }
   ],
-  "skippedWithoutExplicitGeometry": 77
+  "skippedWithoutExplicitGeometry": 76
 }
