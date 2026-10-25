@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-25T00:14:26.156398+00:00",
+  "checkedAt": "2026-10-25T04:55:42.050767+00:00",
   "date": "2026-10-25",
   "windowLocal": {
     "from": "12:00",
@@ -117,5 +117,5 @@
       }
     }
   ],
-  "skippedWithoutExplicitGeometry": 42
+  "skippedWithoutExplicitGeometry": 48
 }
