@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-26T11:20:36.649470+00:00",
+  "checkedAt": "2026-10-26T17:30:19.571154+00:00",
   "date": "2026-10-26",
   "windowLocal": {
     "from": "12:00",
@@ -50,7 +50,7 @@
       "to": "2610261800",
       "schedule": null,
       "lower": "GND",
-      "upper": "FL090) From:2026-10-26 10:00 Till:2026-10-26 14:30 (",
+      "upper": "FL090) From:2026-10-26 05:00 Till:2026-10-26 22:00 (",
       "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
       "severity": "orange",
       "shape": {
@@ -518,47 +518,12 @@
       }
     },
     {
-      "notam": "R4664/26",
-      "from": "2610260600",
-      "to": "2610261530",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL130) From:2026-10-26 07:00 Till:2026-10-26 15:15 (",
-      "description": "DANGER AREA ACTIVATED. SPORT FLT AND PJE WILL TAKE PLACE INTO THE FLW AREA: 454308N0253253E-454056N0253039E-453921N0253347E-454129N0253605E 454308N0253253E RESERVED AREA SPORTS ACT OF ACFT AND PJE CONTACT ON 135.210 EXPECT RADAR VECTORING",
-      "severity": "red",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.71888888888889,
-            25.548055555555557
-          ],
-          [
-            45.68222222222222,
-            25.510833333333334
-          ],
-          [
-            45.655833333333334,
-            25.563055555555557
-          ],
-          [
-            45.69138888888889,
-            25.60138888888889
-          ],
-          [
-            45.71888888888889,
-            25.548055555555557
-          ]
-        ]
-      }
-    },
-    {
       "notam": "R3638/26",
       "from": "2610260600",
       "to": "2610261800",
       "schedule": null,
       "lower": "GND",
-      "upper": "8300FT AMSL) From:2026-10-26 06:30 Till:2026-10-26 16:00 (",
+      "upper": "8300FT AMSL) From:2026-10-26 06:00 Till:2026-10-26 20:00 (",
       "description": "DANGER AREA ACTIVATED. FRNG WILL TAKE PLACE INTO THE FLW AREA: 453321N0252813E-453321N0252842E-453502N0253018E-453502N0252807E 453321N0252813E",
       "severity": "orange",
       "shape": {
@@ -586,25 +551,7 @@
           ]
         ]
       }
-    },
-    {
-      "notam": "R3637/26",
-      "from": "2610260630",
-      "to": "2610261600",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "10675FT AMSL) From:2026-10-26 06:00 Till:2026-10-26 14:00 (",
-      "description": "DANGER AREA ACTIVATED. FRNG WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 460408N0261802E WITH 1NM RADIUS",
-      "severity": "orange",
-      "shape": {
-        "type": "circle",
-        "center": [
-          46.06888888888889,
-          26.300555555555555
-        ],
-        "radiusKm": 1.852
-      }
     }
   ],
-  "skippedWithoutExplicitGeometry": 143
+  "skippedWithoutExplicitGeometry": 93
 }
