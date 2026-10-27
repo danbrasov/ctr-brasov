@@ -1,24 +1,26 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/getnotamlist?twr=LRBV",
-  "checkedAt": "2026-10-27T12:23:26.834947+00:00",
+  "checkedAt": "2026-10-27T18:09:57.440836+00:00",
   "zones": {
     "AZLR1": {
-      "notam": "D3544/2026",
-      "from": "2610270800",
-      "to": "2610271800",
+      "notam": "D3556/2026",
+      "from": "2610280800",
+      "to": "2610281800",
       "lower": "GND",
       "upper": "FL090",
       "matches": 1,
-      "activeMatches": 1
+      "activeMatches": 0,
+      "status": "upcoming"
     },
     "AZLR2": {
-      "notam": "D3545/2026",
-      "from": "2610270800",
-      "to": "2610271800",
+      "notam": "D3557/2026",
+      "from": "2610280800",
+      "to": "2610281800",
       "lower": "GND",
       "upper": "FL060",
       "matches": 1,
-      "activeMatches": 1
+      "activeMatches": 0,
+      "status": "upcoming"
     },
     "AZLR3": {
       "notam": null,
