@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-10-27T06:12:33.798827+00:00",
+  "checkedAt": "2026-10-27T12:23:28.936799+00:00",
   "date": "2026-10-27",
   "windowLocal": {
     "from": "12:00",
@@ -9,6 +9,76 @@
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
   "items": [
+    {
+      "notam": "D3545/26",
+      "from": "2610270800",
+      "to": "2610271800",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL060) From:2026-10-27 08:00 Till:2026-10-27 18:00 (",
+      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 453843N0253754E-454233N0254914E-453953N0255514E-453221N0254805E 453843N0253754E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.64527777777778,
+            25.631666666666668
+          ],
+          [
+            45.70916666666667,
+            25.820555555555554
+          ],
+          [
+            45.664722222222224,
+            25.920555555555556
+          ],
+          [
+            45.53916666666667,
+            25.80138888888889
+          ],
+          [
+            45.64527777777778,
+            25.631666666666668
+          ]
+        ]
+      }
+    },
+    {
+      "notam": "D3544/26",
+      "from": "2610270800",
+      "to": "2610271800",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL090) From:2026-10-27 07:58 Till:2026-10-27 22:00 (",
+      "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            45.343611111111116,
+            25.616111111111113
+          ],
+          [
+            45.46,
+            25.373055555555556
+          ],
+          [
+            45.64527777777778,
+            25.631666666666668
+          ],
+          [
+            45.53916666666667,
+            25.80138888888889
+          ],
+          [
+            45.343611111111116,
+            25.616111111111113
+          ]
+        ]
+      }
+    },
     {
       "notam": "M6815/26",
       "from": "2610270500",
@@ -453,7 +523,7 @@
       "to": "2610271530",
       "schedule": null,
       "lower": "GND",
-      "upper": "FL130) From:2026-10-27 06:00 Till:2026-10-27 15:15 (",
+      "upper": "FL130) From:2026-10-27 07:00 Till:2026-10-27 15:15 (",
       "description": "DANGER AREA ACTIVATED. SPORT FLT AND PJE WILL TAKE PLACE INTO THE FLW AREA: 454308N0253253E-454056N0253039E-453921N0253347E-454129N0253605E 454308N0253253E RESERVED AREA SPORTS ACT OF ACFT AND PJE CONTACT ON 135.210 EXPECT RADAR VECTORING",
       "severity": "red",
       "shape": {
@@ -478,41 +548,6 @@
           [
             45.71888888888889,
             25.548055555555557
-          ]
-        ]
-      }
-    },
-    {
-      "notam": "R4820/26",
-      "from": "2610270600",
-      "to": "2610271515",
-      "schedule": null,
-      "lower": "4000FT AMSL",
-      "upper": "FL080) From:2026-10-27 06:00 Till:2026-10-27 15:15 (",
-      "description": "DANGER AREA ACTIVATED. SPORT FLT AND GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 454717N0253951E-454438N0254522E-453912N0253953E-454204N0253421E 454717N0253951E RESERVED AREA CONTACT ON 135.190 SPORTS ACT OF ACFT AND GLD",
-      "severity": "red",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.78805555555555,
-            25.664166666666667
-          ],
-          [
-            45.74388888888889,
-            25.75611111111111
-          ],
-          [
-            45.65333333333333,
-            25.66472222222222
-          ],
-          [
-            45.70111111111111,
-            25.572499999999998
-          ],
-          [
-            45.78805555555555,
-            25.664166666666667
           ]
         ]
       }
@@ -571,5 +606,5 @@
       }
     }
   ],
-  "skippedWithoutExplicitGeometry": 130
+  "skippedWithoutExplicitGeometry": 157
 }
