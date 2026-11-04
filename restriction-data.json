@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-11-04T09:37:30.501911+00:00",
+  "checkedAt": "2026-11-04T17:33:04.729396+00:00",
   "date": "2026-11-04",
   "windowLocal": {
     "from": "12:00",
@@ -50,7 +50,7 @@
       "to": "2611041800",
       "schedule": null,
       "lower": "GND",
-      "upper": "FL090) From:2026-11-04 06:00 Till:2026-11-04 15:00 (",
+      "upper": "FL090) From:2026-11-04 05:00 Till:2026-11-04 22:00 (",
       "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
       "severity": "orange",
       "shape": {
@@ -411,54 +411,56 @@
       }
     },
     {
-      "notam": "R6144/26",
-      "from": "2611040630",
-      "to": "2611041600",
+      "notam": "M6980/26",
+      "from": "2611041100",
+      "to": "2611041900",
       "schedule": null,
       "lower": "GND",
-      "upper": "10675FT AMSL) From:2026-11-04 06:00 Till:2026-11-04 15:00 (",
-      "description": "DANGER AREA ACTIVATED. FRNG AND DEMOLITION OF EXPLOSIVES WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 460408N0261802E WITH 1NM RADIUS",
+      "upper": "FL105) From:2026-11-04 11:00 Till:2026-11-04 19:00 (",
+      "description": "NAVIGATION WARNING. MIL FLT WILL TAKE PLACE INTO AN AREA BOUNDED BY 5NM EITHER SIDE OF A STRAIGHT LINE CONNECTING THE FLW POINTS OF COORD: 463015N0235320E-461339N0242314E-453440N0255602E-451300N0265800E 453052N0264117E-451416N0273818E-451300N0265800E-453440N0255602E 461339N0242314E-463015N0235320E FLT WILL BE COOR BTN CIV AND MIL ATC",
       "severity": "orange",
-      "shape": {
-        "type": "circle",
-        "center": [
-          46.06888888888889,
-          26.300555555555555
-        ],
-        "radiusKm": 1.852
-      }
-    },
-    {
-      "notam": "R6122/26",
-      "from": "2611040600",
-      "to": "2611041530",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "FL130) From:2026-11-04 05:00 Till:2026-11-04 15:00 (",
-      "description": "DANGER AREA ACTIVATED. SPORT FLT AND PJE WILL TAKE PLACE INTO THE FLW AREA: 454308N0253253E-454056N0253039E-453921N0253347E-454129N0253605E 454308N0253253E RESERVED AREA SPORTS ACT OF ACFT AND PJE CONTACT ON 135.210 EXPECT RADAR VECTORING",
-      "severity": "red",
       "shape": {
         "type": "polygon",
         "points": [
           [
-            45.71888888888889,
-            25.548055555555557
+            46.50416666666667,
+            23.88888888888889
           ],
           [
-            45.68222222222222,
-            25.510833333333334
+            46.2275,
+            24.38722222222222
           ],
           [
-            45.655833333333334,
-            25.563055555555557
+            45.57777777777778,
+            25.933888888888887
           ],
           [
-            45.69138888888889,
-            25.60138888888889
+            45.21666666666667,
+            26.966666666666665
           ],
           [
-            45.71888888888889,
-            25.548055555555557
+            45.51444444444444,
+            26.688055555555557
+          ],
+          [
+            45.23777777777778,
+            27.638333333333332
+          ],
+          [
+            45.21666666666667,
+            26.966666666666665
+          ],
+          [
+            45.57777777777778,
+            25.933888888888887
+          ],
+          [
+            46.2275,
+            24.38722222222222
+          ],
+          [
+            46.50416666666667,
+            23.88888888888889
           ]
         ]
       }
@@ -469,7 +471,7 @@
       "to": "2611041800",
       "schedule": null,
       "lower": "GND",
-      "upper": "FL120) From:2026-11-04 07:30 Till:2026-11-04 15:35 (",
+      "upper": "FL120) From:2026-11-04 00:00 Till:2026-11-04 23:59 (",
       "description": "DANGER AREA ACTIVATED PJE WILL TAKE PLACE INTO THE FLW AREA: 453512N0252456E-453329N0252754E-453114N0252538E-453259N0252243E 453512N0252456E AERIAL SPORTING ACTIVITIES PJE. INFORMATION CONCERNING ACTIVATION/DEACTIVATION OF THE AREA DURING PLANNED HOURS OF ACTIVITY WILL BE OBTAINED FROM ATC. EXPECT RADAR VECTORING",
       "severity": "orange",
       "shape": {
@@ -499,30 +501,12 @@
       }
     },
     {
-      "notam": "R6100/26",
-      "from": "2611040000",
-      "to": "2611041800",
-      "schedule": null,
-      "lower": "GND",
-      "upper": "3900FT AMSL) From:2026-11-04 00:00 Till:2026-11-04 23:59 (",
-      "description": "NAVIGATION WARNING. UNMANNED ACFT FLT WILL TAKE PLACE INTO A CIRCLE CENTERED ON POINT OF COORD 462226N0254448E WITH 3NM RADIUS",
-      "severity": "orange",
-      "shape": {
-        "type": "circle",
-        "center": [
-          46.37388888888889,
-          25.746666666666666
-        ],
-        "radiusKm": 5.556
-      }
-    },
-    {
       "notam": "R5218/26",
       "from": "2611040600",
       "to": "2611041800",
       "schedule": null,
       "lower": "GND",
-      "upper": "8300FT AMSL) From:2026-11-04 07:00 Till:2026-11-04 13:00 (",
+      "upper": "8300FT AMSL) From:2026-11-04 06:00 Till:2026-11-04 18:00 (",
       "description": "DANGER AREA ACTIVATED. FRNG WILL TAKE PLACE INTO THE FLW AREA: 453321N0252813E-453321N0252842E-453502N0253018E-453502N0252807E 453321N0252813E",
       "severity": "orange",
       "shape": {
@@ -552,5 +536,5 @@
       }
     }
   ],
-  "skippedWithoutExplicitGeometry": 131
+  "skippedWithoutExplicitGeometry": 119
 }
