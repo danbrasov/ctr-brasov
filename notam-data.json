@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/getnotamlist?twr=LRBV",
-  "checkedAt": "2026-11-03T22:09:52.718705+00:00",
+  "checkedAt": "2026-11-04T02:21:47.791032+00:00",
   "zones": {
     "AZLR1": {
       "notam": "D3622/2026",
