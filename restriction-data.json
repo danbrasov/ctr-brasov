@@ -1,6 +1,6 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-11-07T10:14:33.571457+00:00",
+  "checkedAt": "2026-11-07T16:31:35.867624+00:00",
   "date": "2026-11-07",
   "windowLocal": {
     "from": "12:00",
@@ -50,7 +50,7 @@
       "to": "2611071800",
       "schedule": null,
       "lower": "GND",
-      "upper": "FL090) From:2026-11-07 10:00 Till:2026-11-07 14:30 (",
+      "upper": "FL090) From:2026-11-07 05:00 Till:2026-11-07 22:00 (",
       "description": "NAVIGATION WARNING. GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 452037N0253658E-452736N0252223E-453843N0253754E-453221N0254805E 452037N0253658E",
       "severity": "orange",
       "shape": {
@@ -409,42 +409,7 @@
           ]
         ]
       }
-    },
-    {
-      "notam": "R6681/26",
-      "from": "2611070600",
-      "to": "2611071500",
-      "schedule": null,
-      "lower": "4000FT AMSL",
-      "upper": "FL080) From:2026-11-07 06:00 Till:2026-11-07 15:00 (",
-      "description": "DANGER AREA ACTIVATED. SPORT FLT AND GLD FLT WILL TAKE PLACE INTO THE FLW AREA: 454717N0253951E-454438N0254522E-453912N0253953E-454204N0253421E 454717N0253951E RESERVED AREA CONTACT ON 135.190 SPORTS ACT OF ACFT AND GLD",
-      "severity": "red",
-      "shape": {
-        "type": "polygon",
-        "points": [
-          [
-            45.78805555555555,
-            25.664166666666667
-          ],
-          [
-            45.74388888888889,
-            25.75611111111111
-          ],
-          [
-            45.65333333333333,
-            25.66472222222222
-          ],
-          [
-            45.70111111111111,
-            25.572499999999998
-          ],
-          [
-            45.78805555555555,
-            25.664166666666667
-          ]
-        ]
-      }
     }
   ],
-  "skippedWithoutExplicitGeometry": 101
+  "skippedWithoutExplicitGeometry": 82
 }
