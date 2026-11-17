@@ -1,7 +1,7 @@
 {
   "source": "https://www.meteoromania.ro/wp-json/meteoapi/v2/starea-vremii",
-  "checkedAt": "2026-11-17T18:56:44.661052+00:00",
-  "datasetAt": "2026-11-17T20:00:00+02:00",
+  "checkedAt": "2026-11-17T21:55:26.142681+00:00",
+  "datasetAt": "2026-11-17T23:00:00+02:00",
   "retentionHours": 24,
   "stations": {
     "anm-varful-omu": {
@@ -41,6 +41,13 @@
           "dir": 270.0,
           "tempC": -4.7,
           "pressureHpa": 739.4
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 42.8,
+          "dir": 247.5,
+          "tempC": -3.1,
+          "pressureHpa": 737.8
         }
       ]
     },
@@ -81,6 +88,13 @@
           "dir": 90.0,
           "tempC": 4.6,
           "pressureHpa": 944.6
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 3.2,
+          "dir": 90.0,
+          "tempC": 5.0,
+          "pressureHpa": 942.6
         }
       ]
     },
@@ -121,6 +135,13 @@
           "dir": 157.5,
           "tempC": 4.6,
           "pressureHpa": 941.9
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 27.7,
+          "dir": 202.5,
+          "tempC": 10.8,
+          "pressureHpa": 939.4
         }
       ]
     },
@@ -161,6 +182,13 @@
           "dir": 337.5,
           "tempC": 4.3,
           "pressureHpa": 951.0
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 1.1,
+          "dir": 45.0,
+          "tempC": 4.3,
+          "pressureHpa": 949.7
         }
       ]
     },
@@ -201,6 +229,13 @@
           "dir": 22.5,
           "tempC": 4.8,
           "pressureHpa": 927.1
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 4.3,
+          "dir": 67.5,
+          "tempC": 4.5,
+          "pressureHpa": 925.5
         }
       ]
     },
@@ -241,6 +276,13 @@
           "dir": 67.5,
           "tempC": 5.3,
           "pressureHpa": 953.4
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 4.3,
+          "dir": 337.5,
+          "tempC": 5.1,
+          "pressureHpa": 950.9
         }
       ]
     },
@@ -281,6 +323,13 @@
           "dir": 202.5,
           "tempC": 3.1,
           "pressureHpa": 851.8
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 7.6,
+          "dir": 247.5,
+          "tempC": 4.6,
+          "pressureHpa": 850.2
         }
       ]
     },
@@ -321,6 +370,13 @@
           "dir": 180.0,
           "tempC": 2.8,
           "pressureHpa": 924.6
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 1.8,
+          "dir": 337.5,
+          "tempC": 2.9,
+          "pressureHpa": 922.7
         }
       ]
     },
@@ -361,6 +417,13 @@
           "dir": 270.0,
           "tempC": -1.1,
           "pressureHpa": 808.7
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 43.9,
+          "dir": 270.0,
+          "tempC": 0.1,
+          "pressureHpa": 807.3
         }
       ]
     },
@@ -401,6 +464,13 @@
           "dir": 225.0,
           "tempC": 7.7,
           "pressureHpa": 942.2
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 7.6,
+          "dir": 22.5,
+          "tempC": 7.0,
+          "pressureHpa": 940.1
         }
       ]
     },
@@ -441,6 +511,13 @@
           "dir": 0.0,
           "tempC": 5.4,
           "pressureHpa": 971.0
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 2.9,
+          "dir": 0.0,
+          "tempC": 4.7,
+          "pressureHpa": 969.7
         }
       ]
     },
@@ -481,6 +558,13 @@
           "dir": 247.5,
           "tempC": 1.2,
           "pressureHpa": 824.0
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 16.9,
+          "dir": 225.0,
+          "tempC": 3.8,
+          "pressureHpa": 822.9
         }
       ]
     },
@@ -521,6 +605,13 @@
           "dir": 135.0,
           "tempC": 0.7,
           "pressureHpa": 881.0
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 1.4,
+          "dir": 180.0,
+          "tempC": 2.6,
+          "pressureHpa": 879.5
         }
       ]
     },
@@ -561,6 +652,13 @@
           "dir": 315.0,
           "tempC": 3.1,
           "pressureHpa": 943.4
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 1.8,
+          "dir": 0.0,
+          "tempC": 3.7,
+          "pressureHpa": 941.3
         }
       ]
     },
@@ -601,6 +699,13 @@
           "dir": 180.0,
           "tempC": 3.3,
           "pressureHpa": 836.7
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 0.7,
+          "dir": 247.5,
+          "tempC": 3.7,
+          "pressureHpa": 835.6
         }
       ]
     },
@@ -641,6 +746,13 @@
           "dir": 180.0,
           "tempC": 4.2,
           "pressureHpa": 937.9
+        },
+        {
+          "t": 1794949200000,
+          "windKmh": 0.7,
+          "dir": 112.5,
+          "tempC": 3.8,
+          "pressureHpa": 936.2
         }
       ]
     }
