@@ -1,13 +1,69 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-11-23T21:43:06.917358+00:00",
-  "date": "2026-11-23",
+  "checkedAt": "2026-11-24T05:35:44.559315+00:00",
+  "date": "2026-11-24",
   "windowLocal": {
     "from": "12:00",
-    "to": "16:40"
+    "to": "16:39"
   },
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
-  "items": [],
-  "skippedWithoutExplicitGeometry": 39
+  "items": [
+    {
+      "notam": "M7461/26",
+      "from": "2611240500",
+      "to": "2611241700",
+      "schedule": null,
+      "lower": "GND",
+      "upper": "FL105) From:2026-11-24 05:00 Till:2026-11-24 17:00 (",
+      "description": "NAVIGATION WARNING. MIL FLT WILL TAKE PLACE INTO AN AREA BOUNDED BY 5NM EITHER SIDE OF A STRAIGHT LINE CONNECTING THE FLW POINTS OF COORD: 463015N0235320E-461339N0242314E-453440N0255602E-451300N0265800E 453052N0264117E-451416N0273818E-451300N0265800E-453440N0255602E 461339N0242314E-463015N0235320E FLT WILL BE COOR BTN CIV AND MIL ATC",
+      "severity": "orange",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [
+            46.50416666666667,
+            23.88888888888889
+          ],
+          [
+            46.2275,
+            24.38722222222222
+          ],
+          [
+            45.57777777777778,
+            25.933888888888887
+          ],
+          [
+            45.21666666666667,
+            26.966666666666665
+          ],
+          [
+            45.51444444444444,
+            26.688055555555557
+          ],
+          [
+            45.23777777777778,
+            27.638333333333332
+          ],
+          [
+            45.21666666666667,
+            26.966666666666665
+          ],
+          [
+            45.57777777777778,
+            25.933888888888887
+          ],
+          [
+            46.2275,
+            24.38722222222222
+          ],
+          [
+            46.50416666666667,
+            23.88888888888889
+          ]
+        ]
+      }
+    }
+  ],
+  "skippedWithoutExplicitGeometry": 78
 }
