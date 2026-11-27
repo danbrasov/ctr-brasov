@@ -1,13 +1,13 @@
 {
   "source": "https://flightplan.romatsa.ro/init/notam/restrictiiro",
-  "checkedAt": "2026-11-26T20:28:20.169536+00:00",
-  "date": "2026-11-26",
+  "checkedAt": "2026-11-27T03:11:29.414249+00:00",
+  "date": "2026-11-27",
   "windowLocal": {
     "from": "12:00",
-    "to": "16:38"
+    "to": "16:37"
   },
   "radiusKm": 75.0,
   "maxAltitude": "FL100",
   "items": [],
-  "skippedWithoutExplicitGeometry": 73
+  "skippedWithoutExplicitGeometry": 38
 }
